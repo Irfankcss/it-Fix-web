@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace itFixAPI.Data
 {
 
-        public class ApplicationDbContext : DbContext
+        public class ApplicationDbContext : IdentityDbContext
         {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
@@ -28,6 +29,10 @@ namespace itFixAPI.Data
 
             modelBuilder.Entity<FavoritiProizvod>()
                 .HasKey(wp => new { wp.FavoritiID, wp.ProizvodId });
+
+            modelBuilder.Entity<Proizvod>()
+                .Property(p => p.Cijena)
+                .HasColumnType("decimal(18, 2)");
         }
 
 

@@ -1,12 +1,11 @@
-﻿namespace itFixAPI.Data
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace itFixAPI.Data
 {
-    public class Korisnik
+    public class Korisnik : IdentityUser
     {
-        public int Id { get; set; }
         public string Ime { get; set; }
         public string Prezime { get; set; }
-        public string Email { get; set; }
-        public string Lozinka { get; set; } // hash lozinke
         public DateTime DatumRegistracije { get; set; }
     }
 }

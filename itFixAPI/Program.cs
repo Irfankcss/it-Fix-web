@@ -1,4 +1,5 @@
 using itFixAPI.Data;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -8,6 +9,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Konekcija na bazu
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddIdentity<Korisnik, IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
 
 // Dodavanje Swagger servisa
 builder.Services.AddSwaggerGen(c =>
