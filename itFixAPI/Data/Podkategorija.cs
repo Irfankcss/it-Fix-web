@@ -8,6 +8,5 @@
         public int KategorijaId { get; set; }
         public Kategorija Kategorija { get; set; }
 
-        public ICollection<Proizvod> Proizvodi { get; set; } = new List<Proizvod>();
     }
 }

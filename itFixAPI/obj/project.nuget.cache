@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "pWyLKtITqLbvBbQGE10NS0FWM0V99xlsAyxUUVyWFo2a0E0SlBh+9FsVlofCnw586yXwT2KpovUc8PWPUPm8kA==",
+  "dgSpecHash": "UwBaG4hZhY5bhjJF2vZqIdp0JKDYBYdwxl6Nzy38VK6Gvrogdn/sRfRVEzpyTNdGDtzYDswO2GDskwdRfVqzug==",
   "success": true,
   "projectFilePath": "C:\\Users\\Irfan\\Documents\\GitHub\\it-Fix-web\\itFixAPI\\itFixAPI.csproj",
   "expectedPackageFiles": [
@@ -11,6 +11,7 @@
     "C:\\Users\\Irfan\\.nuget\\packages\\microsoft.aspnetcore.authentication.abstractions\\2.3.0\\microsoft.aspnetcore.authentication.abstractions.2.3.0.nupkg.sha512",
     "C:\\Users\\Irfan\\.nuget\\packages\\microsoft.aspnetcore.authentication.cookies\\2.3.0\\microsoft.aspnetcore.authentication.cookies.2.3.0.nupkg.sha512",
     "C:\\Users\\Irfan\\.nuget\\packages\\microsoft.aspnetcore.authentication.core\\2.3.0\\microsoft.aspnetcore.authentication.core.2.3.0.nupkg.sha512",
+    "C:\\Users\\Irfan\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\7.0.0\\microsoft.aspnetcore.authentication.jwtbearer.7.0.0.nupkg.sha512",
     "C:\\Users\\Irfan\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\7.0.0\\microsoft.aspnetcore.cryptography.internal.7.0.0.nupkg.sha512",
     "C:\\Users\\Irfan\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\7.0.0\\microsoft.aspnetcore.cryptography.keyderivation.7.0.0.nupkg.sha512",
     "C:\\Users\\Irfan\\.nuget\\packages\\microsoft.aspnetcore.dataprotection\\2.3.0\\microsoft.aspnetcore.dataprotection.2.3.0.nupkg.sha512",
