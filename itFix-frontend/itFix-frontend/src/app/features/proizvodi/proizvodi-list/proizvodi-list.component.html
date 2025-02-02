@@ -1,0 +1,9 @@
+<div *ngIf="products.length > 0; else noProducts">
+  <div *ngFor="let product of products">
+    <h3>{{ product.naziv }}</h3>
+    <p>{{ product.cijena }} KM</p>
+  </div>
+</div>
+<ng-template #noProducts>
+  <p>Nema proizvoda.</p>
+</ng-template>

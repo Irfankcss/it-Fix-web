@@ -17,6 +17,16 @@ builder.Services.AddIdentity<Korisnik, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigins",
+        builder =>
+        {
+            builder.WithOrigins("http://localhost:4200") // Dozvoli samo frontend domen
+                   .AllowAnyMethod()
+                   .AllowAnyHeader();
+        });
+});
 // Dodavanje Swagger servisa
 builder.Services.AddSwaggerGen(c =>
 {
@@ -64,6 +74,7 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Error");
     app.UseHsts();
 }
+app.UseCors("AllowSpecificOrigins");
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
