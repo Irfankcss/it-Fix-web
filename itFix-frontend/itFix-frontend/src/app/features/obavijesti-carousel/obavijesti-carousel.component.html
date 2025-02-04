@@ -1,0 +1,25 @@
+<div *ngIf="isLoading">
+  <p>Učitavanje obavijesti...</p>
+</div>
+
+<div *ngIf="errorMessage">
+  <p class="text-danger">{{ errorMessage }}</p>
+</div>
+
+<ngb-carousel *ngIf="!isLoading && obavijesti && obavijesti.length">
+  <ng-template ngbSlide *ngFor="let obavijest of obavijesti">
+    <div class="picsum-img-wrapper">
+      <img [src]="obavijest.slikaUrl || 'https://via.placeholder.com/800x400?text=No+Image'" alt="Slika obavijesti" class="d-block w-100">
+    </div>
+    <div class="carousel-caption">
+      <h3>{{ obavijest.naslov }}</h3>
+      <p>{{ obavijest.tekst }}</p>
+      <small>{{ obavijest.datumObjave | date:'medium' }}</small>
+    </div>
+  </ng-template>
+</ngb-carousel>
+
+<!-- Ako nema obavijesti -->
+<div *ngIf="!isLoading && (!obavijesti || obavijesti.length === 0)">
+  <p>Nema obavijesti za prikaz.</p>
+</div>

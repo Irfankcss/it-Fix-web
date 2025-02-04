@@ -18,6 +18,7 @@ namespace itFixAPI.Data
         public DbSet<KorpaProizvod> KorpaProizvodi { get; set; }
         public DbSet<Favoriti> Favoritis { get; set; }
         public DbSet<FavoritiProizvod> FavoritiProizvods { get; set; }
+        public DbSet<Obavijest> Obavijesti { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

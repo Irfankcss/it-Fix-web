@@ -6,5 +6,6 @@
   <a (click)="logout()" *ngIf="authService.isLoggedIn()">Odjava</a>
   <a routerLink="/profil" *ngIf="authService.isLoggedIn()">Profil</a>
 </nav>
-
+<app-obavijesti-carousel></app-obavijesti-carousel>
 <router-outlet></router-outlet>
+
