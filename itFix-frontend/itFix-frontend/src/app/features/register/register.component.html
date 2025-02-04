@@ -1,0 +1,9 @@
+<h2>Registracija</h2>
+<form (ngSubmit)="register()">
+  <input type="text" name="ime" placeholder="Ime" [(ngModel)]="user.ime" required />
+  <input type="text" name="prezime" placeholder="Prezime" [(ngModel)]="user.prezime" required />
+  <input type="email" name="email" placeholder="Email" [(ngModel)]="user.email" required />
+  <input type="password" name="lozinka" placeholder="Lozinka" [(ngModel)]="user.lozinka" required />
+  <button type="submit">Registruj se</button>
+</form>
+<p *ngIf="errorMessage">{{ errorMessage }}</p>

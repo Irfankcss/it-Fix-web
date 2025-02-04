@@ -4930,7 +4930,10 @@
       "Microsoft.EntityFrameworkCore >= 7.0.0",
       "Microsoft.EntityFrameworkCore.SqlServer >= 7.0.0",
       "Microsoft.EntityFrameworkCore.Tools >= 7.0.0",
-      "Swashbuckle.AspNetCore >= 7.0.0"
+      "Swashbuckle.AspNetCore >= 7.0.0",
+      "Swashbuckle.AspNetCore.Swagger >= 7.0.0",
+      "Swashbuckle.AspNetCore.SwaggerGen >= 7.0.0",
+      "Swashbuckle.AspNetCore.SwaggerUI >= 7.0.0"
     ]
   },
   "packageFolders": {
@@ -5005,6 +5008,18 @@
             "version": "[7.0.0, )"
           },
           "Swashbuckle.AspNetCore": {
+            "target": "Package",
+            "version": "[7.0.0, )"
+          },
+          "Swashbuckle.AspNetCore.Swagger": {
+            "target": "Package",
+            "version": "[7.0.0, )"
+          },
+          "Swashbuckle.AspNetCore.SwaggerGen": {
+            "target": "Package",
+            "version": "[7.0.0, )"
+          },
+          "Swashbuckle.AspNetCore.SwaggerUI": {
             "target": "Package",
             "version": "[7.0.0, )"
           }

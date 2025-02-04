@@ -1,52 +1,29 @@
 ﻿using itFixAPI.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Identity;
 
 namespace itFixAPI.Controllers.Korpe
 {
+    //[Authorize] // Samo autentificirani korisnici mogu pristupiti
     [ApiController]
     [Route("api/[controller]")]
     public class KorpaController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-        private readonly UserManager<Korisnik> _userManager;
 
-        public KorpaController(ApplicationDbContext context, UserManager<Korisnik> userManager)
+        public KorpaController(ApplicationDbContext context)
         {
             _context = context;
-            _userManager = userManager;
         }
 
         private async Task<Korpa> DohvatiIliKreirajKorpu()
         {
-            string korisnikId;
-
-            if (User.Identity?.IsAuthenticated == true)
+            var korisnikId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (korisnikId == null)
             {
-                korisnikId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Koristite stvarni korisnik ID
-            }
-            else
-            {
-                // Kreirajte privremenog korisnika za anonimne korisnike
-                var privremeniKorisnik = new Korisnik
-                {
-                    UserName = Guid.NewGuid().ToString(),
-                    Email = $"{Guid.NewGuid()}@anon.com",
-                    Ime = "Anoniman",
-                    Prezime = "Korisnik",
-                    DatumRegistracije = DateTime.UtcNow
-                };
-
-                var rezultat = await _userManager.CreateAsync(privremeniKorisnik);
-                if (!rezultat.Succeeded)
-                {
-                    throw new Exception("Ne mogu kreirati privremenog korisnika.");
-                }
-
-                korisnikId = privremeniKorisnik.Id;
+                return null; // Korisnik nije prijavljen
             }
 
             var korpa = await _context.Korpe
@@ -62,11 +39,22 @@ namespace itFixAPI.Controllers.Korpe
 
             return korpa;
         }
+        [HttpGet("test")]
+        public IActionResult TestAuth()
+        {
+            if (User.Identity?.IsAuthenticated == true)
+            {
+                return Ok($"Autorizovan korisnik: {User.Identity.Name}");
+            }
+            return Unauthorized("Niste prijavljeni!");
+        }
 
         [HttpPost("dodaj-proizvod")]
         public async Task<IActionResult> DodajProizvodUKorpu([FromBody] KorpaProizvodDto korpaProizvodDto)
         {
             var korpa = await DohvatiIliKreirajKorpu();
+            if (korpa == null)
+                return Unauthorized("Morate biti prijavljeni da biste koristili korpu.");
 
             var proizvod = await _context.Proizvodi.FindAsync(korpaProizvodDto.ProizvodId);
             if (proizvod == null)
@@ -96,6 +84,8 @@ namespace itFixAPI.Controllers.Korpe
         public async Task<ActionResult<KorpaDto>> GetKorpa()
         {
             var korpa = await DohvatiIliKreirajKorpu();
+            if (korpa == null)
+                return Unauthorized("Morate biti prijavljeni da biste vidjeli svoju korpu.");
 
             var korpaDto = new KorpaDto
             {
@@ -117,6 +107,8 @@ namespace itFixAPI.Controllers.Korpe
         public async Task<IActionResult> RemoveFromKorpa(int proizvodId)
         {
             var korpa = await DohvatiIliKreirajKorpu();
+            if (korpa == null)
+                return Unauthorized("Morate biti prijavljeni da biste koristili korpu.");
 
             var korpaProizvod = korpa.KorpaProizvodi.FirstOrDefault(kp => kp.ProizvodId == proizvodId);
             if (korpaProizvod == null)

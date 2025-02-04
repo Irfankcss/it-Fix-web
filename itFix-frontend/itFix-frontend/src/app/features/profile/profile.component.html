@@ -1,0 +1,11 @@
+<div *ngIf="user; else errorTpl">
+  <h2>Moj profil</h2>
+  <p><strong>Ime:</strong> {{ user.ime }}</p>
+  <p><strong>Prezime:</strong> {{ user.prezime }}</p>
+  <p><strong>Email:</strong> {{ user.email }}</p>
+  <p><strong>Datum registracije:</strong> {{ user.datumRegistracije | date:'dd.MM.yyyy' }}</p>
+</div>
+
+<ng-template #errorTpl>
+  <p class="error-message">{{ errorMessage }}</p>
+</ng-template>

@@ -1,0 +1,7 @@
+<h2>Prijava</h2>
+<form (ngSubmit)="login()">
+  <input type="email" name="email" placeholder="Email" [(ngModel)]="credentials.email" required />
+  <input type="password" name="lozinka" placeholder="Lozinka" [(ngModel)]="credentials.lozinka" required />
+  <button type="submit">Prijavi se</button>
+</form>
+<p *ngIf="errorMessage">{{ errorMessage }}</p>
