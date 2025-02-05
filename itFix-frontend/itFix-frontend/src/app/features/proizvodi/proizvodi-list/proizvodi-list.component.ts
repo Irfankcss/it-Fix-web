@@ -6,7 +6,8 @@ import {CommonModule} from '@angular/common';
   selector: 'app-product-list',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './proizvodi-list.component.html'
+  templateUrl: './proizvodi-list.component.html',
+  styleUrls: ['./proizvodi-list.component.css']
 })
 export class ProizvodiListComponent implements OnInit {
   products: any[] = [];

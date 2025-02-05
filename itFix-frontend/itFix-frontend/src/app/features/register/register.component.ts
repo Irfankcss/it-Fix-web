@@ -10,7 +10,6 @@ import {CommonModule,NgIf,NgFor} from '@angular/common';
   imports: [
     FormsModule,
     NgIf,
-    NgFor,
     CommonModule
   ],
   standalone: true

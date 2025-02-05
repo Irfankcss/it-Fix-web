@@ -13,8 +13,14 @@ import {ObavijestiCarouselComponent} from './features/obavijesti-carousel/obavij
 })
 export class AppComponent {
   constructor(public authService: AuthService) {}
+  menuOpen = false;
 
   logout() {
     this.authService.logout();
   }
+  toggleMenu() {
+    this.menuOpen = !this.menuOpen;
+  }
+
+
 }
