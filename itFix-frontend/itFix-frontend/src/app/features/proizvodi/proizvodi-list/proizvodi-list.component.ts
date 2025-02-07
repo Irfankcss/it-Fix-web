@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {StoreComponent} from '../../store/store.component';
-import {RouterLink} from '@angular/router';
+import {RouterLink,Router} from '@angular/router';
 
 @Component({
   selector: 'app-proizvod-list',
@@ -14,4 +14,10 @@ import {RouterLink} from '@angular/router';
 })
 export class ProizvodListComponent {
   @Input() proizvodi: any[] = [];
+  constructor(private router: Router) {
+  }
+
+  otvoriProizvod(id:number) {
+    this.router.navigate(['/proizvod',id]);
+  }
 }

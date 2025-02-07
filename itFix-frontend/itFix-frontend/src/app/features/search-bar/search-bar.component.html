@@ -1,10 +1,13 @@
-<div class="search-container">
-  <input
-    type="text"
-    [(ngModel)]="searchTerm"
-    (input)="onSearch()"
-    placeholder="Pretraži proizvode..."
-    class="search-input"
-  />
-  <button (click)="clearSearch()" *ngIf="searchTerm" class="clear-btn">X</button>
+<div class="search-container" #searchBar>
+  <div class="search-box">
+    <input
+      type="text"
+      [(ngModel)]="searchTerm"
+      placeholder="Pretraži proizvode..."
+      class="search-input"
+    />
+    <button (click)="clearSearch()" *ngIf="searchTerm" class="clear-btn">✖</button>
+    <button (click)="onSearch()" class="search-btn">⌕</button>
+  </div>
+  <button class="cart-btn">🛒 Korpa</button>
 </div>

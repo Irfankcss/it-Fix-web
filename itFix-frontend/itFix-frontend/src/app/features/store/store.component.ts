@@ -5,6 +5,8 @@ import { FormsModule } from '@angular/forms';
 import { ProizvodListComponent } from '../proizvodi/proizvodi-list/proizvodi-list.component';
 import { CommonModule } from '@angular/common';
 import { SearchBarComponent } from '../search-bar/search-bar.component';
+import {ActivatedRoute} from '@angular/router';
+import {MatSlider, MatSliderModule} from '@angular/material/slider';
 
 @Component({
   selector: 'app-store',
@@ -15,46 +17,55 @@ import { SearchBarComponent } from '../search-bar/search-bar.component';
     FormsModule,
     ProizvodListComponent,
     CommonModule,
-    SearchBarComponent
+    SearchBarComponent,
+    MatSlider,
+    MatSliderModule
   ],
 })
 export class StoreComponent implements OnInit {
+  currentValue = 2500;
   proizvodi: any[] = [];
   kategorije: any[] = [];
   ukupnoProizvoda: number = 0;
   kategorijaId: number = 0;
   podkategorijaId: number = 0;
-  minCijena: number = 0;
-  maxCijena: number = 0;
+  cijena = { min: 0, max: 5000 };
   polovan: boolean = false;
   searchTerm: string = ''; // ✔ Dodano
   sortBy: string = 'naziv';
   sortOrder: string = 'asc';
   page: number = 1;
   pageSize: number = 10;
+  odabranaKategorija: any;
 
-  constructor(private proizvodService: ProizvodService, private kategorijaService: KategorijaService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private proizvodService: ProizvodService,
+    private kategorijaService: KategorijaService
+  ) {}
 
   ngOnInit() {
     this.fetchKategorije();
-    this.fetchProizvodi();
+
+    // 👇 Čitanje `search` query parametra i pokretanje pretrage
+    this.route.queryParams.subscribe(params => {
+      this.searchTerm = params['search'] || '';
+      this.fetchProizvodi();
+    });
   }
 
   fetchKategorije() {
     this.kategorijaService.getKategorije().subscribe(response => {
       this.kategorije = response;
-    }, error => {
-      console.error("Greška pri dohvatu kategorija:", error);
     });
   }
 
   fetchProizvodi() {
-    console.log("Šaljem searchTerm:", this.searchTerm); // 👀 Log za provjeru
     this.proizvodService.getProizvodi(
       this.kategorijaId,
       this.podkategorijaId,
-      this.minCijena,
-      this.maxCijena,
+      this.cijena.min,
+      this.cijena.max,
       this.polovan,
       this.searchTerm,
       this.sortBy,
@@ -62,15 +73,10 @@ export class StoreComponent implements OnInit {
       this.page,
       this.pageSize
     ).subscribe(response => {
-      console.log("Dobijeni proizvodi:", response);
       this.proizvodi = response.proizvodi;
       this.ukupnoProizvoda = response.ukupno;
-    }, error => {
-      console.error("Greška pri dohvatu proizvoda:", error);
     });
   }
-
-
   onPageChange(newPage: number) {
     this.page = newPage;
     this.fetchProizvodi();
@@ -86,6 +92,29 @@ export class StoreComponent implements OnInit {
     this.sortOrder = sortOrder;
     this.fetchProizvodi();
   }
+  updateRange(event: any) {
+    const value = event.value;
+    const mid = (this.cijena.min + this.cijena.max) / 2;
+
+    if (value < mid) {
+      this.cijena.min = value;
+    } else {
+      this.cijena.max = value;
+    }
+
+    this.fetchProizvodi();
+  }
+  updateMin(event: any) {
+    this.cijena.min = event.target.value;
+    this.fetchProizvodi();
+  }
+
+  updateMax(event: any) {
+    this.cijena.max = event.target.value;
+    this.fetchProizvodi();
+  }
+
+
 
   onSearch(searchTerm: string): void {
     this.searchTerm = searchTerm; // ✔ Postavljamo searchTerm

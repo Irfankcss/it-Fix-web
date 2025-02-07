@@ -1,17 +1,6 @@
-<nav class="navbar">
-  <div class="container">
-    <a routerLink="/" class="logo">
-      <img src="assets/itfixlogo.png" alt="IT-Fix Logo">
-    </a>
-    <button class="menu-toggle" (click)="toggleMenu()">☰</button>
-    <div class="nav-links" [class.active]="menuOpen">
-      <a routerLink="/">Početna</a>
-      <a routerLink="/prodavnica">Prodavnica</a>
-      <a routerLink="/login" *ngIf="!authService.isLoggedIn()">Prijava</a>
-      <a routerLink="/register" *ngIf="!authService.isLoggedIn()">Registracija</a>
-      <a (click)="logout()" *ngIf="authService.isLoggedIn()">Odjava</a>
-      <a routerLink="/profil" *ngIf="authService.isLoggedIn()">Profil</a>
-    </div>
-  </div>
-</nav>
-<router-outlet></router-outlet>
+<app-navbar #navbar></app-navbar>
+<app-search-bar (searchEvent)="onGlobalSearch($event)"></app-search-bar>
+
+<div class="body">
+  <router-outlet></router-outlet>
+</div>

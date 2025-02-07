@@ -1,38 +1,39 @@
 <div class="store-container">
-  <app-search-bar (searchEvent)="onSearch($event)"></app-search-bar>
   <aside class="filters">
+    <h3>FILTRIRANJE:</h3>
+    <label>Cijena:</label>
+    <mat-slider [min]="0" [max]="5000" [step]="10">
+      <input matSliderStartThumb [(ngModel)]="cijena.min" (input)="updateMin($event)">
+      <input matSliderEndThumb [(ngModel)]="cijena.max" (input)="updateMax($event)">
+    </mat-slider>
+
+    <div class="price-values">
+      <span>{{ cijena.min }} KM</span>
+      <span>{{ cijena.max }} KM</span>
+    </div>
+
     <label>Kategorija:</label>
-    <select [(ngModel)]="kategorijaId" (change)="fetchProizvodi()">
-      <option *ngFor="let kategorija of kategorije" [value]="kategorija.kategorijaId">{{ kategorija.naziv }}</option>
-    </select>
+    <div class="category-filters">
+      <label *ngFor="let kategorija of kategorije">
+        <input type="radio" name="kategorija" [(ngModel)]="kategorijaId" [value]="kategorija.kategorijaId" (change)="fetchProizvodi()">
+        {{ kategorija.naziv }} ({{ kategorija.count }})
+      </label>
+    </div>
 
-    <label>Min cijena:</label>
-    <input type="number" [(ngModel)]="minCijena" (change)="fetchProizvodi()">
-
-    <label>Max cijena:</label>
-    <input type="number" [(ngModel)]="maxCijena" (change)="fetchProizvodi()">
-
-    <label>Sortiraj po:</label>
-    <select [(ngModel)]="sortBy" (change)="onSortChange(sortBy)">
-      <option value="naziv">Naziv</option>
-      <option value="cijena">Cijena</option>
-    </select>
-    <a>Cijena</a>
-    <select [(ngModel)]="sortOrder" (change)="onSortOrderChange(sortOrder)">
+    <label>Sortiraj po cijeni:</label>
+    <select [(ngModel)]="sortOrder" (change)="fetchProizvodi()">
       <option value="asc">Najniža-Najviša</option>
       <option value="desc">Najviša-Najniža</option>
     </select>
-
-    <button (click)="onSortChange(sortBy)">Promijeni redoslijed</button>
   </aside>
 
   <section class="product-list">
     <app-proizvod-list [proizvodi]="proizvodi"></app-proizvod-list>
   </section>
+</div>
 
-  <div class="pagination">
-    <button (click)="onPageChange(page - 1)" [disabled]="page === 1">Prethodna</button>
-    <span>Stranica {{ page }}</span>
-    <button (click)="onPageChange(page + 1)" [disabled]="page * pageSize >= ukupnoProizvoda">Sljedeća</button>
-  </div>
+<div class="pagination">
+  <button (click)="onPageChange(page - 1)" [disabled]="page === 1">Prethodna</button>
+  <span>Stranica {{ page }}</span>
+  <button (click)="onPageChange(page + 1)" [disabled]="page * pageSize >= ukupnoProizvoda">Sljedeća</button>
 </div>

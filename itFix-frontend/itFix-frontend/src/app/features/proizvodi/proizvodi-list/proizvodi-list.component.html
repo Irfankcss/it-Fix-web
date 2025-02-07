@@ -1,9 +1,15 @@
+<!-- Updated Proizvod-List HTML -->
 <div class="product-grid">
-  <div *ngFor="let proizvod of proizvodi" class="product-card">
+  <div *ngFor="let proizvod of proizvodi" class="product-card" (click)="otvoriProizvod(proizvod.proizvodId)">
+    <div class="discount" *ngIf="proizvod.popust">
+      -{{ proizvod.popust }}%
+    </div>
     <img [src]="proizvod.slikaUrl" alt="{{ proizvod.naziv }}">
-    <h3>{{ proizvod.naziv }}</h3>
-    <p>{{ proizvod.opis }}</p>
-    <p>Cijena: {{ proizvod.cijena }} KM</p>
-    <a [routerLink]="['/proizvod', proizvod.proizvodId]">Detalji</a>
+    <h3 class="product-title">{{ proizvod.naziv }}</h3>
+    <p class="product-price">
+      <span *ngIf="proizvod.popust" class="original-price">{{ proizvod.staraCijena }} KM</span>
+      {{ proizvod.cijena }} KM
+    </p>
+    <a class="details-link">Dodaj u korpu</a>
   </div>
 </div>
