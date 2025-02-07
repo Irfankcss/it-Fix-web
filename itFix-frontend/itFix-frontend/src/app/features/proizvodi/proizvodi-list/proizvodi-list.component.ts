@@ -1,22 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { ProizvodService } from '../../../core/services/product.service';
+import { Component, Input } from '@angular/core';
 import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {StoreComponent} from '../../store/store.component';
+import {RouterLink} from '@angular/router';
 
 @Component({
-  selector: 'app-product-list',
-  standalone: true,
-  imports: [CommonModule],
+  selector: 'app-proizvod-list',
   templateUrl: './proizvodi-list.component.html',
-  styleUrls: ['./proizvodi-list.component.css']
+  styleUrls: ['./proizvodi-list.component.css'],
+  standalone: true,
+  imports: [FormsModule,
+    CommonModule, RouterLink],
 })
-export class ProizvodiListComponent implements OnInit {
-  products: any[] = [];
-
-  constructor(private proizvodiService: ProizvodService) { }
-
-  ngOnInit() {
-    this.proizvodiService.getProizvodi().subscribe(data => {
-      this.products = data;
-    });
-  }
+export class ProizvodListComponent {
+  @Input() proizvodi: any[] = [];
 }

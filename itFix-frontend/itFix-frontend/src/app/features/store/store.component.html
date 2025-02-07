@@ -1,0 +1,38 @@
+<div class="store-container">
+  <app-search-bar (searchEvent)="onSearch($event)"></app-search-bar>
+  <aside class="filters">
+    <label>Kategorija:</label>
+    <select [(ngModel)]="kategorijaId" (change)="fetchProizvodi()">
+      <option *ngFor="let kategorija of kategorije" [value]="kategorija.kategorijaId">{{ kategorija.naziv }}</option>
+    </select>
+
+    <label>Min cijena:</label>
+    <input type="number" [(ngModel)]="minCijena" (change)="fetchProizvodi()">
+
+    <label>Max cijena:</label>
+    <input type="number" [(ngModel)]="maxCijena" (change)="fetchProizvodi()">
+
+    <label>Sortiraj po:</label>
+    <select [(ngModel)]="sortBy" (change)="onSortChange(sortBy)">
+      <option value="naziv">Naziv</option>
+      <option value="cijena">Cijena</option>
+    </select>
+    <a>Cijena</a>
+    <select [(ngModel)]="sortOrder" (change)="onSortOrderChange(sortOrder)">
+      <option value="asc">Najniža-Najviša</option>
+      <option value="desc">Najviša-Najniža</option>
+    </select>
+
+    <button (click)="onSortChange(sortBy)">Promijeni redoslijed</button>
+  </aside>
+
+  <section class="product-list">
+    <app-proizvod-list [proizvodi]="proizvodi"></app-proizvod-list>
+  </section>
+
+  <div class="pagination">
+    <button (click)="onPageChange(page - 1)" [disabled]="page === 1">Prethodna</button>
+    <span>Stranica {{ page }}</span>
+    <button (click)="onPageChange(page + 1)" [disabled]="page * pageSize >= ukupnoProizvoda">Sljedeća</button>
+  </div>
+</div>

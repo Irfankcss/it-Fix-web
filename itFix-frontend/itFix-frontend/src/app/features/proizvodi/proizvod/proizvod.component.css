@@ -1,0 +1,168 @@
+/* Glavni kontejner */
+.proizvod-container {
+  padding-top:100px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  background: #f8f8f8;
+  padding-left: 30px;
+  padding-right: 30px;
+  border-radius: 12px;
+  max-width: 80%;
+  margin: 20px auto;
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Slika */
+.slika-container {
+  flex: 1;
+  min-width: 300px;
+  max-width: 500px;
+}
+
+.slika-container img {
+  width: 100%;
+  border-radius: 12px;
+}
+
+/* Informacije */
+.info-container {
+  flex: 2;
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.naziv {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.opis {
+  font-size: 18px;
+  color: #444;
+  margin-bottom: 15px;
+}
+
+/* Cijena */
+.cijene {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.trenutna-cijena {
+  font-size: 30px;
+  font-weight: bold;
+  color: #d60000;
+}
+
+.stara-cijena {
+  font-size: 22px;
+  text-decoration: line-through;
+  color: #888;
+}
+
+/* Ocjena */
+.ocjena {
+  font-size: 18px;
+  color: #ff9800;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+/* Garancija */
+.garancija {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #28a745;
+}
+
+/* Dugmad */
+.dugmad {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+button {
+  padding: 14px 20px;
+  font-size: 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.dodaj-korpu {
+  background: #5cb85c;
+  color: white;
+  border: none;
+}
+
+.dodaj-korpu:hover {
+  background: #4cae4c;
+}
+
+.brza-kupovina {
+  background: white;
+  color: black;
+  border: 2px solid #5cb85c;
+}
+
+.brza-kupovina:hover {
+  background: #e8f5e8;
+}
+
+/* Responzivnost */
+@media (max-width: 1024px) {
+  .proizvod-container {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .slika-container {
+    max-width: 80%;
+  }
+
+  .info-container {
+    width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .proizvod-container {
+    padding: 20px;
+  }
+
+  .naziv {
+    font-size: 24px;
+  }
+
+  .opis {
+    font-size: 16px;
+  }
+
+  .trenutna-cijena {
+    font-size: 26px;
+  }
+
+  .stara-cijena {
+    font-size: 20px;
+  }
+
+  .ocjena,
+  .garancija {
+    font-size: 16px;
+  }
+
+  button {
+    font-size: 16px;
+    padding: 12px 16px;
+  }
+}

@@ -1,11 +1,11 @@
-﻿using itFixAPI.Controllers.Proizvodi;
-using itFixAPI.Data;
+﻿using itFixAPI.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace itFixAPI.Controllers.Proizvodi
 {
-
     [ApiController]
     [Route("api/[controller]")]
     public class ProizvodController : ControllerBase
@@ -25,7 +25,6 @@ namespace itFixAPI.Controllers.Proizvodi
                 return BadRequest(ModelState);
             }
 
-            
             if (createDto.KategorijaId.HasValue)
             {
                 var kategorija = await _context.Kategorije.FindAsync(createDto.KategorijaId.Value);
@@ -51,24 +50,18 @@ namespace itFixAPI.Controllers.Proizvodi
                 Cijena = createDto.Cijena,
                 SlikaUrl = createDto.SlikaUrl,
                 KategorijaId = createDto.KategorijaId,
-                PodkategorijaId = createDto.PodkategorijaId
+                PodkategorijaId = createDto.PodkategorijaId,
+                Polovan = createDto.Polovan,
+                Popust = createDto.Popust,
+                Ocjena = createDto.Ocjena,
+                BrojRecenzija = createDto.BrojRecenzija,
+                GarancijaMjeseci = createDto.GarancijaMjeseci
             };
 
             _context.Proizvodi.Add(proizvod);
             await _context.SaveChangesAsync();
 
-            var proizvodResponse = new ProizvodDto
-            {
-                Naziv = proizvod.Naziv,
-                Cijena = proizvod.Cijena,
-                Opis = proizvod.Opis,
-                SlikaUrl = proizvod.SlikaUrl,
-                KategorijaId = proizvod.KategorijaId,
-                PodkategorijaId = proizvod.PodkategorijaId,
-                ProizvodId = proizvod.ProizvodId
-            };
-
-            return Ok(proizvodResponse);
+            return Ok(new ProizvodDto(proizvod));
         }
 
         [HttpGet("{id}")]
@@ -84,41 +77,81 @@ namespace itFixAPI.Controllers.Proizvodi
                 return NotFound($"Proizvod sa ID-jem {id} ne postoji.");
             }
 
-            var proizvodDto = new ProizvodDto
-            {
-                ProizvodId = proizvod.ProizvodId,
-                Naziv = proizvod.Naziv,
-                Opis = proizvod.Opis,
-                Cijena = proizvod.Cijena,
-                SlikaUrl = proizvod.SlikaUrl,
-                KategorijaId = proizvod.KategorijaId,
-                PodkategorijaId = proizvod.PodkategorijaId
-            };
-
-            return Ok(proizvodDto);
+            return Ok(new ProizvodDto(proizvod));
         }
-
         [HttpGet]
-        public async Task<IActionResult> GetAllProizvodi()
+        public async Task<IActionResult> GetAllProizvodi(
+            [FromQuery] int? kategorijaId,
+            [FromQuery] int? podkategorijaId,
+            [FromQuery] decimal? minCijena,
+            [FromQuery] decimal? maxCijena,
+            [FromQuery] bool? polovan,
+            [FromQuery] string? searchTerm, // 🔍 Novi parametar
+            [FromQuery] int? minPopust,
+            [FromQuery] int? maxPopust,
+            [FromQuery] float? minOcjena,
+            [FromQuery] int? minGarancijaMjeseci,
+            [FromQuery] string? sortBy = "naziv",
+            [FromQuery] string? sortOrder = "asc",
+            [FromQuery] int page = 1,
+            [FromQuery] int pageSize = 10)
         {
-            var proizvodi = await _context.Proizvodi
+            var query = _context.Proizvodi
                 .Include(p => p.Kategorija)
                 .Include(p => p.Podkategorija)
-                .ToListAsync();
+                .AsQueryable();
 
-            var proizvodDtos = proizvodi.Select(p => new ProizvodDto
+            // 🔹 Filtriranje
+            if (kategorijaId.HasValue)
+                query = query.Where(p => p.KategorijaId == kategorijaId.Value);
+
+            if (podkategorijaId.HasValue)
+                query = query.Where(p => p.PodkategorijaId == podkategorijaId.Value);
+
+            if (minCijena.HasValue)
+                query = query.Where(p => p.Cijena >= minCijena.Value);
+
+            if (maxCijena.HasValue)
+                query = query.Where(p => p.Cijena <= maxCijena.Value);
+
+            if (polovan.HasValue)
+                query = query.Where(p => p.Polovan == polovan.Value);
+
+            if (!string.IsNullOrEmpty(searchTerm))
+                query = query.Where(p => p.Naziv.Contains(searchTerm)); // 🔍 Pretraga po nazivu
+
+            if (minPopust.HasValue)
+                query = query.Where(p => p.Popust >= minPopust.Value);
+
+            if (maxPopust.HasValue)
+                query = query.Where(p => p.Popust <= maxPopust.Value);
+
+            if (minOcjena.HasValue)
+                query = query.Where(p => p.Ocjena >= minOcjena.Value);
+
+            if (minGarancijaMjeseci.HasValue)
+                query = query.Where(p => p.GarancijaMjeseci >= minGarancijaMjeseci.Value);
+
+            // 🔹 Sortiranje
+            query = sortBy.ToLower() switch
             {
-                ProizvodId = p.ProizvodId,
-                Naziv = p.Naziv,
-                Opis = p.Opis,
-                Cijena = p.Cijena,
-                SlikaUrl = p.SlikaUrl,
-                KategorijaId = p.KategorijaId,
-                PodkategorijaId = p.PodkategorijaId
-            });
+                "cijena" => sortOrder.ToLower() == "desc" ? query.OrderByDescending(p => p.Cijena) : query.OrderBy(p => p.Cijena),
+                "naziv" => sortOrder.ToLower() == "desc" ? query.OrderByDescending(p => p.Naziv) : query.OrderBy(p => p.Naziv),
+                "popust" => sortOrder.ToLower() == "desc" ? query.OrderByDescending(p => p.Popust) : query.OrderBy(p => p.Popust),
+                "ocjena" => sortOrder.ToLower() == "desc" ? query.OrderByDescending(p => p.Ocjena) : query.OrderBy(p => p.Ocjena),
+                _ => query.OrderBy(p => p.Naziv)
+            };
 
-            return Ok(proizvodDtos);
+            // 🔹 Paginacija
+            var totalItems = await query.CountAsync();
+            var proizvodi = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+
+            var proizvodDtos = proizvodi.Select(p => new ProizvodDto(p));
+
+            return Ok(new { ukupno = totalItems, proizvodi = proizvodDtos });
         }
+
+
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProizvod(int id)

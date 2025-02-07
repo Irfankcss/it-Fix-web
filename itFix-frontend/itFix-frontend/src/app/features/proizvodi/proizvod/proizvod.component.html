@@ -1,0 +1,37 @@
+<div class="proizvod-container">
+  <div class="slika-container">
+    <img [src]="proizvod?.slikaUrl" [alt]="proizvod?.naziv" />
+  </div>
+
+  <div class="info-container">
+    <h1 class="naziv">{{ proizvod?.naziv }}</h1>
+
+    <p class="opis">{{ proizvod?.opis }}</p>
+
+    <div class="cijene">
+      <span class="trenutna-cijena">{{ proizvod?.cijenaSaPopustom | currency:'KM ' }}</span>
+      <span *ngIf="proizvod?.cijena !== proizvod?.cijenaSaPopustom" class="stara-cijena">
+        {{ proizvod?.cijena | currency:'KM ' }}
+      </span>
+    </div>
+
+    <div class="ocjena" *ngIf="proizvod?.ocjena !== null">
+      ⭐ Ocjena: {{ proizvod?.ocjena }} / 5 ({{ proizvod?.brojRecenzija }} recenzija)
+    </div>
+
+    <div *ngIf="proizvod?.garancijaMjeseci !== null" class="garancija">
+      🛡 Garancija: {{ proizvod?.garancijaMjeseci }} mjeseci
+    </div>
+    <div *ngIf="proizvod?.polovan !== false; else polovanProizvod" class="polovan">
+       Ovaj proizvod je nov.
+    </div>
+    <ng-template #polovanProizvod>
+      <div class="polovan"> Ovaj proizvod je polovan.</div>
+    </ng-template>
+
+    <div class="dugmad">
+      <button class="dodaj-korpu">Dodaj u korpu</button>
+      <button class="brza-kupovina">Brza kupovina</button>
+    </div>
+  </div>
+</div>
