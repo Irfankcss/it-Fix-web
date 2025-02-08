@@ -7,6 +7,7 @@ import {CommonModule,NgIf,NgFor} from '@angular/common';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
+  styleUrls: ['./register.component.css'],
   imports: [
     FormsModule,
     NgIf,

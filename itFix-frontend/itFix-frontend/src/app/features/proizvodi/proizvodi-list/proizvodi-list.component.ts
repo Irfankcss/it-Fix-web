@@ -10,7 +10,7 @@ import {RouterLink,Router} from '@angular/router';
   styleUrls: ['./proizvodi-list.component.css'],
   standalone: true,
   imports: [FormsModule,
-    CommonModule, RouterLink],
+    CommonModule],
 })
 export class ProizvodListComponent {
   @Input() proizvodi: any[] = [];

@@ -17,13 +17,12 @@ import {MatSlider, MatSliderModule} from '@angular/material/slider';
     FormsModule,
     ProizvodListComponent,
     CommonModule,
-    SearchBarComponent,
     MatSlider,
     MatSliderModule
   ],
 })
 export class StoreComponent implements OnInit {
-  currentValue = 2500;
+  prikaziFiltere: boolean = false;
   proizvodi: any[] = [];
   kategorije: any[] = [];
   ukupnoProizvoda: number = 0;
@@ -36,7 +35,7 @@ export class StoreComponent implements OnInit {
   sortOrder: string = 'asc';
   page: number = 1;
   pageSize: number = 10;
-  odabranaKategorija: any;
+  odabranaKategorija: any ='';
 
   constructor(
     private route: ActivatedRoute,
@@ -119,5 +118,11 @@ export class StoreComponent implements OnInit {
   onSearch(searchTerm: string): void {
     this.searchTerm = searchTerm; // ✔ Postavljamo searchTerm
     this.fetchProizvodi(); // ✔ API sada filtrira rezultate
+  }
+
+  ponistiKategoirje() {
+    this.odabranaKategorija='';
+    this.kategorijaId = 0;
+    this.fetchProizvodi();
   }
 }

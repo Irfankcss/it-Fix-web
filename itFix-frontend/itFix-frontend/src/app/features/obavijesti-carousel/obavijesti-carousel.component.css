@@ -9,26 +9,26 @@
   width: 100%;
 }
 h3{
-  font-size: 45px;
+  font-size: 40px;
   text-outline: 1px black;
   text-shadow: 2px 1px 1px black;
   font-weight: bold;
 }
 p{
-  font-size: 25px;
+  font-size: 22px;
   font-weight: bold;
   text-outline: 1px black;
   text-shadow: 2px 1px 1px black;
 }
 @media screen and (max-width: 768px) {
   h3{
-    font-size: 32px;
+    font-size: 27px;
     text-outline: 1px black;
     text-shadow: 1px 1px 1px black;
     font-weight: bold;
   }
   p{
-    font-size: 18px;
+    font-size: 13px;
     font-weight: bold;
     text-outline: 1px black;
     text-shadow: 1px 1px 1px black;

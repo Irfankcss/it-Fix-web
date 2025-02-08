@@ -1,5 +1,9 @@
 <div class="store-container">
-  <aside class="filters">
+  <button class="toggle-filters" (click)="prikaziFiltere = !prikaziFiltere">
+    {{ prikaziFiltere ? 'Sakrij filtere' : 'Prikaži filtere' }}
+  </button>
+
+  <aside class="filters" [ngClass]="{ 'hidden': !prikaziFiltere }">
     <h3>FILTRIRANJE:</h3>
     <label>Cijena:</label>
     <mat-slider [min]="0" [max]="5000" [step]="10">
@@ -12,13 +16,17 @@
       <span>{{ cijena.max }} KM</span>
     </div>
 
-    <label>Kategorija:</label>
-    <div class="category-filters">
-      <label *ngFor="let kategorija of kategorije">
-        <input type="radio" name="kategorija" [(ngModel)]="kategorijaId" [value]="kategorija.kategorijaId" (change)="fetchProizvodi()">
-        {{ kategorija.naziv }} ({{ kategorija.count }})
-      </label>
-    </div>
+    <h3>Kategorije</h3>
+    <ul class="category-list">
+      <li *ngIf="odabranaKategorija!==''" (click)="ponistiKategoirje()" style="background-color: #fa1515;color:white">Poništi kategorije</li>
+      <li
+        *ngFor="let kategorija of kategorije"
+        [class.active]="kategorija.kategorijaId === kategorijaId"
+        (click)="odabranaKategorija = kategorija; kategorijaId = kategorija.kategorijaId; fetchProizvodi()"
+      >
+        {{ kategorija.naziv }}
+      </li>
+    </ul>
 
     <label>Sortiraj po cijeni:</label>
     <select [(ngModel)]="sortOrder" (change)="fetchProizvodi()">

@@ -40,10 +40,10 @@
 }
 
 .product-card img {
-  max-width: 100%; /* Prilagodljivo na male ekrane */
+  max-width: 100%;
   max-height: 210px;
   width: 210px;
-  height: auto; /* Omogućuje proporcionalnost */
+  height: 210px;
   object-fit: contain;
   border-radius: 8px;
   margin-bottom: 15px;
@@ -67,7 +67,7 @@
 
 .details-link {
   text-decoration: none;
-  background: #9ac043;
+  background: #7cc04a;
   color: #fff;
   padding: 10px 15px;
   border-radius: 6px;
@@ -76,7 +76,7 @@
 }
 
 .details-link:hover {
-  background: #28a644;
+  background: #6ca841;
 }
 
 /* Media queries za manje ekrane */

@@ -1,9 +1,61 @@
-<h2>Registracija</h2>
-<form (ngSubmit)="register()">
-  <input type="text" name="ime" placeholder="Ime" [(ngModel)]="user.ime" required />
-  <input type="text" name="prezime" placeholder="Prezime" [(ngModel)]="user.prezime" required />
-  <input type="email" name="email" placeholder="Email" [(ngModel)]="user.email" required />
-  <input type="password" name="lozinka" placeholder="Lozinka" [(ngModel)]="user.lozinka" required />
-  <button type="submit">Registruj se</button>
-</form>
-<p *ngIf="errorMessage">{{ errorMessage }}</p>
+<div class="login-container">
+  <div class="login-card">
+    <h2 class="title">Registracija</h2>
+    <form class="login-form" (ngSubmit)="register()">
+      <div class="input-group">
+        <input
+          class="input-field"
+          type="text"
+          name="ime"
+          placeholder="Ime"
+          [(ngModel)]="user.ime"
+          required
+        />
+      </div>
+      <div class="input-group">
+        <input
+          class="input-field"
+          type="text"
+          name="prezime"
+          placeholder="Prezime"
+          [(ngModel)]="user.prezime"
+          required
+        />
+      </div>
+      <div class="input-group">
+        <input
+          class="input-field"
+          type="email"
+          name="email"
+          placeholder="Email"
+          [(ngModel)]="user.email"
+          required
+        />
+      </div>
+      <div class="input-group">
+        <input
+          class="input-field"
+          type="password"
+          name="lozinka"
+          placeholder="Lozinka"
+          [(ngModel)]="user.lozinka"
+          required
+        />
+      </div>
+      <div class="input-group">
+        <input
+          class="input-field"
+          type="password"
+          name="potvrdaLozinke"
+          placeholder="Potvrdite lozinku"
+          required
+        />
+      </div>
+      <button class="submit-button" type="submit">Registruj se</button>
+    </form>
+    <p class="register-text">
+      Već imate račun? <a class="register-link" href="/login">Prijavite se</a>
+    </p>
+    <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+  </div>
+</div>

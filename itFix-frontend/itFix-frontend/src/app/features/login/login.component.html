@@ -1,7 +1,34 @@
-<h2>Prijava</h2>
-<form (ngSubmit)="login()">
-  <input type="email" name="email" placeholder="Email" [(ngModel)]="credentials.email" required />
-  <input type="password" name="lozinka" placeholder="Lozinka" [(ngModel)]="credentials.lozinka" required />
-  <button type="submit">Prijavi se</button>
-</form>
-<p *ngIf="errorMessage">{{ errorMessage }}</p>
+
+  <div class="login-container">
+    <div class="login-card">
+      <h2 class="title">Prijava</h2>
+      <form class="login-form" (ngSubmit)="login()">
+        <div class="input-group">
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            [(ngModel)]="credentials.email"
+            required
+            class="input-field"
+          />
+        </div>
+        <div class="input-group">
+          <input
+            type="password"
+            name="lozinka"
+            placeholder="Lozinka"
+            [(ngModel)]="credentials.lozinka"
+            required
+            class="input-field"
+          />
+        </div>
+        <button type="submit" class="submit-button">Prijavi se</button>
+      </form>
+      <p class="register-text">
+        Nemate račun? <a href="/register" class="register-link">Registracija</a>
+      </p>
+      <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+    </div>
+  </div>
+
