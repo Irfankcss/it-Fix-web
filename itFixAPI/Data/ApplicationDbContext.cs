@@ -19,6 +19,8 @@ namespace itFixAPI.Data
         public DbSet<Favoriti> Favoritis { get; set; }
         public DbSet<FavoritiProizvod> FavoritiProizvods { get; set; }
         public DbSet<Obavijest> Obavijesti { get; set; }
+        public DbSet<Narudzba> Narudzbe { get; set; }
+        public DbSet<NarudzbaProizvod> NarudzbaProizvodi { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -34,6 +36,23 @@ namespace itFixAPI.Data
             modelBuilder.Entity<Proizvod>()
                 .Property(p => p.Cijena)
                 .HasColumnType("decimal(18, 2)");
+            modelBuilder.Entity<NarudzbaProizvod>()
+              .HasKey(np => new { np.NarudzbaId, np.ProizvodId });
+
+
+            modelBuilder.Entity<NarudzbaProizvod>()
+                .HasOne(np => np.Narudzba)
+                .WithMany(n => n.NarudzbaProizvodi)
+                .HasForeignKey(np => np.NarudzbaId)
+                .OnDelete(DeleteBehavior.Cascade); 
+
+            modelBuilder.Entity<NarudzbaProizvod>()
+                .HasOne(np => np.Proizvod)
+                .WithMany()
+                .HasForeignKey(np => np.ProizvodId);
+            modelBuilder.Entity<Narudzba>()
+                .Property(n => n.UkupnaCijena)
+                .HasColumnType("decimal(18,2)");
         }
 
 

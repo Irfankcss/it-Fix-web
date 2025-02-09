@@ -318,6 +318,85 @@ namespace itFixAPI.Migrations
                     b.ToTable("KorpaProizvodi");
                 });
 
+            modelBuilder.Entity("itFixAPI.Data.Narudzba", b =>
+                {
+                    b.Property<int>("NarudzbaId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("NarudzbaId"));
+
+                    b.Property<string>("AdresaDostave")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BrojTelefona")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DatumKreiranja")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Grad")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Ime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("KorisnikId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Napomena")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Prezime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("UkupnaCijena")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("NarudzbaId");
+
+                    b.HasIndex("KorisnikId");
+
+                    b.ToTable("Narudzbe");
+                });
+
+            modelBuilder.Entity("itFixAPI.Data.NarudzbaProizvod", b =>
+                {
+                    b.Property<int>("NarudzbaId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProizvodId")
+                        .HasColumnType("int");
+
+                    b.Property<float>("CijenaPoKomadu")
+                        .HasColumnType("real");
+
+                    b.Property<int>("Kolicina")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Popust")
+                        .HasColumnType("int");
+
+                    b.HasKey("NarudzbaId", "ProizvodId");
+
+                    b.HasIndex("ProizvodId");
+
+                    b.ToTable("NarudzbaProizvodi");
+                });
+
             modelBuilder.Entity("itFixAPI.Data.Obavijest", b =>
                 {
                     b.Property<int>("Id")
@@ -393,6 +472,9 @@ namespace itFixAPI.Migrations
 
                     b.Property<int?>("KategorijaId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("NaRate")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Naziv")
                         .IsRequired()
@@ -554,6 +636,34 @@ namespace itFixAPI.Migrations
                     b.Navigation("Proizvod");
                 });
 
+            modelBuilder.Entity("itFixAPI.Data.Narudzba", b =>
+                {
+                    b.HasOne("itFixAPI.Data.Korisnik", "Korisnik")
+                        .WithMany()
+                        .HasForeignKey("KorisnikId");
+
+                    b.Navigation("Korisnik");
+                });
+
+            modelBuilder.Entity("itFixAPI.Data.NarudzbaProizvod", b =>
+                {
+                    b.HasOne("itFixAPI.Data.Narudzba", "Narudzba")
+                        .WithMany("NarudzbaProizvodi")
+                        .HasForeignKey("NarudzbaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("itFixAPI.Data.Proizvod", "Proizvod")
+                        .WithMany()
+                        .HasForeignKey("ProizvodId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Narudzba");
+
+                    b.Navigation("Proizvod");
+                });
+
             modelBuilder.Entity("itFixAPI.Data.Podkategorija", b =>
                 {
                     b.HasOne("itFixAPI.Data.Kategorija", "Kategorija")
@@ -593,6 +703,11 @@ namespace itFixAPI.Migrations
             modelBuilder.Entity("itFixAPI.Data.Korpa", b =>
                 {
                     b.Navigation("KorpaProizvodi");
+                });
+
+            modelBuilder.Entity("itFixAPI.Data.Narudzba", b =>
+                {
+                    b.Navigation("NarudzbaProizvodi");
                 });
 #pragma warning restore 612, 618
         }

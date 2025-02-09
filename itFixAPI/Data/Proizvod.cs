@@ -13,6 +13,7 @@ namespace itFixAPI.Data
         public int Popust {  get; set; } = 0;
         public float? Ocjena { get; set; }
         public int BrojRecenzija { get; set; }
+        public bool NaRate { get; set; } = false;
         public int? GarancijaMjeseci { get; set; }
         public int? KategorijaId { get; set; }
         public Kategorija? Kategorija { get; set; }

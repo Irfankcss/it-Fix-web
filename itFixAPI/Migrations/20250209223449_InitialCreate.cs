@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace itFixAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class IdentityModeli : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -65,6 +65,24 @@ namespace itFixAPI.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Kategorije", x => x.KategorijaId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Obavijesti",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Naslov = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Tekst = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SlikaUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DatumObjave = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DatumIsteka = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Prioritet = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Obavijesti", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -212,6 +230,34 @@ namespace itFixAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Narudzbe",
+                columns: table => new
+                {
+                    NarudzbaId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    KorisnikId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Ime = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Prezime = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BrojTelefona = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Grad = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AdresaDostave = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DatumKreiranja = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UkupnaCijena = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Napomena = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Narudzbe", x => x.NarudzbaId);
+                    table.ForeignKey(
+                        name: "FK_Narudzbe_AspNetUsers_KorisnikId",
+                        column: x => x.KorisnikId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Podkategorije",
                 columns: table => new
                 {
@@ -241,6 +287,12 @@ namespace itFixAPI.Migrations
                     Opis = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Cijena = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     SlikaUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Polovan = table.Column<bool>(type: "bit", nullable: false),
+                    Popust = table.Column<int>(type: "int", nullable: false),
+                    Ocjena = table.Column<float>(type: "real", nullable: true),
+                    BrojRecenzija = table.Column<int>(type: "int", nullable: false),
+                    NaRate = table.Column<bool>(type: "bit", nullable: false),
+                    GarancijaMjeseci = table.Column<int>(type: "int", nullable: true),
                     KategorijaId = table.Column<int>(type: "int", nullable: true),
                     PodkategorijaId = table.Column<int>(type: "int", nullable: true)
                 },
@@ -308,6 +360,33 @@ namespace itFixAPI.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "NarudzbaProizvodi",
+                columns: table => new
+                {
+                    NarudzbaId = table.Column<int>(type: "int", nullable: false),
+                    ProizvodId = table.Column<int>(type: "int", nullable: false),
+                    Kolicina = table.Column<int>(type: "int", nullable: false),
+                    CijenaPoKomadu = table.Column<float>(type: "real", nullable: false),
+                    Popust = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_NarudzbaProizvodi", x => new { x.NarudzbaId, x.ProizvodId });
+                    table.ForeignKey(
+                        name: "FK_NarudzbaProizvodi_Narudzbe_NarudzbaId",
+                        column: x => x.NarudzbaId,
+                        principalTable: "Narudzbe",
+                        principalColumn: "NarudzbaId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_NarudzbaProizvodi_Proizvodi_ProizvodId",
+                        column: x => x.ProizvodId,
+                        principalTable: "Proizvodi",
+                        principalColumn: "ProizvodId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -368,6 +447,16 @@ namespace itFixAPI.Migrations
                 column: "KorisnikId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_NarudzbaProizvodi_ProizvodId",
+                table: "NarudzbaProizvodi",
+                column: "ProizvodId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Narudzbe_KorisnikId",
+                table: "Narudzbe",
+                column: "KorisnikId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Podkategorije_KategorijaId",
                 table: "Podkategorije",
                 column: "KategorijaId");
@@ -408,6 +497,12 @@ namespace itFixAPI.Migrations
                 name: "KorpaProizvodi");
 
             migrationBuilder.DropTable(
+                name: "NarudzbaProizvodi");
+
+            migrationBuilder.DropTable(
+                name: "Obavijesti");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
@@ -415,6 +510,9 @@ namespace itFixAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "Korpe");
+
+            migrationBuilder.DropTable(
+                name: "Narudzbe");
 
             migrationBuilder.DropTable(
                 name: "Proizvodi");
