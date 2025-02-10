@@ -53,15 +53,27 @@ namespace itFixAPI.Controllers.Proizvodi
                 PodkategorijaId = createDto.PodkategorijaId,
                 Polovan = createDto.Polovan,
                 Popust = createDto.Popust,
-                Ocjena = createDto.Ocjena,
-                BrojRecenzija = createDto.BrojRecenzija,
-                GarancijaMjeseci = createDto.GarancijaMjeseci
+                NaRate = createDto.NaRate,
+                GarancijaMjeseci = createDto.GarancijaMjeseci,
+                DatumDodavanja = DateTime.Now,
             };
 
             _context.Proizvodi.Add(proizvod);
             await _context.SaveChangesAsync();
 
             return Ok(new ProizvodDto(proizvod));
+        }
+        [HttpGet("najnoviji")]
+        public async Task<IActionResult> GetNajnovijiProizvodi()
+        {
+            var najnovijiProizvodi = await _context.Proizvodi
+                .OrderByDescending(p => p.DatumDodavanja)
+                .Take(4)
+                .ToListAsync();
+
+            var proizvodDtos = najnovijiProizvodi.Select(p => new ProizvodDto(p));
+
+            return Ok(proizvodDtos);
         }
 
         [HttpGet("{id}")]

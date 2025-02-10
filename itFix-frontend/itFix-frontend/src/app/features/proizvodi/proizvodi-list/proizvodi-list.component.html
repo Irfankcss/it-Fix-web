@@ -5,10 +5,10 @@
       -{{ proizvod.popust }}%
     </div>
     <img [src]="proizvod.slikaUrl" alt="{{ proizvod.naziv }}">
-    <h3 class="product-title">{{ proizvod.naziv }}</h3>
-    <p class="product-price">
-      <span *ngIf="proizvod.popust" class="original-price">{{ proizvod.staraCijena }} KM</span>
-      {{ proizvod.cijena }} KM
+    <h3 class="product-title">{{ proizvod.naziv.length>50? (proizvod.naziv | slice:0:50) + '...' : proizvod.naziv }}</h3>
+    <p class="product-prices">
+      <span *ngIf="proizvod.popust" class="old-price">{{ proizvod.cijena }} KM</span>
+      <span class="product-price">{{ proizvod.cijenaSaPopustom | number:'1.2-2'}} KM</span>
     </p>
     <a class="details-link">Dodaj u korpu</a>
   </div>

@@ -49,5 +49,12 @@ export class ProizvodService {
 
     return this.http.get<any>(this.apiUrl, { params }).pipe(retry(2), catchError(this.handleError));
   }
+  getNajnovijiProizvodi(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/najnoviji`).pipe(
+      retry(2),
+      catchError(this.handleError)
+    );
+  }
+
 
 }

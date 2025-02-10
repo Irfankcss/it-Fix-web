@@ -15,6 +15,7 @@ namespace itFixAPI.Data
         public int BrojRecenzija { get; set; }
         public bool NaRate { get; set; } = false;
         public int? GarancijaMjeseci { get; set; }
+        public DateTime DatumDodavanja { get; set; }
         public int? KategorijaId { get; set; }
         public Kategorija? Kategorija { get; set; }
 

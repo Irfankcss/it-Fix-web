@@ -19,6 +19,7 @@ namespace itFixAPI.Controllers.Proizvodi
         public int? KategorijaId { get; set; }
         public int? PodkategorijaId { get; set; }
 
+
         public ProizvodDto(Proizvod proizvod)
         {
             ProizvodId = proizvod.ProizvodId;
@@ -34,6 +35,7 @@ namespace itFixAPI.Controllers.Proizvodi
             GarancijaMjeseci = proizvod.GarancijaMjeseci;
             KategorijaId = proizvod.KategorijaId;
             PodkategorijaId = proizvod.PodkategorijaId;
+
         }
     }
 
@@ -59,14 +61,9 @@ public class CreateProizvodDto
         [Range(0, 100, ErrorMessage = "Popust mora biti između 0 i 100.")]
         public int Popust { get; set; } = 0;
 
-        [Range(0, 5, ErrorMessage = "Ocjena mora biti između 0 i 5.")]
-        public float? Ocjena { get; set; }
-
-        [Range(0, int.MaxValue, ErrorMessage = "Broj recenzija ne može biti negativan.")]
-        public int BrojRecenzija { get; set; } = 0;
-
         [Range(0, 120, ErrorMessage = "Garancija mora biti između 0 i 120 mjeseci.")]
         public int? GarancijaMjeseci { get; set; }
+        public bool NaRate {  get; set; } = false;
     }
 
 

@@ -3,6 +3,7 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {StoreComponent} from '../../store/store.component';
 import {RouterLink,Router} from '@angular/router';
+import {round} from '@popperjs/core/lib/utils/math';
 
 @Component({
   selector: 'app-proizvod-list',
@@ -20,4 +21,6 @@ export class ProizvodListComponent {
   otvoriProizvod(id:number) {
     this.router.navigate(['/proizvod',id]);
   }
+
+  protected readonly round = round;
 }

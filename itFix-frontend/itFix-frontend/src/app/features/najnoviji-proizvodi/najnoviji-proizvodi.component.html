@@ -1,0 +1,17 @@
+<div class="najnoviji-proizvodi">
+  <h2>Najnoviji Proizvodi</h2>
+  <div *ngIf="najnovijiProizvodi.length > 0; else loading" class="proizvod-grid">
+    <div *ngFor="let proizvod of najnovijiProizvodi" class="proizvod-kartica">
+      <h3>{{ proizvod.naziv.length > 50 ? (proizvod.naziv | slice:0:50) + '...' : proizvod.naziv }}</h3>
+      <p>Cijena: {{ proizvod.cijenaSaPopustom | number:'1.2-2' }} KM</p>
+      <img [src]="proizvod.slikaUrl" alt="{{ proizvod.naziv }}" width="250" height="150">
+      <button class="add-to-cart-btn">+</button>
+    </div>
+  </div>
+  <div class="bottom">
+  <a href="/prodavnica" class="cijela-ponuda-link">Pogledaj cijelu ponudu</a>
+  </div>
+    <ng-template #loading>
+    <p>Učitavanje proizvoda...</p>
+  </ng-template>
+</div>

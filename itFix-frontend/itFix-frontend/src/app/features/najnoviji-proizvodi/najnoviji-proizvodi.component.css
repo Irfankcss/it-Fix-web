@@ -1,0 +1,110 @@
+.najnoviji-proizvodi {
+  text-align: center;
+  padding: 20px;
+  background-color: rgba(2, 2, 2, 0.05);
+}
+
+.najnoviji-proizvodi h2 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.proizvod-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* Uvijek 4 kolone */
+  gap: 25px;
+  justify-content: center;
+  padding: 20px;
+}
+
+.proizvod-kartica {
+  cursor: pointer;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  min-height: 300px; /* Smanjena visina za bolje uklapanje */
+}
+
+.proizvod-kartica:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.proizvod-kartica h3 {
+  font-size: 15px;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+  min-height: 40px;
+  line-height: 1.4;
+  margin-bottom: 10px;
+}
+
+.proizvod-kartica p {
+  font-size: 16px;
+  font-weight: bold;
+  color: #007bff;
+  margin-bottom: 10px;
+}
+
+.proizvod-kartica img {
+  max-width: 100%;
+  width: 250px;
+  height: 150px;
+  object-fit: contain;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.add-to-cart-btn {
+  background: #7cc04a;
+  color: #fff;
+  width: 120px;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 15px;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+.bottom{
+width: 100%;
+  justify-content: right;
+  text-align: right;
+}
+.cijela-ponuda-link{
+  color: #3d3c3c;
+  text-align: right;
+}
+
+.add-to-cart-btn:hover {
+  background: #6ca841;
+}
+
+/* Manji ekrani */
+@media (max-width: 1200px) {
+  .proizvod-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .proizvod-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .proizvod-grid {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
