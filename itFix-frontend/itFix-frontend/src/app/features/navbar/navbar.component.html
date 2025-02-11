@@ -1,10 +1,10 @@
-<nav class="navbar" #navbar>
+<nav class="navbar">
   <div class="container">
     <a routerLink="/" class="logo">
-      <img src="assets/itfixlogo.png" alt="IT-Fix Logo">
+      <img src="assets/logo.png" alt="IT-Fix Logo">
     </a>
     <button class="menu-toggle" (click)="toggleMenu()">☰</button>
-    <div class="nav-links" [class.active]="menuOpen">
+    <div class="nav-links" [class.active]="menuOpen" (click)="closeMenu()">
       <a routerLink="/">Početna</a>
       <a routerLink="/prodavnica">Prodavnica</a>
       <a routerLink="/pracenje-posiljke">Prati pošiljku</a>
@@ -16,4 +16,3 @@
     </div>
   </div>
 </nav>
-

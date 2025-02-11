@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ProizvodService} from '../../../core/services/product.service';
 import {CurrencyPipe, NgIf} from '@angular/common';
+import {NajnovijiProizvodiComponent} from '../../najnoviji-proizvodi/najnoviji-proizvodi.component';
 
 @Component({
   selector: 'app-proizvod',
@@ -10,7 +11,8 @@ import {CurrencyPipe, NgIf} from '@angular/common';
   styleUrl: './proizvod.component.css',
   imports: [
     CurrencyPipe,
-    NgIf
+    NgIf,
+    NajnovijiProizvodiComponent
   ]
 })
 export class ProizvodComponent implements OnInit {

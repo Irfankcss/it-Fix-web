@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ProizvodService} from '../../core/services/product.service';
 import {ProizvodListComponent} from '../proizvodi/proizvodi-list/proizvodi-list.component';
 import {DecimalPipe, NgForOf, NgIf, NgOptimizedImage, SlicePipe} from '@angular/common';
+import {Router} from '@angular/router';
 
 
 @Component({
@@ -20,12 +21,17 @@ import {DecimalPipe, NgForOf, NgIf, NgOptimizedImage, SlicePipe} from '@angular/
 })
 export class NajnovijiProizvodiComponent implements OnInit {
   najnovijiProizvodi: any[] = [];
-  constructor(private proizvodService: ProizvodService) {
+  constructor(private proizvodService: ProizvodService, private router: Router) {
   }
   ngOnInit(): void {
     this.proizvodService.getNajnovijiProizvodi().subscribe({
       next: (data) => this.najnovijiProizvodi = data,
       error: (err) => console.error('Greška pri dohvaćanju proizvoda:', err)
     });
+  }
+
+  otvoriProizvod(porizvodId: any) {
+    console.log("pozvan");
+    this.router.navigate(['/proizvod', porizvodId]);
   }
 }

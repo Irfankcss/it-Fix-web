@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../core/services/auth.service';
@@ -10,13 +10,11 @@ import { AuthService } from '../../core/services/auth.service';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent  {
+export class NavbarComponent {
 
   constructor(public authService: AuthService) {}
 
   menuOpen = false;
-
-
 
   logout() {
     this.authService.logout();
@@ -24,5 +22,20 @@ export class NavbarComponent  {
 
   toggleMenu() {
     this.menuOpen = !this.menuOpen;
+  }
+
+  closeMenu() {
+    this.menuOpen = false;
+  }
+
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: Event) {
+    const navbar = document.querySelector('.navbar'); // Selektujemo navbar
+    const menuToggle = document.querySelector('.menu-toggle'); // Selektujemo hamburger dugme
+
+    // Ako klik nije unutar navbar-a i nije na dugmetu za otvaranje, zatvaramo meni
+    if (navbar && menuToggle && !navbar.contains(event.target as Node) && !menuToggle.contains(event.target as Node)) {
+      this.closeMenu();
+    }
   }
 }

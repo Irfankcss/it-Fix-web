@@ -12,7 +12,7 @@
 
 .proizvod-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* Uvijek 4 kolone */
+  grid-template-columns: repeat(4, 1fr);
   gap: 25px;
   justify-content: center;
   padding: 20px;
@@ -30,7 +30,7 @@
   align-items: center;
   position: relative;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  min-height: 300px; /* Smanjena visina za bolje uklapanje */
+  min-height: 300px;
 }
 
 .proizvod-kartica:hover {
@@ -77,7 +77,7 @@
   transition: background 0.3s ease;
 }
 .bottom{
-width: 100%;
+  width: 100%;
   justify-content: right;
   text-align: right;
 }
@@ -89,6 +89,37 @@ width: 100%;
 .add-to-cart-btn:hover {
   background: #6ca841;
 }
+.najnoviji-proizvodi h2 {
+  font-size: 32px;
+  font-weight: 700;
+  color: #222;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 25px;
+  position: relative;
+  display: inline-block;
+  padding-bottom: 10px;
+  background: linear-gradient(90deg, #007bff, #00d4ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.najnoviji-proizvodi h2::after {
+  content: "";
+  width: 80px;
+  height: 4px;
+  background: #007bff;
+  display: block;
+  margin: 8px auto 0 auto;
+  border-radius: 2px;
+}
+
+@media (max-width: 768px) {
+  .najnoviji-proizvodi h2 {
+    font-size: 28px;
+  }
+}
+
 
 /* Manji ekrani */
 @media (max-width: 1200px) {
