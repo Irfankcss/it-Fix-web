@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { AuthService } from '../../core/services/auth.service';
 import { Router } from '@angular/router';
 import {FormsModule} from '@angular/forms';
-import {CommonModule,NgIf,NgFor} from '@angular/common';
+import {CommonModule,NgIf} from '@angular/common';
 
 @Component({
   selector: 'app-register',
@@ -16,7 +16,7 @@ import {CommonModule,NgIf,NgFor} from '@angular/common';
   standalone: true
 })
 export class RegisterComponent {
-  user = { ime: '', prezime: '', email: '', lozinka: '' };
+  user = { ime: '', prezime: '', email: '', password: '' };
   errorMessage: string = '';
 
   constructor(private authService: AuthService, private router: Router) {}

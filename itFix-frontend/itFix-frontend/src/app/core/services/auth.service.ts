@@ -13,11 +13,11 @@ export class AuthService {
 
   // Metoda za registraciju
   register(user: any) {
-    return this.http.post(this.apiUrl + 'Korisnik/registracija', user);
+    return this.http.post(this.apiUrl + 'auth/register', user);
   }
   // Metoda za prijavu
   login(credentials: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}prijava`, credentials);
+    return this.http.post(this.apiUrl + `auth/login`, credentials);
   }
   isLoggedIn(): boolean {
     if (typeof window !== 'undefined') {

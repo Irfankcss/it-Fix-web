@@ -6,7 +6,7 @@ using System.Security.Claims;
 
 namespace itFixAPI.Controllers.Korpe
 {
-    //[Authorize] // Samo autentificirani korisnici mogu pristupiti
+    [Authorize] // Samo autentifikovani korisnici mogu pristupiti
     [ApiController]
     [Route("api/[controller]")]
     public class KorpaController : ControllerBase
@@ -39,15 +39,6 @@ namespace itFixAPI.Controllers.Korpe
 
             return korpa;
         }
-        [HttpGet("test")]
-        public IActionResult TestAuth()
-        {
-            if (User.Identity?.IsAuthenticated == true)
-            {
-                return Ok($"Autorizovan korisnik: {User.Identity.Name}");
-            }
-            return Unauthorized("Niste prijavljeni!");
-        }
 
         [HttpPost("dodaj-proizvod")]
         public async Task<IActionResult> DodajProizvodUKorpu([FromBody] KorpaProizvodDto korpaProizvodDto)
@@ -66,7 +57,7 @@ namespace itFixAPI.Controllers.Korpe
                 korpaProizvod = new KorpaProizvod
                 {
                     KorpaId = korpa.KorpaId,
-                    ProizvodId = korpaProizvodDto.ProizvodId,
+                    ProizvodId = proizvod.ProizvodId,
                     Kolicina = korpaProizvodDto.Kolicina
                 };
                 korpa.KorpaProizvodi.Add(korpaProizvod);
@@ -77,7 +68,7 @@ namespace itFixAPI.Controllers.Korpe
             }
 
             await _context.SaveChangesAsync();
-            return Ok("Proizvod uspješno dodan u korpu.");
+            return Ok("Proizvod uspešno dodan u korpu.");
         }
 
         [HttpGet]
@@ -91,13 +82,14 @@ namespace itFixAPI.Controllers.Korpe
             {
                 KorpaId = korpa.KorpaId,
                 KorisnikId = korpa.KorisnikId,
-                Proizvodi = korpa.KorpaProizvodi.Select(kp => new KorpaProizvodDto
-                {
-                    ProizvodId = kp.ProizvodId,
-                    Naziv = kp.Proizvod.Naziv,
-                    Cijena = kp.Proizvod.Cijena,
-                    Kolicina = kp.Kolicina
-                }).ToList()
+                Proizvodi = await _context.KorpaProizvodi
+                    .Where(kp => kp.KorpaId == korpa.KorpaId)
+                    .Select(kp => new KorpaProizvodDto
+                    {
+                        ProizvodId = kp.ProizvodId,
+                        Kolicina = kp.Kolicina
+                    })
+                    .ToListAsync()
             };
 
             return Ok(korpaDto);
@@ -115,7 +107,6 @@ namespace itFixAPI.Controllers.Korpe
                 return NotFound("Proizvod nije u korpi.");
 
             korpa.KorpaProizvodi.Remove(korpaProizvod);
-
             await _context.SaveChangesAsync();
             return NoContent();
         }
