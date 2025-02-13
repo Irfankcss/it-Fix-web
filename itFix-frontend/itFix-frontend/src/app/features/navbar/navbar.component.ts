@@ -12,12 +12,14 @@ import { AuthService } from '../../core/services/auth.service';
 })
 export class NavbarComponent {
 
-  constructor(public authService: AuthService) {}
+  constructor(public authService: AuthService,private router: Router) {}
 
   menuOpen = false;
 
   logout() {
     this.authService.logout();
+    this.router.navigate(['/']);
+    window.location.reload();
   }
 
   toggleMenu() {

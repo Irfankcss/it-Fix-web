@@ -51,7 +51,13 @@ builder.Services.AddAuthorization(options =>
 });
 
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+    });
+
+
 
 // Konfiguracija Swagger-a
 builder.Services.AddSwaggerGen(c =>

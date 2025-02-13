@@ -7,6 +7,7 @@ import {StoreComponent} from './features/store/store.component';
 import {ProizvodComponent} from './features/proizvodi/proizvod/proizvod.component';
 import {PosiljkaComponent} from './features/posiljka/posiljka.component';
 import {KontaktComponent} from './features/kontakt/kontakt.component';
+import {KorpaComponent} from './features/korpa/korpa.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent},
@@ -16,5 +17,6 @@ export const routes: Routes = [
   {path: 'prodavnica', component : StoreComponent},
   {path: 'proizvod/:id', component:ProizvodComponent},
   {path:'pracenje-posiljke',component:PosiljkaComponent},
-  {path:'kontakt',component:KontaktComponent}
+  {path:'kontakt',component:KontaktComponent},
+  {path:'korpa',component:KorpaComponent}
 ];

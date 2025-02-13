@@ -1,4 +1,6 @@
-﻿namespace itFixAPI.Controllers.Korpe
+﻿using itFixAPI.Data;
+
+namespace itFixAPI.Controllers.Korpe
 {
     public class KorpaDto
     {
@@ -9,7 +11,7 @@
 
     public class KorpaProizvodDto
     {
-        public int ProizvodId { get; set; }
+        public Proizvod Proizvod { get; set; } 
         public int Kolicina { get; set; }
     }
 }

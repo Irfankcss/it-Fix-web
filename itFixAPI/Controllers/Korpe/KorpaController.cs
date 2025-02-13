@@ -47,11 +47,11 @@ namespace itFixAPI.Controllers.Korpe
             if (korpa == null)
                 return Unauthorized("Morate biti prijavljeni da biste koristili korpu.");
 
-            var proizvod = await _context.Proizvodi.FindAsync(korpaProizvodDto.ProizvodId);
+            var proizvod = await _context.Proizvodi.FindAsync(korpaProizvodDto.Proizvod.ProizvodId);
             if (proizvod == null)
                 return NotFound("Proizvod nije pronađen.");
 
-            var korpaProizvod = korpa.KorpaProizvodi.FirstOrDefault(kp => kp.ProizvodId == korpaProizvodDto.ProizvodId);
+            var korpaProizvod = korpa.KorpaProizvodi.FirstOrDefault(kp => kp.ProizvodId == korpaProizvodDto.Proizvod.ProizvodId);
             if (korpaProizvod == null)
             {
                 korpaProizvod = new KorpaProizvod
@@ -84,9 +84,10 @@ namespace itFixAPI.Controllers.Korpe
                 KorisnikId = korpa.KorisnikId,
                 Proizvodi = await _context.KorpaProizvodi
                     .Where(kp => kp.KorpaId == korpa.KorpaId)
+                    .Include(kp => kp.Proizvod) // Učitavanje cijelog proizvoda
                     .Select(kp => new KorpaProizvodDto
                     {
-                        ProizvodId = kp.ProizvodId,
+                        Proizvod = kp.Proizvod, // Vraća cijeli objekat Proizvod
                         Kolicina = kp.Kolicina
                     })
                     .ToListAsync()
@@ -94,6 +95,7 @@ namespace itFixAPI.Controllers.Korpe
 
             return Ok(korpaDto);
         }
+
 
         [HttpDelete("{proizvodId}")]
         public async Task<IActionResult> RemoveFromKorpa(int proizvodId)

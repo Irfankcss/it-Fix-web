@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ProizvodService} from '../../../core/services/product.service';
 import {CurrencyPipe, NgIf} from '@angular/common';
 import {NajnovijiProizvodiComponent} from '../../najnoviji-proizvodi/najnoviji-proizvodi.component';
+import {CartService} from '../../../core/services/cart.service';
 
 @Component({
   selector: 'app-proizvod',
@@ -20,7 +21,8 @@ export class ProizvodComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private proizvodService: ProizvodService
+    private proizvodService: ProizvodService,
+    private cartService: CartService
   ) {}
 
   ngOnInit(): void {
@@ -31,5 +33,10 @@ export class ProizvodComponent implements OnInit {
         error: (err) => console.error('Greška prilikom dohvaćanja proizvoda:', err),
       });
     }
+  }
+
+  dodajuKorpu() {
+    this.cartService.addToCart(this.proizvod,1).subscribe();
+    alert("Dodan u korpu")  ;
   }
 }

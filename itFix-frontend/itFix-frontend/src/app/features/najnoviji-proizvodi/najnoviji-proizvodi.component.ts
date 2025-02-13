@@ -1,17 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import {ProizvodService} from '../../core/services/product.service';
-import {ProizvodListComponent} from '../proizvodi/proizvodi-list/proizvodi-list.component';
-import {DecimalPipe, NgForOf, NgIf, NgOptimizedImage, SlicePipe} from '@angular/common';
+import {DecimalPipe, NgForOf, NgIf, SlicePipe} from '@angular/common';
 import {Router} from '@angular/router';
 
 
 @Component({
   selector: 'app-najnoviji-proizvodi',
   imports: [
-    ProizvodListComponent,
     NgForOf,
     NgIf,
-    NgOptimizedImage,
     SlicePipe,
     DecimalPipe
   ],

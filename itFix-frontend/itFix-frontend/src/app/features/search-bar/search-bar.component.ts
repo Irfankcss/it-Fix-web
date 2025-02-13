@@ -3,7 +3,7 @@ import { debounceTime, Subject } from 'rxjs';
 import { NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {LayoutService} from '../../core/services/layout.service';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-search-bar',
@@ -19,7 +19,7 @@ export class SearchBarComponent {
 
   @Output() searchEvent = new EventEmitter<string>();
 
-  constructor(private route: ActivatedRoute) {
+  constructor(private route: ActivatedRoute, private router:Router) {
     this.route.queryParams.subscribe(params => {
       if (params['search']) {
         this.searchTerm = params['search']; // Postavi searchTerm iz URL-a
@@ -39,5 +39,9 @@ export class SearchBarComponent {
   clearSearch(): void {
     this.searchTerm = '';
     this.searchSubject.next('');
+  }
+
+  otovriKorpu() {
+    this.router.navigate(['/korpa']);
   }
 }

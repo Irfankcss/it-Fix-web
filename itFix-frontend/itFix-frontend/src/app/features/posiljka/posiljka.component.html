@@ -1,15 +1,36 @@
+<div class="body">
 <div class="posiljka-container">
-  <p>Kako bi pratili svoju narudžbu, molimo da unesete ID narudžbe u polje ispod i pritisnite dugme "Prati". Ovo je dodano na vaš račun i u email potvrdi koju trebate primiti.</p>
+  <p>Kako bi pratili svoju narudžbu, unesite ID narudžbe i email, pa pritisnite "Prati".</p>
+
   <div class="inputi">
     <div class="input-i-lbl">
-      <label>Narudzba ID</label>
-      <input class="narudzbaid-input">
+      <label>Narudžba ID</label>
+      <input [(ngModel)]="narudzbaId" class="narudzbaid-input">
     </div>
     <div class="input-i-lbl">
       <label>Email za naplatu</label>
-      <input class="email-input">
+      <input [(ngModel)]="email" class="email-input">
     </div>
   </div>
-  <button class="prati-btn">Prati</button>
-</div>
 
+  <button (click)="pratiNarudzbu()" class="prati-btn">Prati</button>
+
+  <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+
+  <div *ngIf="narudzba" class="narudzba-detalji">
+    <h3>Detalji narudžbe:</h3>
+    <p><strong>ID:</strong> {{ narudzba.narudzbaId }}</p>
+    <p><strong>Kupac:</strong> {{ narudzba.ime }} {{narudzba.prezime}}</p>
+    <h4 style="font-weight: bold"><strong>Status:</strong> {{ narudzba.status }}</h4>
+    <p><strong>Ukupna cijena:</strong> {{ narudzba.ukupnaCijena }} KM</p>
+    <p><strong>Adresa:</strong> {{ narudzba.adresaDostave }}, {{ narudzba.grad }}</p>
+
+    <h4>Proizvodi:</h4>
+    <ul>
+      <li *ngFor="let proizvod of narudzba.narudzbaProizvodi">
+        {{ proizvod.proizvod.naziv }} - {{ proizvod.kolicina }} kom - {{ proizvod.proizvod.cijena }} KM
+      </li>
+    </ul>
+  </div>
+</div>
+</div>

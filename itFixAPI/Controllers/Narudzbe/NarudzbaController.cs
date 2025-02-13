@@ -52,33 +52,55 @@ namespace itFixAPI.Controllers.Narudzbe
             return Ok(narudzba);
         }
 
-        // ✅ Kreiraj novu narudžbu
+        // ✅ Kreiraj novu narudžbu i vrati je kao odgovor
         [HttpPost]
-        public async Task<IActionResult> CreateNarudzba([FromBody] Narudzba narudzba)
+        public async Task<IActionResult> CreateNarudzba([FromBody] NarudzbaDTO narudzbaDto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            // Ako je korisnik prijavljen, dodijeli mu korisnički ID
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (userId != null)
+            var novaNarudzba = new Narudzba
             {
-                narudzba.KorisnikId = userId;
-            }
+                KorisnikId = userId,
+                Ime = narudzbaDto.Ime,
+                Prezime = narudzbaDto.Prezime,
+                Email = narudzbaDto.Email,
+                BrojTelefona = narudzbaDto.BrojTelefona,
+                Grad = narudzbaDto.Grad,
+                AdresaDostave = narudzbaDto.AdresaDostave,
+                UkupnaCijena = narudzbaDto.UkupnaCijena,
+                Status = "Primljena",
+                NarudzbaProizvodi = narudzbaDto.Proizvodi.Select(p => new NarudzbaProizvod
+                {
+                    ProizvodId = p.ProizvodId,
+                    Kolicina = p.Kolicina
+                }).ToList()
+            };
 
-            _context.Narudzbe.Add(narudzba);
+            _context.Narudzbe.Add(novaNarudzba);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetNarudzba), new { id = narudzba.NarudzbaId }, narudzba);
+            // Ponovo učitaj narudžbu sa svim povezanim podacima
+            var kreiranaNarudzba = await _context.Narudzbe
+                .Include(n => n.NarudzbaProizvodi)
+                .ThenInclude(np => np.Proizvod)
+                .FirstOrDefaultAsync(n => n.NarudzbaId == novaNarudzba.NarudzbaId);
+
+            return CreatedAtAction(nameof(GetNarudzba), new { id = novaNarudzba.NarudzbaId }, kreiranaNarudzba);
         }
 
         // ✅ Ažuriraj postojeću narudžbu (npr. promjena statusa)
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateNarudzba(int id, [FromBody] Narudzba updatedNarudzba)
         {
-            var narudzba = await _context.Narudzbe.FindAsync(id);
+            var narudzba = await _context.Narudzbe
+                .Include(n => n.NarudzbaProizvodi)
+                .ThenInclude(np => np.Proizvod)
+                .FirstOrDefaultAsync(n => n.NarudzbaId == id);
+
             if (narudzba == null)
             {
                 return NotFound(new { poruka = "Narudžba ne postoji." });
@@ -130,6 +152,23 @@ namespace itFixAPI.Controllers.Narudzbe
                 .ToListAsync();
 
             return Ok(narudzbe);
+        }
+
+        // ✅ Dohvati narudžbu po ID-u i emailu
+        [HttpGet("detalji")]
+        public async Task<IActionResult> GetNarudzbaByIdAndEmail([FromQuery] int narudzbaId, [FromQuery] string email)
+        {
+            var narudzba = await _context.Narudzbe
+                .Include(n => n.NarudzbaProizvodi)
+                .ThenInclude(np => np.Proizvod)
+                .FirstOrDefaultAsync(n => n.NarudzbaId == narudzbaId && n.Email == email);
+
+            if (narudzba == null)
+            {
+                return NotFound(new { poruka = "Narudžba nije pronađena ili nemate pristup." });
+            }
+
+            return Ok(narudzba);
         }
     }
 }
