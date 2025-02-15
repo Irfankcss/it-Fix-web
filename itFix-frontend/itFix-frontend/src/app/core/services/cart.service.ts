@@ -7,7 +7,7 @@ import { environment } from '../../../environment/environment';
   providedIn: 'root'
 })
 export class CartService {
-  private apiUrl = `${environment.apiUrl}korpa`;
+  private apiUrl = `${environment.apiUrl}Korpa`;
 
   constructor(private http: HttpClient) {}
 
@@ -30,8 +30,11 @@ export class CartService {
     return this.http.post(`${this.apiUrl}/dodaj-proizvod`, body, { headers: this.getAuthHeaders() });
   }
 
-  // Brisanje proizvoda iz korpe
   removeFromCart(proizvodId: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${proizvodId}`, { headers: this.getAuthHeaders() });
   }
+  resetKorpa(): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/reset`);
+  }
+
 }

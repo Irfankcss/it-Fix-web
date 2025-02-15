@@ -3,6 +3,7 @@ import { CartService } from '../../core/services/cart.service';
 import { FormsModule } from '@angular/forms';
 import { DecimalPipe, NgForOf, NgIf, SlicePipe} from '@angular/common';
 import { NarudzbaService } from '../../core/services/narudzba.service';
+import {Router} from '@angular/router';
 
 interface KorpaProizvod {
   proizvodId: number;
@@ -40,7 +41,7 @@ export class KorpaComponent implements OnInit {
   };
   greskaPoruka: string = '';
 
-  constructor(private korpaService: CartService, private narudzbaService: NarudzbaService) {}
+  constructor(private korpaService: CartService, private narudzbaService: NarudzbaService,private router: Router) {}
 
   ngOnInit() {
     this.ucitajKorpu();
@@ -76,7 +77,7 @@ export class KorpaComponent implements OnInit {
       return;
     }
 
-    this.greskaPoruka = ''; // Reset poruke greške
+    this.greskaPoruka = '';
     if (this.korak < 3) this.korak++;
   }
 
@@ -108,9 +109,10 @@ export class KorpaComponent implements OnInit {
         console.log('Narudžba uspješno kreirana:', response);
         alert('Narudžba je uspješno kreirana!');
 
-        // Reset korpe i podataka
-        this.korpaProizvodi = [];
-        this.korak = 1;
+        this.korpaService.resetKorpa().subscribe(() => {
+          this.korpaProizvodi = [];
+          this.ukupno = 0;
+        });
         this.podaciNarudzbe = {
           ime: '',
           prezime: '',
@@ -119,6 +121,7 @@ export class KorpaComponent implements OnInit {
           grad: '',
           adresaDostave: ''
         };
+        this.router.navigate(['/narudzba'], { state: { narudzba } });
       },
       error => {
         console.error('Greška prilikom kreiranja narudžbe:', error);

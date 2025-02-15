@@ -1,0 +1,42 @@
+<div class="order-container">
+  <h2>Potvrda narudžbe</h2>
+  <p>Vaša narudžba je uspješno kreirana. Status narudžbe: <strong>{{ narudzba?.status }}</strong></p>
+  <p><strong>Broj narudžbe:</strong> #{{ narudzba?.narudzbaId }}</p>
+
+  <div class="order-info">
+    <h3>Adresa dostave</h3>
+    <p>{{ narudzba?.ime }} {{ narudzba?.prezime }}</p>
+    <p>{{ narudzba?.adresaDostave }}, {{ narudzba?.grad }}</p>
+    <p>{{ narudzba?.brojTelefona }}</p>
+    <p>{{ narudzba?.email }}</p>
+  </div>
+
+  <div class="order-items">
+    <h3>Pregled narudžbe</h3>
+    <table>
+      <thead>
+      <tr>
+        <th>Proizvod</th>
+        <th>Cijena</th>
+        <th>Količina</th>
+        <th>Ukupno</th>
+      </tr>
+      </thead>
+      <tbody>
+      <p *ngIf="!narudzba?.narudzbaProizvodi">Nema proizvoda u narudžbi!</p>
+
+      <tr *ngFor="let item of narudzba.narudzbaProizvodi">
+        <td>{{ item.proizvod.naziv }}</td>
+        <td>{{ item.proizvod.cijena}}</td>
+        <td>{{ item.kolicina }}</td>
+        <td>{{ item.kolicina * item.proizvod.cijena }}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="order-summary">
+    <h3>Ukupno za plaćanje:</h3>
+    <p><strong>{{ narudzba?.ukupnaCijena }}</strong></p>
+  </div>
+</div>
