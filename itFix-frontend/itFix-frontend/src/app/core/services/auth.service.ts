@@ -30,6 +30,12 @@ export class AuthService {
   logout() {
     localStorage.removeItem('token'); // Briše token
   }
+  getCurrentUser(): Observable<User> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get<User>(`${this.apiUrl}auth/me`, { headers });
+  }
+
 
   getToken(): string | null {
     return localStorage.getItem('token');
@@ -50,4 +56,11 @@ export class AuthService {
     return this.http.get(`${this.apiUrl}Korisnik/moj-profil`, { headers });
   }
 
+}
+export interface User {
+  id: string;
+  ime: string;
+  prezime: string;
+  email: string;
+  roles: string[];
 }

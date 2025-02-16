@@ -76,6 +76,28 @@ namespace itFixAPI.Controllers.Korisnici
 
             return BadRequest(result.Errors);
         }
+        [Authorize]
+        [HttpGet("me")]
+        public async Task<IActionResult> GetCurrentUser()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null) return Unauthorized();
+
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null) return NotFound();
+
+            var roles = await _userManager.GetRolesAsync(user);
+
+            return Ok(new
+            {
+                id = user.Id,
+                ime = user.Ime,
+                prezime = user.Prezime,
+                email = user.Email,
+                roles = roles
+            });
+        }
+
 
         private string GenerateJwtToken(Korisnik user, IList<string> roles)
         {
@@ -93,7 +115,7 @@ namespace itFixAPI.Controllers.Korisnici
 
             var token = new JwtSecurityToken(
                 claims: claims,
-                expires: DateTime.UtcNow.AddHours(2),
+                expires: DateTime.UtcNow.AddHours(24),
                 signingCredentials: creds
             );
 

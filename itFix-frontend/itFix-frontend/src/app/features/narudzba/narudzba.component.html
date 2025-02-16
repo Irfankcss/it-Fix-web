@@ -1,7 +1,10 @@
 <div class="order-container">
-  <h2>Potvrda narudžbe</h2>
-  <p>Vaša narudžba je uspješno kreirana. Status narudžbe: <strong>{{ narudzba?.status }}</strong></p>
-  <p><strong>Broj narudžbe:</strong> #{{ narudzba?.narudzbaId }}</p>
+  <div class="order-header">
+    <img src="assets/logo.png" alt="itFix Logo" class="logo">
+    <h2>Hvala Vam na povjerenju!</h2>
+    <p>Vaša narudžba je uspješno kreirana i obrađena. Status narudžbe: <strong>{{ narudzba?.status }}</strong></p>
+    <p><strong>Broj narudžbe:</strong> #{{ narudzba?.narudzbaId }}</p>
+  </div>
 
   <div class="order-info">
     <h3>Adresa dostave</h3>
@@ -16,6 +19,7 @@
     <table>
       <thead>
       <tr>
+        <th>Slika</th>
         <th>Proizvod</th>
         <th>Cijena</th>
         <th>Količina</th>
@@ -26,10 +30,11 @@
       <p *ngIf="!narudzba?.narudzbaProizvodi">Nema proizvoda u narudžbi!</p>
 
       <tr *ngFor="let item of narudzba.narudzbaProizvodi">
+        <td><img [src]="item.proizvod.slikaUrl" alt="{{ item.proizvod.naziv }}"></td>
         <td>{{ item.proizvod.naziv }}</td>
-        <td>{{ item.proizvod.cijena}}</td>
+        <td>{{ item.proizvod.cijena | number:'1.2-2'}} KM</td>
         <td>{{ item.kolicina }}</td>
-        <td>{{ item.kolicina * item.proizvod.cijena }}</td>
+        <td>{{ item.kolicina * item.proizvod.cijena | number:'1.2-2'}} KM</td>
       </tr>
       </tbody>
     </table>
@@ -37,6 +42,14 @@
 
   <div class="order-summary">
     <h3>Ukupno za plaćanje:</h3>
-    <p><strong>{{ narudzba?.ukupnaCijena }}</strong></p>
+    <p><strong>{{ narudzba?.ukupnaCijena | number:'1.2-2' }} KM</strong></p>
   </div>
+
+  <div class="order-footer">
+    <p>Vaš itFix tim vam stoji na raspolaganju za bilo kakva pitanja ili podršku.</p>
+    <p class="signature">Vaš itFix</p>
+  </div>
+</div>
+<div class="button-container">
+<button (click)="idiNaProdavnicu()">Nastavi kupovinu</button>
 </div>

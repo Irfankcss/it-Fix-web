@@ -26,8 +26,8 @@ export class NarudzbaService {
     const url = status ? `${this.apiUrl}?status=${status}` : this.apiUrl;
     return this.http.get(url, { headers: this.getAuthHeaders() });
   }
-  getNarudzba(id: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${id}`, { headers: this.getAuthHeaders() });
+  getNarudzbaById(id: number) {
+    return this.http.get<any>(`${this.apiUrl}/${id}`, { headers: this.getAuthHeaders() });
   }
   getMojeNarudzbe(): Observable<any> {
     return this.http.get(`${this.apiUrl}/moje`, { headers: this.getAuthHeaders() });

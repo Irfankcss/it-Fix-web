@@ -1,20 +1,36 @@
 .order-container {
-  max-width: 600px;
+  max-width: 900px;
   margin: 20px auto;
   padding: 20px;
   border: 1px solid #ddd;
   border-radius: 8px;
-  background-color: #f9f9f9;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.logo {
+  width: 150px;
+  display: block;
+  margin: 0 auto 10px;
 }
 
 h2, h3 {
-  text-align: center;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+
+.order-items {
+  overflow-x: auto;
+  width: 100%;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 10px;
+  min-width: 600px;
 }
 
 th, td {
@@ -23,11 +39,71 @@ th, td {
   text-align: left;
 }
 
-.order-summary {
-  text-align: center;
-  margin-top: 20px;
+td img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+.button-container{
+  width: 100%;
+  text-align: right;
+  padding:3%;
+}
+button {
+  border:none;
+  padding: 14px 20px;
+  font-size: 18px;
+  border-radius: 8px;
+  background-color: #7bbe49;
+  cursor: pointer;
+  color:white;
+  font-weight: bold;
+  transition: 0.3s;
 }
 
-strong {
+button:hover {
+  background-color: #6aa43e;
+  box-shadow: black 1px 1px 1px;
+}
+.order-summary {
   font-size: 18px;
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+.order-footer {
+  margin-top: 30px;
+  font-size: 14px;
+  color: #555;
+}
+
+.signature {
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+@media (max-width: 768px) {
+  .order-container {
+    padding: 15px;
+  }
+
+  .logo {
+    width: 120px;
+  }
+
+  table {
+    min-width: 100%;
+  }
+
+  th, td {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  td img {
+    width: 60px;
+    height: 60px;
+  }
 }

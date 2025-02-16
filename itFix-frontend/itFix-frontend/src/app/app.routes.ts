@@ -20,5 +20,5 @@ export const routes: Routes = [
   {path:'pracenje-posiljke',component:PosiljkaComponent},
   {path:'kontakt',component:KontaktComponent},
   {path:'korpa',component:KorpaComponent},
-  { path: 'narudzba', component:NarudzbaComponent }
+  { path: 'narudzba/:id', component:NarudzbaComponent }
 ];

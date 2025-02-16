@@ -121,7 +121,8 @@ export class KorpaComponent implements OnInit {
           grad: '',
           adresaDostave: ''
         };
-        this.router.navigate(['/narudzba'], { state: { narudzba } });
+        this.router.navigate(['/narudzba', response.narudzbaId]);
+
       },
       error => {
         console.error('Greška prilikom kreiranja narudžbe:', error);

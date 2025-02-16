@@ -17,7 +17,7 @@ namespace itFixAPI.Controllers.Narudzbe
             _context = context;
         }
 
-        // ✅ Dohvati sve narudžbe (sa opcijom filtriranja po statusu)
+        //  Dohvati sve narudžbe (sa opcijom filtriranja po statusu)
         [HttpGet]
         public async Task<IActionResult> GetNarudzbe([FromQuery] string? status = null)
         {
@@ -35,24 +35,28 @@ namespace itFixAPI.Controllers.Narudzbe
             return Ok(narudzbe);
         }
 
-        // ✅ Dohvati narudžbu po ID-u
+        //  Dohvati narudžbu po ID-u
+        [Authorize] 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetNarudzba(int id)
+        public IActionResult GetNarudzbaById(int id)
         {
-            var narudzba = await _context.Narudzbe
+            var korisnikId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value; 
+
+            var narudzba = _context.Narudzbe
                 .Include(n => n.NarudzbaProizvodi)
                 .ThenInclude(np => np.Proizvod)
-                .FirstOrDefaultAsync(n => n.NarudzbaId == id);
+                .FirstOrDefault(n => n.NarudzbaId == id);
 
-            if (narudzba == null)
-            {
-                return NotFound(new { poruka = "Narudžba nije pronađena." });
-            }
+            if (narudzba == null) return NotFound();
+
+            if (narudzba.KorisnikId != korisnikId) return Forbid();
 
             return Ok(narudzba);
         }
 
-        // ✅ Kreiraj novu narudžbu i vrati je kao odgovor
+
+
+        //  Kreiraj novu narudžbu i vrati je kao odgovor
         [HttpPost]
         public async Task<IActionResult> CreateNarudzba([FromBody] NarudzbaDTO narudzbaDto)
         {
@@ -89,10 +93,10 @@ namespace itFixAPI.Controllers.Narudzbe
                 .ThenInclude(np => np.Proizvod)
                 .FirstOrDefaultAsync(n => n.NarudzbaId == novaNarudzba.NarudzbaId);
 
-            return CreatedAtAction(nameof(GetNarudzba), new { id = novaNarudzba.NarudzbaId }, kreiranaNarudzba);
+            return CreatedAtAction(nameof(GetNarudzbaById), new { id = novaNarudzba.NarudzbaId }, kreiranaNarudzba);
         }
 
-        // ✅ Ažuriraj postojeću narudžbu (npr. promjena statusa)
+        //  Ažuriraj postojeću narudžbu (npr. promjena statusa)
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateNarudzba(int id, [FromBody] Narudzba updatedNarudzba)
         {
@@ -114,7 +118,7 @@ namespace itFixAPI.Controllers.Narudzbe
             return Ok(narudzba);
         }
 
-        // ✅ Obriši narudžbu i njene povezane proizvode
+        // Obriši narudžbu i njene povezane proizvode
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteNarudzba(int id)
         {
@@ -134,7 +138,7 @@ namespace itFixAPI.Controllers.Narudzbe
             return NoContent();
         }
 
-        // ✅ Dohvati narudžbe prijavljenog korisnika
+        // Dohvati narudžbe prijavljenog korisnika
         [HttpGet("moje")]
         [Authorize]
         public async Task<IActionResult> GetMojeNarudzbe()
@@ -154,7 +158,7 @@ namespace itFixAPI.Controllers.Narudzbe
             return Ok(narudzbe);
         }
 
-        // ✅ Dohvati narudžbu po ID-u i emailu
+        // Dohvati narudžbu po ID-u i emailu
         [HttpGet("detalji")]
         public async Task<IActionResult> GetNarudzbaByIdAndEmail([FromQuery] int narudzbaId, [FromQuery] string email)
         {
