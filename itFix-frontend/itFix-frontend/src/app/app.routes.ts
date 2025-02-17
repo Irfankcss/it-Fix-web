@@ -9,6 +9,7 @@ import {PosiljkaComponent} from './features/posiljka/posiljka.component';
 import {KontaktComponent} from './features/kontakt/kontakt.component';
 import {KorpaComponent} from './features/korpa/korpa.component';
 import {NarudzbaComponent} from './features/narudzba/narudzba.component';
+import {FavoritiComponent} from './features/favoriti/favoriti.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent},
@@ -20,5 +21,6 @@ export const routes: Routes = [
   {path:'pracenje-posiljke',component:PosiljkaComponent},
   {path:'kontakt',component:KontaktComponent},
   {path:'korpa',component:KorpaComponent},
-  { path: 'narudzba/:id', component:NarudzbaComponent }
+  { path: 'narudzba/:id', component:NarudzbaComponent },
+  {path:'favoriti',component:FavoritiComponent}
 ];

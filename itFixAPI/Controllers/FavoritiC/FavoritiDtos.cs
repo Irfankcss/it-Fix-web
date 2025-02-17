@@ -3,7 +3,6 @@
     public class FavoritiDto
     {
         public int FavoritiID { get; set; }
-        public string KorisnikId { get; set; }
         public List<FavoritiProizvodDto> Proizvodi { get; set; }
     }
     public class FavoritiProizvodDto
@@ -14,7 +13,6 @@
     }
     public class FavoritiProizvodCreateDto
     {
-        public string KorisnikId { get; set; }
         public int ProizvodId { get; set; }
     }
 }

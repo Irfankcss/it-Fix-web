@@ -1,0 +1,23 @@
+<div class="favoriti-container">
+  <h2>Moji Favoriti</h2>
+
+  <p *ngIf="loading">Učitavanje favorita...</p>
+  <p *ngIf="errorMessage">{{ errorMessage }}</p>
+
+  <div class="favoriti-grid" *ngIf="!loading && favoriti.length > 0">
+    <div *ngFor="let proizvod of favoriti" class="favorit-card">
+
+
+      <div class="favorit-info">
+        <h3>{{ proizvod.naziv }}</h3>
+        <p class="favorit-price">{{ proizvod.cijena | number:'1.2-2' }} KM</p>
+      </div>
+
+      <button (click)="izbaciIzFavorita(proizvod.proizvodId)" class="remove-btn">
+        <i class="fa fa-trash"></i> Ukloni
+      </button>
+    </div>
+  </div>
+
+  <p *ngIf="!loading && favoriti.length === 0">Nemate nijedan proizvod u favoritima.</p>
+</div>

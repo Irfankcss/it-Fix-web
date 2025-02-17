@@ -1,15 +1,25 @@
-<!-- Updated Proizvod-List HTML -->
+
 <div class="product-grid">
   <div *ngFor="let proizvod of proizvodi" class="product-card" (click)="otvoriProizvod(proizvod.proizvodId)">
     <div class="discount" *ngIf="proizvod.popust">
       -{{ proizvod.popust }}%
     </div>
     <img [src]="proizvod.slikaUrl" alt="{{ proizvod.naziv }}">
-    <h3 class="product-title">{{ proizvod.naziv.length>50? (proizvod.naziv | slice:0:50) + '...' : proizvod.naziv }}</h3>
+
+    <h3 class="product-title">
+      {{ proizvod.naziv.length > 50 ? (proizvod.naziv | slice:0:50) + '...' : proizvod.naziv }}
+    </h3>
+
     <p class="product-prices">
       <span *ngIf="proizvod.popust" class="old-price">{{ proizvod.cijena }} KM</span>
-      <span class="product-price">{{ proizvod.cijenaSaPopustom | number:'1.2-2'}} KM</span>
+      <span class="product-price">{{ proizvod.cijenaSaPopustom | number:'1.2-2' }} KM</span>
     </p>
-    <a class="details-link">Dodaj u korpu</a>
+
+    <div class="product-actions">
+      <a class="details-link">Dodaj u korpu</a>
+      <button class="favorite-btn" (click)="dodajUFavorit(proizvod.proizvodId, $event)">
+        <i class="fa fa-heart"></i>
+      </button>
+    </div>
   </div>
 </div>
