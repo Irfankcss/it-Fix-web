@@ -1,23 +1,26 @@
 <div class="favoriti-container">
-  <h2>Moji Favoriti</h2>
+  <h2 class="favoriti-title">Moja Lista Želja</h2>
 
-  <p *ngIf="loading">Učitavanje favorita...</p>
-  <p *ngIf="errorMessage">{{ errorMessage }}</p>
+  <p *ngIf="loading" class="loading-text">Učitavanje favorita...</p>
+  <p *ngIf="errorMessage" class="error-text">{{ errorMessage }}</p>
 
   <div class="favoriti-grid" *ngIf="!loading && favoriti.length > 0">
     <div *ngFor="let proizvod of favoriti" class="favorit-card">
+      <span class="remove-icon" (click)="izbaciIzFavorita(proizvod.proizvodId)">✖</span>
 
+      <h3 class="favorit-name">
+        {{ proizvod.naziv.length > 28 ? (proizvod.naziv | slice:0:28) + '...' : proizvod.naziv }}
+      </h3>
+      <img [src]="proizvod.slikaUrl" class="favorit-image" alt="{{ proizvod.naziv }}">
+      <p class="favorit-price">Cijena: {{ proizvod.cijena | number:'1.2-2' }} KM</p>
 
-      <div class="favorit-info">
-        <h3>{{ proizvod.naziv }}</h3>
-        <p class="favorit-price">{{ proizvod.cijena | number:'1.2-2' }} KM</p>
-      </div>
-
-      <button (click)="izbaciIzFavorita(proizvod.proizvodId)" class="remove-btn">
-        <i class="fa fa-trash"></i> Ukloni
+      <button (click)="dodajUKorpu(proizvod.proizvodId)" class="add-btn">
+        Naruči
       </button>
     </div>
+
   </div>
 
-  <p *ngIf="!loading && favoriti.length === 0">Nemate nijedan proizvod u favoritima.</p>
+  <p *ngIf="!loading && favoriti.length === 0" class="no-favoriti">Nemate nijedan proizvod na listi želja.</p>
+  <a *ngIf="!loading && favoriti.length === 0" class="no-favoriti" href="/prodavnica">Pregledajte ponudu</a>
 </div>

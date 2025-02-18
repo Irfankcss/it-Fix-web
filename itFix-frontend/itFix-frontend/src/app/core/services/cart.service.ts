@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from '../../../environment/environment';
 
 @Injectable({
@@ -8,6 +8,8 @@ import { environment } from '../../../environment/environment';
 })
 export class CartService {
   private apiUrl = `${environment.apiUrl}Korpa`;
+  private cartItems: any[] = [];
+  private cartSubject = new BehaviorSubject<any[]>(this.cartItems);
 
   constructor(private http: HttpClient) {}
 
@@ -33,8 +35,8 @@ export class CartService {
   removeFromCart(proizvodId: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${proizvodId}`, { headers: this.getAuthHeaders() });
   }
-  resetKorpa(): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/reset`);
-  }
 
+  resetKorpa(): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/reset`, { headers: this.getAuthHeaders() });
+  }
 }

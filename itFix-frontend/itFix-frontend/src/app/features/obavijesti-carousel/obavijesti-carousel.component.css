@@ -6,6 +6,7 @@
 .picsum-img-wrapper img {
   height: 100%;
   width: 100%;
+  object-fit: cover;
 }
 h3{
   font-size: 40px;
@@ -20,6 +21,11 @@ p{
   text-shadow: 2px 1px 1px black;
 }
 @media screen and (max-width: 768px) {
+  .picsum-img-wrapper img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
   h3{
     font-size: 27px;
     text-outline: 1px black;

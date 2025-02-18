@@ -1,5 +1,5 @@
 import { Component} from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
+import {NavigationEnd, Router, RouterOutlet} from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { SearchBarComponent } from './features/search-bar/search-bar.component';
 import { NavbarComponent } from './features/navbar/navbar.component';
@@ -14,7 +14,13 @@ import {FooterComponent} from './features/footer/footer.component';
 })
 export class AppComponent  {
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) {
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        window.scrollTo(0, 0); // Resetuje scroll na vrh stranice
+      }
+    });
+  }
 
   //menuOpen = false;
 

@@ -10,6 +10,7 @@
         public int ProizvodId { get; set; }
         public string Naziv { get; set; }
         public decimal Cijena { get; set; }
+        public string SlikaUrl {  get; set; }
     }
     public class FavoritiProizvodCreateDto
     {

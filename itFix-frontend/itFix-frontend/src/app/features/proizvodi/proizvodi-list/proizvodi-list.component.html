@@ -1,4 +1,3 @@
-
 <div class="product-grid">
   <div *ngFor="let proizvod of proizvodi" class="product-card" (click)="otvoriProizvod(proizvod.proizvodId)">
     <div class="discount" *ngIf="proizvod.popust">
@@ -18,7 +17,7 @@
     <div class="product-actions">
       <a class="details-link">Dodaj u korpu</a>
       <button class="favorite-btn" (click)="dodajUFavorit(proizvod.proizvodId, $event)">
-        <i class="fa fa-heart"></i>
+        <fa-icon [icon]="getHeartIcon(proizvod.proizvodId)" class="favorit-icon"></fa-icon>
       </button>
     </div>
   </div>

@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { environment } from '../../../environment/environment';
+import {convertBrowserOptions} from '@angular-devkit/build-angular/src/builders/browser-esbuild';
 
 export interface FavoritiProizvodDto {
   proizvodId: number;
   naziv: string;
   cijena: number;
+  slikaUrl: string;
 }
 
 export interface FavoritiDto {
@@ -19,7 +21,7 @@ export interface FavoritiDto {
   providedIn: 'root',
 })
 export class FavoritService {
-  private apiUrl = environment.apiUrl + 'favoriti';
+  private apiUrl = `${environment.apiUrl}favoriti`;
 
   constructor(private http: HttpClient) {}
 
@@ -29,7 +31,7 @@ export class FavoritService {
       ? {
         headers: new HttpHeaders({
           Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json', // Dodano kako bi osigurao ispravno slanje JSON podataka
+          'Content-Type': 'application/json',
         }),
       }
       : {};
@@ -39,8 +41,15 @@ export class FavoritService {
     return this.http.get<FavoritiDto>(this.apiUrl, this.getHeaders());
   }
 
+  getFavoritiProizvodi(): Observable<number[]> {
+    return this.http.get<FavoritiDto>(this.apiUrl, this.getHeaders()).pipe(
+      map((response: FavoritiDto) =>  response.proizvodi.map(p => p.proizvodId) )
+
+    );
+  }
+
   addToFavoriti(proizvodId: number): Observable<any> {
-    return this.http.post(`${this.apiUrl}`, { proizvodId }, this.getHeaders()); // Ispravljeno: šaljemo proizvodId u tijelu zahtjeva
+    return this.http.post(`${this.apiUrl}`, { proizvodId }, this.getHeaders());
   }
 
   removeFromFavoriti(proizvodId: number): Observable<void> {

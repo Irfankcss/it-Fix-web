@@ -9,5 +9,21 @@
     <button (click)="clearSearch()" *ngIf="searchTerm" class="clear-btn">✖</button>
     <button (click)="onSearch()" class="search-btn">⌕</button>
   </div>
-  <button class="cart-btn" (click)="otovriKorpu()">Korpa</button>
+
+  <div class="icon-container">
+    <button class="fav-btn" (click)="otvoriFavorite()">
+      <fa-icon [icon]="faHeart"></fa-icon>
+      <span class="badge">{{ brojFavorita }}</span>
+    </button>
+
+    <button class="cart-btn" (click)="otvoriKorpu()">
+      <fa-icon [icon]="faShoppingCart"></fa-icon>
+      <span class="badge">{{ brojProizvodaUKorpi }}</span>
+    </button>
+
+    <div class="ukupno-container">
+      <span class="ukupno-text">Ukupno</span>
+      <span class="ukupno-iznos">{{ ukupnaCijena | number:'1.2-2' }} KM</span>
+    </div>
+  </div>
 </div>

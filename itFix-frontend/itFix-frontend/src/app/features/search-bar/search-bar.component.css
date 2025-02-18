@@ -1,4 +1,3 @@
-
 .search-container {
   top: 75px;
   left: calc(50% - 0.5px);
@@ -15,6 +14,57 @@
   z-index: 1000;
 }
 
+.icon-container {
+  display: flex;
+  align-items: center;
+}
+
+.fav-btn, .cart-btn {
+  position: relative;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  margin-left: 15px;
+}
+
+.badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: #7cc04a;
+  color: #031424;
+  font-size: 12px;
+  font-weight: bold;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 2px solid #031424;
+}
+
+.ukupno-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-left: 15px;
+  color: white;
+}
+.ukupno-text {
+  font-size: 14px;
+  color: #b0b0b0;
+}
+fa-icon{
+  color: #eeeeee;
+}
+.ukupno-iznos {
+  font-size: 18px;
+  font-weight: bold;
+}
+
 .search-box {
   display: flex;
   align-items: center;
@@ -22,12 +72,12 @@
   border-radius: 25px;
   padding: 5px 12px;
   background: white;
-  width: 600px; /* Održava širinu na velikim ekranima */
+  width: 600px;
   max-width: 100%;
 }
 
 .search-input {
-  flex: 1; /* Omogućava rastezanje */
+  flex: 1;
   border: none;
   outline: none;
   font-size: 16px;
@@ -60,26 +110,41 @@
   margin-left: 5px;
 }
 
-.cart-btn {
+.icon-btn {
+  position: relative;
   display: flex;
   align-items: center;
-  text-align: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  color: white;
+  margin-left: 15px;
+}
+
+.icon-btn:hover {
+  color: #7cc04a;
+}
+
+.icon-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
   background: #7cc04a;
   color: white;
+  font-size: 12px;
   font-weight: bold;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 25px;
-  cursor: pointer;
-  font-size: 16px;
-  margin-left: 10px;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
   justify-content: center;
+  border-radius: 50%;
 }
-
-.cart-btn:hover {
-  background: #78b447;
-}
-
 
 @media (max-width: 768px) {
   .search-container {
@@ -104,11 +169,10 @@
     padding: 6px 10px;
   }
 
-  .cart-btn {
-    margin-left: 0;
-    width: 90%;
-    margin-top: 8px;
-    text-align: center;
+  .icon-btn {
+    width: 35px;
+    height: 35px;
+    font-size: 18px;
   }
 }
 
@@ -135,13 +199,9 @@
     max-width: 40px;
   }
 
-  .cart-btn {
-    width: 70%;
-    max-width: 200px;
-    padding: 8px;
-    font-size: 14px;
-    text-align: center;
-    margin-top: 10px;
+  .icon-btn {
+    width: 30px;
+    height: 30px;
+    font-size: 16px;
   }
 }
-

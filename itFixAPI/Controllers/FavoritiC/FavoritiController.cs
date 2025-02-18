@@ -110,7 +110,8 @@ namespace itFixAPI.Controllers.FavoritiC
                 {
                     ProizvodId = wp.ProizvodId,
                     Naziv = wp.Proizvod?.Naziv ?? "Nepoznato",
-                    Cijena = wp.Proizvod?.Cijena ?? 0
+                    Cijena = wp.Proizvod?.Cijena ?? 0,
+                    SlikaUrl = wp.Proizvod?.SlikaUrl ?? "" // 🛠 Dodato
                 }).ToList()
             });
         }

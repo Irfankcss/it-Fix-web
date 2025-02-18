@@ -14,4 +14,10 @@ namespace itFixAPI.Controllers.Korpe
         public Proizvod Proizvod { get; set; } 
         public int Kolicina { get; set; }
     }
+
+    public class KorpaAddProizvodDto
+    {
+        public int ProizvodId { get; set; }
+        public int Kolicina { get; set; }
+    }
 }

@@ -9,10 +9,8 @@
       <a routerLink="/prodavnica">Prodavnica</a>
       <a routerLink="/pracenje-posiljke">Prati pošiljku</a>
       <a routerLink="/kontakt">Kontakt</a>
-      <a routerLink="/login" *ngIf="!authService.isLoggedIn()">Prijava</a>
-      <a routerLink="/register" *ngIf="!authService.isLoggedIn()">Registracija</a>
+      <a routerLink="/login" *ngIf="!authService.isLoggedIn()">Prijava/Registracija</a>
       <a (click)="logout()" *ngIf="authService.isLoggedIn()">Odjava</a>
-      <a routerLink="/profil" *ngIf="authService.isLoggedIn()">Profil</a>
     </div>
   </div>
 </nav>
