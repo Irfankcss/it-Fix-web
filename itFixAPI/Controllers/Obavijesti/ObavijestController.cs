@@ -39,7 +39,8 @@ namespace itFixAPI.Controllers
                         SlikaUrl = o.SlikaUrl,
                         DatumObjave = o.DatumObjave,
                         DatumIsteka = o.DatumIsteka,
-                        Prioritet = o.Prioritet
+                        Prioritet = o.Prioritet,
+                        SearchTerm = o.SearchTerm
                     })
                     .ToListAsync();
 
@@ -67,7 +68,8 @@ namespace itFixAPI.Controllers
                     SlikaUrl = o.SlikaUrl,
                     DatumObjave = o.DatumObjave,
                     DatumIsteka = o.DatumIsteka,
-                    Prioritet = o.Prioritet
+                    Prioritet = o.Prioritet,
+                    SearchTerm = o.SearchTerm
                 })
                 .FirstOrDefaultAsync();
 
@@ -95,7 +97,8 @@ namespace itFixAPI.Controllers
                 SlikaUrl = obavijestDto.SlikaUrl ?? "", // Ako nema slike, neka bude prazan string
                 DatumObjave = DateTime.UtcNow,
                 DatumIsteka = obavijestDto.DatumIsteka,
-                Prioritet = obavijestDto.Prioritet
+                Prioritet = obavijestDto.Prioritet,
+                SearchTerm= obavijestDto.SearchTerm
             };
 
             _context.Obavijesti.Add(obavijest);
@@ -124,6 +127,7 @@ namespace itFixAPI.Controllers
             obavijest.SlikaUrl = obavijestDto.SlikaUrl ?? obavijest.SlikaUrl;
             obavijest.DatumIsteka = obavijestDto.DatumIsteka;
             obavijest.Prioritet = obavijestDto.Prioritet;
+            obavijest.SearchTerm = obavijestDto.SearchTerm;
 
             await _context.SaveChangesAsync();
 

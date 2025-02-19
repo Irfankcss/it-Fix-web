@@ -4,6 +4,7 @@ import { ProizvodService} from '../../../core/services/product.service';
 import {CurrencyPipe, NgIf} from '@angular/common';
 import {NajnovijiProizvodiComponent} from '../../najnoviji-proizvodi/najnoviji-proizvodi.component';
 import {CartService} from '../../../core/services/cart.service';
+import {AlertService} from '../../../core/services/alert.service';
 
 @Component({
   selector: 'app-proizvod',
@@ -22,7 +23,8 @@ export class ProizvodComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private proizvodService: ProizvodService,
-    private cartService: CartService
+    private cartService: CartService,
+    private alertService: AlertService
   ) {}
 
   ngOnInit(): void {
@@ -36,7 +38,11 @@ export class ProizvodComponent implements OnInit {
   }
 
   dodajuKorpu() {
-    this.cartService.addToCart(this.proizvod,1).subscribe();
-    alert("Dodan u korpu")  ;
+    this.cartService.addToCart(this.proizvod,1).subscribe(
+      next=>{
+        this.alertService.showSuccess('Proizvod dodan u korpu!');
+      }
+    );
+
   }
 }

@@ -10,6 +10,8 @@ namespace itFixAPI.Controllers.Obavijesti
         public string SlikaUrl { get; set; }
         public DateTime DatumObjave { get; set; }
         public DateTime DatumIsteka { get; set; }
+
+        public string SearchTerm { get; set; }
         public int Prioritet { get; set; }
     }
 
@@ -22,6 +24,7 @@ namespace itFixAPI.Controllers.Obavijesti
         public string? SlikaUrl { get; set; }
         [Required]
         public DateTime DatumIsteka { get; set; }
+        public string SearchTerm { get;set; }
         public int Prioritet { get; set; }
     }
 

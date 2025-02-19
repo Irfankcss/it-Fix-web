@@ -68,7 +68,8 @@ namespace itFixAPI.Controllers.Korpe
             }
 
             await _context.SaveChangesAsync();
-            return Ok("Proizvod uspešno dodan u korpu.");
+            return Ok(new { message = "Proizvod uspješno dodan u korpu." });
+
         }
 
         [HttpGet]

@@ -1,41 +1,46 @@
 .picsum-img-wrapper {
   height: 400px;
   overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 .picsum-img-wrapper img {
   height: 100%;
   width: 100%;
   object-fit: cover;
+  filter: brightness(90%);
 }
-h3{
+
+h3 {
   font-size: 40px;
-  text-outline: 1px black;
-  text-shadow: 2px 1px 1px black;
+  color: white;
+  text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.7);
   font-weight: bold;
 }
-p{
+
+p {
   font-size: 22px;
   font-weight: bold;
-  text-outline: 1px black;
-  text-shadow: 2px 1px 1px black;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
 }
+
 @media screen and (max-width: 768px) {
-  .picsum-img-wrapper img {
-    height: 100%;
-    width: 100%;
-    object-fit: cover;
+  .picsum-img-wrapper {
+    height: 300px;
   }
-  h3{
-    font-size: 27px;
-    text-outline: 1px black;
-    text-shadow: 1px 1px 1px black;
-    font-weight: bold;
+
+  h3 {
+    font-size: 30px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
   }
-  p{
-    font-size: 13px;
-    font-weight: bold;
-    text-outline: 1px black;
-    text-shadow: 1px 1px 1px black;
+
+  p {
+    font-size: 16px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
   }
 }

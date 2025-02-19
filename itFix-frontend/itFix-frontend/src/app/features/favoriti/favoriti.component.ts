@@ -3,6 +3,7 @@ import {FavoritiProizvodDto, FavoritService} from '../../core/services/favorit.s
 import {DecimalPipe, NgForOf, NgIf, SlicePipe} from '@angular/common';
 import {CartService} from '../../core/services/cart.service';
 import {Router} from '@angular/router';
+import {AlertService} from '../../core/services/alert.service';
 @Component({
   selector: 'app-favoriti',
   standalone: true,
@@ -20,7 +21,8 @@ export class FavoritiComponent implements OnInit {
   loading: boolean = true;
   errorMessage: string = '';
 
-  constructor(private favoritService: FavoritService, private cartService: CartService, private router:Router) {}
+  constructor(private favoritService: FavoritService, private cartService: CartService, private router:Router,
+              private alertService: AlertService) {}
 
   ngOnInit() {
     this.ucitajFavorite();
@@ -31,11 +33,10 @@ export class FavoritiComponent implements OnInit {
     this.favoritService.getFavoriti().subscribe({
       next: (res) => {
         this.favoriti = res.proizvodi;
-        console.log("favoriti",this.favoriti);
         this.loading = false;
       },
       error: (err) => {
-        this.errorMessage = 'Neuspješno dohvaćanje favorita.';
+        this.alertService.showError('Greska pri ucitavanju favorita');
         console.error(err);
         this.loading = false;
       }
@@ -46,21 +47,15 @@ export class FavoritiComponent implements OnInit {
     this.favoritService.removeFromFavoriti(proizvodId).subscribe({
       next: () => {
         this.favoriti = this.favoriti.filter(p => p.proizvodId !== proizvodId);
+        this.alertService.showSuccess('Proizvod izbrisan iz favorita');
       },
       error: (err) => {
-        console.error('Greška pri uklanjanju proizvoda iz favorita:', err);
+        this.alertService.showError('Greska pri brisanju proizvoda iz favorita');
       }
     });
   }
 
   dodajUKorpu(proizvodId: any) {
-    this.cartService.addToCart(proizvodId, 1).subscribe({
-      next: () => {
-        this.router.navigate(['/korpa']);
-      },
-      error: (err) => {
-        console.error('Greška pri dodavanju proizvoda u korpu:', err);
-      }
-    })
+      this.router.navigate(['/proizvod', proizvodId]);
   }
 }

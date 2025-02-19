@@ -4,9 +4,9 @@ import { KategorijaService } from '../../core/services/kategorija.service';
 import { FormsModule } from '@angular/forms';
 import { ProizvodListComponent } from '../proizvodi/proizvodi-list/proizvodi-list.component';
 import { CommonModule } from '@angular/common';
-import { SearchBarComponent } from '../search-bar/search-bar.component';
 import {ActivatedRoute} from '@angular/router';
 import {MatSlider, MatSliderModule} from '@angular/material/slider';
+import {AlertService} from '../../core/services/alert.service';
 
 @Component({
   selector: 'app-store',
@@ -40,13 +40,13 @@ export class StoreComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private proizvodService: ProizvodService,
-    private kategorijaService: KategorijaService
+    private kategorijaService: KategorijaService,
+    private alertService: AlertService
   ) {}
 
   ngOnInit() {
     this.fetchKategorije();
 
-    // 👇 Čitanje `search` query parametra i pokretanje pretrage
     this.route.queryParams.subscribe(params => {
       this.searchTerm = params['search'] || '';
       this.fetchProizvodi();
@@ -122,6 +122,7 @@ export class StoreComponent implements OnInit {
 
   ponistiKategoirje() {
     this.odabranaKategorija='';
+    this.alertService.showSuccess("Filter kategorije poništen");
     this.kategorijaId = 0;
     this.fetchProizvodi();
   }

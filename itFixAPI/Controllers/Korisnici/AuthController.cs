@@ -50,11 +50,17 @@ namespace itFixAPI.Controllers.Korisnici
             }
             return Unauthorized();
         }
+
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterModel model)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+            if (!HasValidPassword(model.Password))
+            {
+                return BadRequest(new { errors = new List<string> { "Lozinka mora imati najmanje 8 karaktera, bar jedno veliko slovo, broj i specijalni znak." } });
+            }
+
 
             var user = new Korisnik
             {
@@ -68,14 +74,20 @@ namespace itFixAPI.Controllers.Korisnici
             var result = await _userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
-                // Dodela uloge "Korisnik" po defaultu
                 await _userManager.AddToRoleAsync(user, "Korisnik");
-
                 return Ok(new { message = "Registracija uspešna! Možete se prijaviti." });
             }
 
-            return BadRequest(result.Errors);
+            return BadRequest(result.Errors.Select(e => e.Description)); // Vraća listu grešaka
         }
+        private bool HasValidPassword(string password)
+        {
+            return password.Length >= 8 &&
+                   password.Any(char.IsUpper) &&
+                   password.Any(char.IsDigit) &&
+                   password.Any(ch => !char.IsLetterOrDigit(ch));
+        }
+
         [Authorize]
         [HttpGet("me")]
         public async Task<IActionResult> GetCurrentUser()
@@ -128,12 +140,6 @@ namespace itFixAPI.Controllers.Korisnici
         public string Email { get; set; }
         public string Password { get; set; }
     }
-    public class RegisterModel
-    {
-        public string Ime { get; set; }
-        public string Prezime { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
-    }
+
 
 }

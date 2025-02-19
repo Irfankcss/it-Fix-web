@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Observable, throwError} from 'rxjs';
+import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
+import {catchError, Observable, throwError} from 'rxjs';
 import {environment} from '../../../environment/environment';
 
 @Injectable({
@@ -11,11 +11,21 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  // Metoda za registraciju
-  register(user: any) {
-    return this.http.post(this.apiUrl + 'auth/register', user);
+  register(user: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}auth/register`, user).pipe(
+      catchError((error: HttpErrorResponse) => {
+        let errorMessage = 'Greška pri registraciji!';
+
+        if (error.error?.errors) {
+          errorMessage = Object.values(error.error.errors).flat().join(', ');
+        } else if (error.error?.message) {
+          errorMessage = error.error.message;
+        }
+
+        return throwError(() => new Error(errorMessage));
+      })
+    );
   }
-  // Metoda za prijavu
   login(credentials: any): Observable<any> {
     return this.http.post(this.apiUrl + `auth/login`, credentials);
   }

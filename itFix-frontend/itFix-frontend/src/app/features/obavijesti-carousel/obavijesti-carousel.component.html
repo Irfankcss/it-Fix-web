@@ -9,10 +9,10 @@
 <ngb-carousel *ngIf="!isLoading && obavijesti && obavijesti.length">
   <ng-template ngbSlide *ngFor="let obavijest of obavijesti">
     <div class="picsum-img-wrapper">
-      <img [src]="obavijest.slikaUrl || 'https://via.placeholder.com/800x400?text=No+Image'" alt="Slika obavijesti" class="d-block w-100">
+      <img style="cursor:pointer" (click)="OtvoriObavjest(obavijest)" [src]="obavijest.slikaUrl || 'https://via.placeholder.com/800x400?text=No+Image'" alt="Slika obavijesti" class="d-block w-100">
     </div>
     <div class="carousel-caption">
-      <h3>{{ obavijest.naslov }}</h3>
+      <h3 style="cursor:pointer" (click)="OtvoriObavjest(obavijest)">{{ obavijest.naslov }}</h3>
       <p>{{ obavijest.tekst }}</p>
       <small>{{ obavijest.datumObjave | date:'medium' }}</small>
     </div>

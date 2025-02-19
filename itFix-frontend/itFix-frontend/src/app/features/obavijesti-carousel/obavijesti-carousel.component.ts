@@ -3,6 +3,7 @@ import {ObavijestService} from '../../core/services/obavijest.service';
 import {NgbCarouselModule} from '@ng-bootstrap/ng-bootstrap';
 import {HttpClientModule} from '@angular/common/http';
 import {CommonModule, NgFor} from '@angular/common';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-obavijesti-carousel',
@@ -16,7 +17,7 @@ export class ObavijestiCarouselComponent implements OnInit {
   isLoading: boolean = true;
   errorMessage: string = '';
 
-  constructor(private obavijestService: ObavijestService) { }
+  constructor(private obavijestService: ObavijestService, private router: Router) {}
 
   ngOnInit(): void {
     this.loadObavijesti();
@@ -25,8 +26,6 @@ export class ObavijestiCarouselComponent implements OnInit {
   loadObavijesti(): void {
     this.obavijestService.getObavijesti().subscribe({
       next: data => {
-        // Pretpostavljamo da API vraća listu obavijesti u formatu:
-        // { id, naslov, tekst, slikaUrl, datumObjave, datumIsteka, prioritet }
         this.obavijesti = data;
         this.isLoading = false;
       },
@@ -35,5 +34,12 @@ export class ObavijestiCarouselComponent implements OnInit {
         this.isLoading = false;
       }
     });
+  }
+  OtvoriObavjest(obv: any): void {
+    console.log("CLICKED");
+    console.log(obv);
+    if (obv.searchTerm && obv.searchTerm.trim() !== '') {
+      this.router.navigate(['/prodavnica'], { queryParams: { search: obv.searchTerm } });
+    }
   }
 }

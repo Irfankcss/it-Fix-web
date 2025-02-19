@@ -28,7 +28,6 @@ export class NajnovijiProizvodiComponent implements OnInit {
   }
 
   otvoriProizvod(porizvodId: any) {
-    console.log("pozvan");
     this.router.navigate(['/proizvod', porizvodId]);
   }
 }

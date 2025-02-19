@@ -6,13 +6,13 @@ import { environment } from '../../../environment/environment';
   providedIn: 'root'
 })
 export class ObavijestService {
-  private apiUrl = `${environment.apiUrl}Obavijesti`; // API URL iz environment fajla
+  private apiUrl = `${environment.apiUrl}Obavijesti`;
 
   constructor(private http: HttpClient) { }
 
   getObavijesti() {
     return this.http.get<any>(this.apiUrl).pipe(
-      retry(3), // ✅ Pokušaj ponovo do 3 puta
+      retry(3),
       catchError(error => {
         console.error('Došlo je do greške:', error);
         return throwError(() => new Error('Neuspjelo učitavanje Obavijesti'));

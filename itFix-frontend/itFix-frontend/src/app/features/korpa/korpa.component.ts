@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { DecimalPipe, NgForOf, NgIf, SlicePipe} from '@angular/common';
 import { NarudzbaService } from '../../core/services/narudzba.service';
 import {Router} from '@angular/router';
+import {AlertService} from '../../core/services/alert.service';
 
 interface KorpaProizvod {
   proizvodId: number;
@@ -41,7 +42,8 @@ export class KorpaComponent implements OnInit {
   };
   greskaPoruka: string = '';
 
-  constructor(private korpaService: CartService, private narudzbaService: NarudzbaService,private router: Router) {}
+  constructor(private korpaService: CartService, private narudzbaService: NarudzbaService,
+              private router: Router, private alertService: AlertService) {}
 
   ngOnInit() {
     this.ucitajKorpu();
@@ -67,17 +69,17 @@ export class KorpaComponent implements OnInit {
   ukloniIzKorpe(proizvodId: number) {
     this.korpaService.removeFromCart(proizvodId).subscribe(() => {
       this.korpaProizvodi = this.korpaProizvodi.filter(p => p.proizvodId !== proizvodId);
+      this.alertService.showSuccess("Proizvod uklonjen iz korpe");
       this.izracunajUkupno();
     });
   }
 
   dalje() {
     if (this.korak === 2 && !this.svaPoljaPopunjena()) {
-      this.greskaPoruka = 'Molimo popunite sva polja!';
+      this.alertService.showError("Molimo popunite sva polja!");
       return;
     }
 
-    this.greskaPoruka = '';
     if (this.korak < 3) this.korak++;
   }
 
@@ -88,10 +90,48 @@ export class KorpaComponent implements OnInit {
   svaPoljaPopunjena(): boolean {
     return Object.values(this.podaciNarudzbe).every(value => value.trim() !== '');
   }
+  validirajPodatke(): boolean {
+    const regexImePrezime = /^[A-ZĆČĐŠŽa-zćčđšž]+(?:\s[A-ZĆČĐŠŽa-zćčđšž]+)*$/;
+    const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const regexBrojTelefona = /^[+]?[0-9\s\-\/]+$/;
+    const regexGrad = /^[A-ZĆČĐŠŽa-zćčđšž\s]+$/;
+    const regexAdresa = /^[A-ZĆČĐŠŽa-zćčđšž0-9\s,.-]+$/;
+
+    if (!regexImePrezime.test(this.podaciNarudzbe.ime)) {
+      this.alertService.showError("Neispravno ime");
+      return false;
+    }
+    if (!regexImePrezime.test(this.podaciNarudzbe.prezime)) {
+      this.alertService.showError("Neispravno prezime");
+      return false;
+    }
+    if (!regexEmail.test(this.podaciNarudzbe.email)) {
+      this.alertService.showError("Neispravan email");
+      return false;
+    }
+    if (!regexBrojTelefona.test(this.podaciNarudzbe.brojTelefona)) {
+      this.alertService.showError("Neispravan broj telefona");
+      return false;
+    }
+    if (!regexGrad.test(this.podaciNarudzbe.grad)) {
+      this.alertService.showError("Neispravan naziv grada");
+      return false;
+    }
+    if (!regexAdresa.test(this.podaciNarudzbe.adresaDostave)) {
+      this.alertService.showError("Neispravna adresa dostave");
+      return false;
+    }
+
+    return true;
+  }
+
 
   kreirajNarudzbu() {
     if (!this.svaPoljaPopunjena()) {
-      this.greskaPoruka = 'Molimo popunite sva polja!';
+      this.alertService.showError("Molimo popunite sva polja!");
+      return;
+    }
+    if(!this.validirajPodatke()) {
       return;
     }
 
@@ -106,8 +146,7 @@ export class KorpaComponent implements OnInit {
 
     this.narudzbaService.kreirajNarudzbu(narudzba).subscribe(
       response => {
-        console.log('Narudžba uspješno kreirana:', response);
-        alert('Narudžba je uspješno kreirana!');
+        this.alertService.showSuccess('Narudžba uspješno kreirana');
 
         this.korpaService.resetKorpa().subscribe(() => {
           this.korpaProizvodi = [];
@@ -125,8 +164,7 @@ export class KorpaComponent implements OnInit {
 
       },
       error => {
-        console.error('Greška prilikom kreiranja narudžbe:', error);
-        alert('Došlo je do greške prilikom kreiranja narudžbe.');
+        this.alertService.showError('Greška pri kreiranju narudžbe');
       }
     );
   }

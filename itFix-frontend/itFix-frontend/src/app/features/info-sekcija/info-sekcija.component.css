@@ -1,0 +1,39 @@
+.info-sekcija {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background: #f5f6f7;
+  flex-wrap: wrap;
+  color: #000000;
+  gap: 15px;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+  flex: 1 1 auto;
+  text-align: center;
+  min-width: 150px;
+}
+
+@media (min-width: 600px) {
+  .info-sekcija {
+    flex-wrap: nowrap;
+    justify-content: space-around;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+  .info-item {
+    flex: 1;
+    justify-content: center;
+  }
+}
+
+img {
+  width: 40px;
+  height: 40px;
+}

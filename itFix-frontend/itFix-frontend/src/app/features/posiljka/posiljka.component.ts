@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NarudzbaService } from '../../core/services/narudzba.service';
 import {NgForOf, NgIf} from '@angular/common';
 import {FormsModule} from '@angular/forms';
+import {AlertService} from '../../core/services/alert.service';
 
 @Component({
   selector: 'app-posiljka',
@@ -20,17 +21,17 @@ export class PosiljkaComponent {
   narudzba: any = null;
   errorMessage: string = '';
 
-  constructor(private narudzbaService: NarudzbaService) {}
+  constructor(private narudzbaService: NarudzbaService, private alertService: AlertService) {}
 
   pratiNarudzbu() {
     if (!this.narudzbaId || !this.email) {
-      this.errorMessage = "Molimo unesite ID narudžbe i email.";
+      this.alertService.showError("Molimo unesite ID narudžbe i email.");
       return;
     }
 
     const id = parseInt(this.narudzbaId, 10);
     if (isNaN(id)) {
-      this.errorMessage = "ID narudžbe mora biti broj.";
+      this.alertService.showError("ID mora biti broj.");
       return;
     }
 
@@ -38,11 +39,11 @@ export class PosiljkaComponent {
       next: (data) => {
         this.narudzba = data;
         console.log(this.narudzba);
-        this.errorMessage = '';
+
       },
       error: () => {
         this.narudzba = null;
-        this.errorMessage = "Narudžba nije pronađena ili nemate pristup.";
+        this.alertService.showError("Narudžba nije pronađena ili nemate pristup.");
       }
     });
   }

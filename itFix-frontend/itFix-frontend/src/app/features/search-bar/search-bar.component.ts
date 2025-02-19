@@ -33,7 +33,7 @@ export class SearchBarComponent implements OnInit {
               private korpaService: CartService) {
     this.route.queryParams.subscribe(params => {
       if (params['search']) {
-        this.searchTerm = params['search']; // Postavi searchTerm iz URL-a
+        this.searchTerm = params['search'];
       }
     });
 

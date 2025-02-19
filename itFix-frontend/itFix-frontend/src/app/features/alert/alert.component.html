@@ -1,0 +1,3 @@
+<div *ngIf="alertService.alert$ | async as alert" class="alert-box" [ngClass]="alert.type">
+  {{ alert.message }}
+</div>

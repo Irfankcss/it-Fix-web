@@ -8,6 +8,7 @@
         public string SlikaUrl { get; set; }
         public DateTime DatumObjave { get; set; }
         public DateTime DatumIsteka { get; set; }
+        public string SearchTerm { get; set; } = "";
         public int Prioritet { get; set; }
     }
 }

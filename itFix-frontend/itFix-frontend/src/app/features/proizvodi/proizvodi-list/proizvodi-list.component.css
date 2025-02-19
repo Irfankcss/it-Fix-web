@@ -18,12 +18,12 @@
   align-items: center;
   position: relative;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  min-height: 400px; /* Fiksna visina */
+  min-height: 400px;
 }
 .favorit-icon{
   color: #94c794;
-  transition: 200ms;
   transform: scale(1.2);
+  transition: ease 1s;
 }
 .favorit-icon:hover{
   color: #5eb95e;
@@ -44,12 +44,9 @@
   cursor: pointer;
   font-size: 1.5rem;
   color: #888;
+  transition: ease 1s;
 }
 
-/* Kada je proizvod u favoritima */
-.favorite-btn.active {
-  color: red;
-}
 
 .discount {
   position: absolute;
@@ -105,15 +102,19 @@
 
 .details-link {
   text-decoration: none;
-  background: #7cc04a;
-  color: #fff;
+  background: #fdfdfd;
+  color: #6ca841;
+  border: 1px solid #6ca841;
   padding: 10px 15px;
   border-radius: 6px;
-  font-weight: bold;
+  font-weight: 600;
+  transition: ease 0.4s;
 }
 
 .details-link:hover {
   background: #6ca841;
+  color:white;
+
 }
 
 /* Manji ekrani */
