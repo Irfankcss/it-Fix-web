@@ -45,7 +45,6 @@
   text-align: center;
   min-height: 40px;
   line-height: 1.4;
-  margin-bottom: 10px;
 }
 
 .proizvod-kartica p {
@@ -96,7 +95,7 @@
   color: #222;
   text-transform: uppercase;
   letter-spacing: 1.5px;
-  margin-bottom: 25px;
+  margin-bottom: 10px;
   position: relative;
   display: inline-block;
   padding-bottom: 10px;

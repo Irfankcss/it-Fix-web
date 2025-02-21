@@ -1,15 +1,14 @@
-import {AfterViewInit, Component, ElementRef, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { debounceTime, Subject } from 'rxjs';
-import {DecimalPipe, NgIf} from '@angular/common';
+import { DecimalPipe, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import {ActivatedRoute, Router} from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { faHeart as faHeartRegular } from '@fortawesome/free-solid-svg-icons';
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
-import {FaIconComponent} from '@fortawesome/angular-fontawesome';
-import {FavoritService} from '../../core/services/favorit.service';
-import {CartService} from '../../core/services/cart.service';
-
-
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { FavoritService } from '../../core/services/favorit.service';
+import { CartService } from '../../core/services/cart.service';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-search-bar',
@@ -26,11 +25,17 @@ export class SearchBarComponent implements OnInit {
   private searchSubject = new Subject<string>();
   faHeart = faHeartRegular;
   faShoppingCart = faShoppingCart;
+  isLoggedIn: boolean = false;
 
   @Output() searchEvent = new EventEmitter<string>();
 
-  constructor(private route: ActivatedRoute, private router:Router,private favoritService: FavoritService,
-              private korpaService: CartService) {
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private favoritService: FavoritService,
+    private korpaService: CartService,
+    private authService: AuthService
+  ) {
     this.route.queryParams.subscribe(params => {
       if (params['search']) {
         this.searchTerm = params['search'];
@@ -41,7 +46,6 @@ export class SearchBarComponent implements OnInit {
       this.searchEvent.emit(searchTerm);
     });
   }
-
 
   onSearch(): void {
     this.searchSubject.next(this.searchTerm);
@@ -61,23 +65,24 @@ export class SearchBarComponent implements OnInit {
   }
 
   ucitajFavorite() {
-    this.favoritService.getFavoritiProizvodi().subscribe((favoriti: number[]) => {
-      this.brojFavorita = favoriti.length;
-    });
+    if (this.isLoggedIn) {
+      this.favoritService.getFavoritiProizvodi().subscribe((favoriti: number[]) => {
+        this.brojFavorita = favoriti.length;
+      });
+    }
   }
 
   ucitajKorpu() {
-    this.korpaService.getCart().subscribe((korpa) => {
-      console.log(korpa);
-      this.brojProizvodaUKorpi = korpa.proizvodi.length;
-      this.ukupnaCijena = korpa.proizvodi.reduce((sum: number, p: { cijena: number }) => sum + p.cijena, 0);
-    });
-
+    if (this.isLoggedIn) {
+      this.korpaService.getCart().subscribe((korpa) => {
+        this.brojProizvodaUKorpi = korpa.proizvodi.length;
+        this.ukupnaCijena = korpa.proizvodi.reduce((sum: number, p: { cijena: number }) => sum + p.cijena, 0);
+      });
+    }
   }
 
-
-
   ngOnInit() {
+    this.isLoggedIn = this.authService.isLoggedIn();
     this.ucitajFavorite();
     this.ucitajKorpu();
   }

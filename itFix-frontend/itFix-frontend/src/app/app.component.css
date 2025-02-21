@@ -1,16 +1,15 @@
 
 .body {
   width: 100%;
-  padding-top: 150px;
   transition: padding-top 0.3s ease-in-out;
 }
 @media (max-width: 768px) {
 .body {
-  padding-top: 190px; /* Manji padding za velike ekrane */
+ /* padding-top: 190px; /* Manji padding za velike ekrane */
 }
 }
 @media (max-width: 480px) {
 .body {
-  padding-top: 177px; /* Manji padding za male ekrane */
+ /* padding-top: 177px; /* Manji padding za male ekrane */
 }
 }

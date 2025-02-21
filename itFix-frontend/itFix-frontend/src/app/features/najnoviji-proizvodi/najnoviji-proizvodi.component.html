@@ -1,5 +1,5 @@
 <div class="najnoviji-proizvodi">
-  <h2>Najnoviji Proizvodi</h2>
+  <h2>Novo u ponudi</h2>
   <div *ngIf="najnovijiProizvodi.length > 0; else loading" class="proizvod-grid">
     <div *ngFor="let proizvod of najnovijiProizvodi" class="proizvod-kartica" (click)="otvoriProizvod(proizvod.porizvodId)">
       <h3>{{ proizvod.naziv.length > 50 ? (proizvod.naziv | slice:0:50) + '...' : proizvod.naziv }}</h3>

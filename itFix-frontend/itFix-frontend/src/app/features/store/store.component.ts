@@ -49,6 +49,7 @@ export class StoreComponent implements OnInit {
 
     this.route.queryParams.subscribe(params => {
       this.searchTerm = params['search'] || '';
+      this.kategorijaId = params['kategorija'] ? Number(params['kategorija']) : 0;
       this.fetchProizvodi();
     });
   }
@@ -116,8 +117,8 @@ export class StoreComponent implements OnInit {
 
 
   onSearch(searchTerm: string): void {
-    this.searchTerm = searchTerm; // ✔ Postavljamo searchTerm
-    this.fetchProizvodi(); // ✔ API sada filtrira rezultate
+    this.searchTerm = searchTerm;
+    this.fetchProizvodi();
   }
 
   ponistiKategoirje() {

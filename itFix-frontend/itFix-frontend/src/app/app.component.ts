@@ -5,11 +5,12 @@ import { SearchBarComponent } from './features/search-bar/search-bar.component';
 import { NavbarComponent } from './features/navbar/navbar.component';
 import {FooterComponent} from './features/footer/footer.component';
 import {AlertComponent} from './features/alert/alert.component';
+import {BackToTopComponent} from './features/back-to-top/back-to-top.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, CommonModule, SearchBarComponent, NavbarComponent, FooterComponent, AlertComponent],
+  imports: [RouterOutlet, CommonModule, SearchBarComponent, NavbarComponent, FooterComponent, AlertComponent, BackToTopComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })

@@ -128,7 +128,7 @@ export class KorpaComponent implements OnInit {
 
   kreirajNarudzbu() {
     if (!this.svaPoljaPopunjena()) {
-      this.alertService.showError("Molimo popunite sva polja!");
+      this.alertService.showError("Molimo popunite sva polja sa podacima za narudžbu!");
       return;
     }
     if(!this.validirajPodatke()) {

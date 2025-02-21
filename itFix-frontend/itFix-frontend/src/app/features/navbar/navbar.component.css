@@ -7,7 +7,6 @@ body {
 .navbar {
   background: #031424;
   padding: 15px 20px;
-  position: fixed;
   width: 100%;
   top: 0;
   left: 0;
@@ -17,6 +16,7 @@ body {
   align-items: center;
   border-bottom: black 1px solid;
 }
+
 .logo img {
   height: 40px;
   width: auto;
@@ -47,6 +47,7 @@ body {
 .nav-links {
   display: flex;
   gap: 25px;
+  align-items: center;
 }
 
 .nav-links a {
@@ -58,6 +59,42 @@ body {
   border-radius: 5px;
   font-weight: 500;
 }
+.dropdown-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-link {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-weight: 500;
+  transition: background 0.3s ease-in-out;
+}
+
+.dropdown-wrapper:hover .dropdown-link {
+  background-color: #6B8E23;
+  transform: scale(1.05);
+}
+
+app-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  z-index: 1000;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  min-width: 200px;
+  padding: 10px;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  color: black;
+}
+
 
 .nav-links a:hover {
   background-color: #6B8E23;

@@ -7,6 +7,7 @@ import { AuthService } from '../../../core/services/auth.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faHeart as faSolidHeart } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as faRegularHeart } from '@fortawesome/free-regular-svg-icons';
+import {AlertService} from '../../../core/services/alert.service';
 
 @Component({
   selector: 'app-proizvod-list',
@@ -17,8 +18,8 @@ import { faHeart as faRegularHeart } from '@fortawesome/free-regular-svg-icons';
 })
 export class ProizvodListComponent {
   @Input() proizvodi: any[] = [];
-  favoriti: Set<number> = new Set(); // Čuvamo `proizvodId` unutar `Set`
-  isLoggedIn: boolean = false; // Provjera da li je korisnik prijavljen
+  favoriti: Set<number> = new Set();
+  isLoggedIn: boolean = false;
 
   faSolidHeart = faSolidHeart;
   faRegularHeart = faRegularHeart;
@@ -26,7 +27,8 @@ export class ProizvodListComponent {
   constructor(
     private router: Router,
     private favoritService: FavoritService,
-    private authService: AuthService
+    private authService: AuthService,
+    private alertService : AlertService
   ) {}
 
   ngOnInit() {
@@ -56,17 +58,19 @@ export class ProizvodListComponent {
     event.stopPropagation();
 
     if (!this.isLoggedIn) {
-      alert('Morate biti prijavljeni da biste dodali u favorite!');
+      this.alertService.showError("Morate biti prijavljeni da dodate proizvod na listu želja.");
       return;
     }
 
     if (this.favoriti.has(proizvodId)) {
       this.favoritService.removeFromFavoriti(proizvodId).subscribe(() => {
+        this.alertService.showSuccess("Proizvod uklonjen sa liste želja.");
         this.favoriti.delete(proizvodId);
       });
     } else {
       this.favoritService.addToFavoriti(proizvodId).subscribe(() => {
         this.favoriti.add(proizvodId);
+        this.alertService.showSuccess("Proizvod dodan na listu želja.");
       });
     }
   }

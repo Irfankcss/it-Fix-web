@@ -6,7 +6,7 @@
     <button class="menu-toggle" (click)="toggleMenu()">☰</button>
     <div class="nav-links" [class.active]="menuOpen" (click)="closeMenu()">
       <a routerLink="/">Početna</a>
-      <a routerLink="/prodavnica">Prodavnica</a>
+      <a routerLink="/prodavnica">Prodaja</a>
       <a routerLink="/pracenje-posiljke">Prati pošiljku</a>
       <a routerLink="/kontakt">Kontakt</a>
       <a routerLink="/login" *ngIf="!authService.isLoggedIn()">Prijava/Registracija</a>

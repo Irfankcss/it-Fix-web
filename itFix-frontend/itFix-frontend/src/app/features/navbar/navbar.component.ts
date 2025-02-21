@@ -1,30 +1,53 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, OnDestroy, OnInit, Inject, PLATFORM_ID } from '@angular/core';
+import {isPlatformBrowser, NgIf} from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
-import { CommonModule } from '@angular/common';
 import { AuthService } from '../../core/services/auth.service';
-import {AlertService} from '../../core/services/alert.service';
+import { AlertService } from '../../core/services/alert.service';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [ CommonModule, RouterLink],
+  imports: [RouterLink, NgIf],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent {
-
-  constructor(public authService: AuthService,private router: Router,private alertService: AlertService) {}
-
+export class NavbarComponent implements OnInit, OnDestroy {
   menuOpen = false;
+  isBrowser: boolean;
 
-  logout() {//
-    this.authService.logout();
-
-    this.router.navigate(['/']);
-    window.location.reload();
-    this.alertService.showSuccess('Uspjesno ste se odjavili!');
-
+  constructor(
+    public authService: AuthService,
+    private router: Router,
+    private alertService: AlertService,
+    @Inject(PLATFORM_ID) private platformId: object
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
   }
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/']);
+    if (this.isBrowser) {
+      window.location.reload();
+    }
+    this.alertService.showSuccess('Uspješno ste se odjavili!');
+  }
+
+  ngOnInit() {
+    if (this.isBrowser) {
+      document.addEventListener('click', this.handleClickOutside);
+    }
+  }
+
+  handleClickOutside = (event: Event) => {
+    const navLinks = document.querySelector('.nav-links');
+    const menuToggle = document.querySelector('.menu-toggle');
+
+    if (this.menuOpen && navLinks && !navLinks.contains(event.target as Node) &&
+      menuToggle && !menuToggle.contains(event.target as Node)) {
+      this.closeMenu();
+    }
+  };
 
   toggleMenu() {
     this.menuOpen = !this.menuOpen;
@@ -34,14 +57,9 @@ export class NavbarComponent {
     this.menuOpen = false;
   }
 
-  @HostListener('document:click', ['$event'])
-  onClickOutside(event: Event) {
-    const navbar = document.querySelector('.navbar');
-    const menuToggle = document.querySelector('.menu-toggle');
-
-
-    if (navbar && menuToggle && !navbar.contains(event.target as Node) && !menuToggle.contains(event.target as Node)) {
-      this.closeMenu();
+  ngOnDestroy() {
+    if (this.isBrowser) {
+      document.removeEventListener('click', this.handleClickOutside);
     }
   }
 }
