@@ -1,4 +1,5 @@
 ﻿using itFixAPI.Data;
+using itFixAPI.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,10 +12,12 @@ namespace itFixAPI.Controllers.Narudzbe
     public class NarudzbaController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly IEmailService _emailService;
 
-        public NarudzbaController(ApplicationDbContext context)
+        public NarudzbaController(ApplicationDbContext context, IEmailService emailService)
         {
             _context = context;
+            _emailService = emailService;
         }
 
         //  Dohvati sve narudžbe (sa opcijom filtriranja po statusu)
@@ -87,7 +90,34 @@ namespace itFixAPI.Controllers.Narudzbe
             _context.Narudzbe.Add(novaNarudzba);
             await _context.SaveChangesAsync();
 
-            // Ponovo učitaj narudžbu sa svim povezanim podacima
+
+            string emailBody = $@"
+                   <h2>Poštovani {narudzbaDto.Ime},</h2>
+                <p>Drago nam je što možemo potvrditi da je Vaša narudžba #{novaNarudzba.NarudzbaId} uspješno primljena!</p>
+                    <h3>Detalji narudžbe:</h3>
+                    <ul>
+                <li><strong>Ukupna cijena:</strong> {novaNarudzba.UkupnaCijena} KM</li>
+                <li><strong>Adresa dostave:</strong> {novaNarudzba.AdresaDostave}, {novaNarudzba.Grad}</li>
+                    </ul>
+                 <p>Naša ekipa će Vas obavijestiti kada Vaša narudžba bude poslana, status također možete pratiti putem naše stranice unošenjem broja narudžbe i emaila.</p>
+                 <p>Hvala što ste odabrali <strong>it-Fix doo</strong>. Ako imate bilo kakvih pitanja, slobodno nas kontaktirajte.</p>
+                    <hr>
+                    <p>Srdačno,</p>
+                     <p><strong>it-Fix doo</strong></p>
+                     <p>Vaš partner za kvalitetnu elektroniku i tehnologiju</p>
+                            ";
+
+            Console.WriteLine($"[DEBUG] Email iz DTO: '{narudzbaDto.Email}'");
+
+            if (string.IsNullOrWhiteSpace(narudzbaDto.Email))
+            {
+                return BadRequest("Greška: Email adresa je obavezna.");
+            }
+
+            await _emailService.SendEmailAsync(novaNarudzba.Email, "Potvrda narudžbe", emailBody);
+
+
+
             var kreiranaNarudzba = await _context.Narudzbe
                 .Include(n => n.NarudzbaProizvodi)
                 .ThenInclude(np => np.Proizvod)

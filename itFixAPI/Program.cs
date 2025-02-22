@@ -1,4 +1,5 @@
 ﻿using itFixAPI.Data;
+using itFixAPI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Rewrite;
@@ -28,6 +29,9 @@ builder.Services.AddCors(options =>
 builder.Services.AddIdentity<Korisnik, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
+
+//mail servis
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 builder.Services.AddAuthentication(options =>
 {
