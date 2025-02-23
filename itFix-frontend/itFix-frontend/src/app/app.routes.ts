@@ -10,6 +10,7 @@ import {KontaktComponent} from './features/kontakt/kontakt.component';
 import {KorpaComponent} from './features/korpa/korpa.component';
 import {NarudzbaComponent} from './features/narudzba/narudzba.component';
 import {FavoritiComponent} from './features/favoriti/favoriti.component';
+import {ConfirmEmailComponent} from './features/confirm-email/confirm-email.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent},
@@ -22,5 +23,7 @@ export const routes: Routes = [
   {path:'kontakt',component:KontaktComponent},
   {path:'korpa',component:KorpaComponent},
   { path: 'narudzba/:id', component:NarudzbaComponent },
-  {path:'favoriti',component:FavoritiComponent}
+  {path:'favoriti',component:FavoritiComponent},
+  { path: 'confirm-email', component: ConfirmEmailComponent },
+  { path: '**', redirectTo: 'login' }
 ];

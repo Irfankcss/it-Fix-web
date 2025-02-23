@@ -27,7 +27,9 @@ export class RegisterComponent {
 
     this.authService.register(this.user).subscribe({
       next: () => {
-        this.alertService.showSuccess('Uspješno ste se registrovali, molimo prijavite se!');
+        this.alertService.showSuccess(
+          'Registracija je uspješna. Na vašu email adresu poslan je verifikacijski link. Molimo provjerite svoj inbox.'
+        );
         this.router.navigate(['/login']);
       },
       error: (err) => {

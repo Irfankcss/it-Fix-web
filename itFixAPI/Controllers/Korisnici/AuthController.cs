@@ -1,4 +1,5 @@
 ﻿using itFixAPI.Data;
+using itFixAPI.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -16,12 +17,14 @@ namespace itFixAPI.Controllers.Korisnici
         private readonly UserManager<Korisnik> _userManager;
         private readonly SignInManager<Korisnik> _signInManager;
         private readonly IConfiguration _configuration;
+        private readonly IEmailService _emailService;
 
-        public AuthController(UserManager<Korisnik> userManager, SignInManager<Korisnik> signInManager, IConfiguration configuration)
+        public AuthController(UserManager<Korisnik> userManager, SignInManager<Korisnik> signInManager, IConfiguration configuration,IEmailService emailService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _configuration = configuration;
+            _emailService = emailService;
         }
         [Authorize(Roles = "Admin")]
         [HttpGet("admin-data")]
@@ -42,25 +45,32 @@ namespace itFixAPI.Controllers.Korisnici
         public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
             var user = await _userManager.FindByEmailAsync(model.Email);
-            if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
+            if (user == null)
+                return Unauthorized("Neispravni email ili lozinka.");
+            if (!await _userManager.IsEmailConfirmedAsync(user))
+                return Unauthorized("Morate potvrditi email prije prijave.");
+
+            if (await _userManager.CheckPasswordAsync(user, model.Password))
             {
                 var roles = await _userManager.GetRolesAsync(user);
                 var token = GenerateJwtToken(user, roles);
                 return Ok(new { token });
             }
-            return Unauthorized();
+
+            return Unauthorized("Neispravni email ili lozinka.");
         }
+
 
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterModel model)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+
             if (!HasValidPassword(model.Password))
             {
                 return BadRequest(new { errors = new List<string> { "Lozinka mora imati najmanje 8 karaktera, bar jedno veliko slovo, broj i specijalni znak." } });
             }
-
 
             var user = new Korisnik
             {
@@ -75,11 +85,30 @@ namespace itFixAPI.Controllers.Korisnici
             if (result.Succeeded)
             {
                 await _userManager.AddToRoleAsync(user, "Korisnik");
-                return Ok(new { message = "Registracija uspešna! Možete se prijaviti." });
+
+                // Generiraj verifikacijski token
+                var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
+                // Kreiraj verifikacijski link
+                var confirmationLink = $"{_configuration["FrontendUrl"]}/confirm-email?userId={user.Id}&token={Uri.EscapeDataString(token)}";
+
+                // Pošalji e-mail s verifikacijskim linkom
+                var emailBody = $@"
+                <p>Poštovani,</p>
+                <p>Hvala vam što ste se registrovali na It-Fix web. Kako biste aktivirali svoj račun, molimo vas da potvrdite svoju email adresu klikom na sljedeći link:</p>
+                <p><a href='{confirmationLink}' style='color: #007bff; text-decoration: none;'>Potvrdi email</a></p>
+                <p>Ako niste vi inicirali ovu registraciju, slobodno zanemarite ovu poruku.</p>
+                <p>S poštovanjem,</p>
+                <p><strong>It-Fix tim za podršku</strong></p>
+";
+                await _emailService.SendEmailAsync(user.Email, "Verifikacija emaila", emailBody);
+
+                return Ok(new { message = "Registracija uspješna! Provjerite email za potvrdu." });
             }
 
-            return BadRequest(result.Errors.Select(e => e.Description)); // Vraća listu grešaka
+            return BadRequest(result.Errors.Select(e => e.Description));
         }
+
         private bool HasValidPassword(string password)
         {
             return password.Length >= 8 &&
@@ -109,6 +138,28 @@ namespace itFixAPI.Controllers.Korisnici
                 roles = roles
             });
         }
+        [HttpGet("confirm-email")]
+        public async Task<IActionResult> ConfirmEmail(string userId, string token)
+        {
+            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(token))
+                return BadRequest(new { success = false, message = "Neispravan zahtjev za potvrdu emaila." });
+
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+                return NotFound(new { success = false, message = "Korisnik nije pronađen." });
+
+            Console.WriteLine($"Primljen token na backendu: {token}");
+
+            var decodedToken = System.Net.WebUtility.UrlDecode(token).Replace(" ", "+"); // Fix za URL kodiranje
+            Console.WriteLine($"Primljen token na backendu (dekodiran): {decodedToken}");
+
+            var result = await _userManager.ConfirmEmailAsync(user, decodedToken);
+            if (result.Succeeded)
+                return Ok(new { success = true, message = "Email uspješno verifikovan!" });
+
+            return BadRequest(new { success = false, message = "Neuspješna verifikacija emaila." });
+        }
+
 
 
         private string GenerateJwtToken(Korisnik user, IList<string> roles)
