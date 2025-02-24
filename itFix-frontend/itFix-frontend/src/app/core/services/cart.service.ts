@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
+import {BehaviorSubject, Observable, tap} from 'rxjs';
 import { environment } from '../../../environment/environment';
 
 @Injectable({
@@ -8,8 +8,7 @@ import { environment } from '../../../environment/environment';
 })
 export class CartService {
   private apiUrl = `${environment.apiUrl}Korpa`;
-  private cartItems: any[] = [];
-  private cartSubject = new BehaviorSubject<any[]>(this.cartItems);
+  private cartSubject = new BehaviorSubject<any>({ proizvodi: [], ukupnaCijena: 0 });
 
   constructor(private http: HttpClient) {}
 
@@ -23,7 +22,12 @@ export class CartService {
 
   // Dohvatanje korpe korisnika
   getCart(): Observable<any> {
-    return this.http.get(this.apiUrl, { headers: this.getAuthHeaders() });
+    return this.http.get(this.apiUrl, { headers: this.getAuthHeaders() }).pipe(
+      tap(korpa => this.cartSubject.next(korpa))
+    );
+  }
+  getCartUpdates(): Observable<any> {
+    return this.cartSubject.asObservable();
   }
 
   // Dodavanje proizvoda u korpu

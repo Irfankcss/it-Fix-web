@@ -103,7 +103,6 @@ namespace itFixAPI.Controllers.Korpe
             if (korpa == null)
                 return Unauthorized("Morate biti prijavljeni da biste koristili korpu.");
 
-            // Brišemo sve proizvode iz korpe
             _context.KorpaProizvodi.RemoveRange(korpa.KorpaProizvodi);
             await _context.SaveChangesAsync();
 

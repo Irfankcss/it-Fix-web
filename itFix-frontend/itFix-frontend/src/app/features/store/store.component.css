@@ -15,11 +15,12 @@ body {
 }
 
 .category-list li {
+  text-transform: uppercase;
   background: #fff;
   padding: 10px 15px;
   border-radius: 8px;
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 600;
   color: #333;
   cursor: pointer;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);

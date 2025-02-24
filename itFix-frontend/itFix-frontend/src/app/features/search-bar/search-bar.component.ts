@@ -9,6 +9,7 @@ import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { FavoritService } from '../../core/services/favorit.service';
 import { CartService } from '../../core/services/cart.service';
 import { AuthService } from '../../core/services/auth.service';
+import { AlertService } from '../../core/services/alert.service';
 
 @Component({
   selector: 'app-search-bar',
@@ -34,7 +35,8 @@ export class SearchBarComponent implements OnInit {
     private router: Router,
     private favoritService: FavoritService,
     private korpaService: CartService,
-    private authService: AuthService
+    private authService: AuthService,
+    private alertService: AlertService
   ) {
     this.route.queryParams.subscribe(params => {
       if (params['search']) {
@@ -57,10 +59,20 @@ export class SearchBarComponent implements OnInit {
   }
 
   otvoriFavorite() {
+    if (!this.isLoggedIn) {
+      this.alertService.showError('Morate biti prijavljeni da biste vidjeli favorite.');
+      this.router.navigate(['/prijava']);
+      return;
+    }
     this.router.navigate(['/favoriti']);
   }
 
   otvoriKorpu() {
+    if (!this.isLoggedIn) {
+      this.alertService.showError('Morate biti prijavljeni da biste vidjeli korpu.');
+      this.router.navigate(['/prijava']);
+      return;
+    }
     this.router.navigate(['/korpa']);
   }
 
@@ -74,16 +86,37 @@ export class SearchBarComponent implements OnInit {
 
   ucitajKorpu() {
     if (this.isLoggedIn) {
-      this.korpaService.getCart().subscribe((korpa) => {
+      this.korpaService.getCart().subscribe(korpa => {
+        console.log(korpa);
         this.brojProizvodaUKorpi = korpa.proizvodi.length;
-        this.ukupnaCijena = korpa.proizvodi.reduce((sum: number, p: { cijena: number }) => sum + p.cijena, 0);
+        this.ukupnaCijena = korpa.proizvodi.reduce((sum: number, p: { proizvod: { cijena: number, popust: number }, kolicina: number }) =>
+          sum + ((p.proizvod.cijena - p.proizvod.cijena *( 1/p.proizvod.popust)) * p.kolicina), 0);
       });
     }
   }
 
   ngOnInit() {
     this.isLoggedIn = this.authService.isLoggedIn();
-    this.ucitajFavorite();
-    this.ucitajKorpu();
+
+    if (this.isLoggedIn) {
+      this.ucitajFavorite();
+      this.ucitajKorpu();
+
+      this.favoritService.getFavoritiCount().subscribe(count => {
+        this.brojFavorita = count;
+        this.korpaService.getCartUpdates().subscribe(korpa => {
+          this.brojProizvodaUKorpi = korpa.proizvodi.length;
+          this.ukupnaCijena = korpa.proizvodi.reduce((sum: number, p: { proizvod: { cijena: number, popust: number }, kolicina: number }) =>
+            sum + ((p.proizvod.cijena - p.proizvod.cijena *( 1/p.proizvod.popust)) * p.kolicina), 0);
+        });
+
+      });
+
+      this.korpaService.getCart().subscribe(korpa => {
+        this.brojProizvodaUKorpi = korpa.proizvodi.length;
+        this.ukupnaCijena = korpa.proizvodi.reduce((sum: number, p: { proizvod: { cijena: number, popust: number }, kolicina: number }) =>
+          sum + ((p.proizvod.cijena - p.proizvod.cijena *( 1/p.proizvod.popust)) * p.kolicina), 0);
+      });
+    }
   }
 }

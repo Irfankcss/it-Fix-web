@@ -70,9 +70,11 @@ export class KorpaComponent implements OnInit {
     this.korpaService.removeFromCart(proizvodId).subscribe(() => {
       this.korpaProizvodi = this.korpaProizvodi.filter(p => p.proizvodId !== proizvodId);
       this.alertService.showSuccess("Proizvod uklonjen iz korpe");
+      window.location.reload();
       this.izracunajUkupno();
     });
   }
+
 
   dalje() {
     if (this.korak === 2 && !this.svaPoljaPopunjena()) {

@@ -75,6 +75,7 @@ export class ProizvodListComponent {
     }
   }
 
+
   getHeartIcon(proizvodId: number) {
     return this.favoriti.has(proizvodId) ? this.faSolidHeart : this.faRegularHeart;
   }

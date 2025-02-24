@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable, tap } from 'rxjs';
 import { environment } from '../../../environment/environment';
-import {convertBrowserOptions} from '@angular-devkit/build-angular/src/builders/browser-esbuild';
 
 export interface FavoritiProizvodDto {
   proizvodId: number;
@@ -22,6 +21,7 @@ export interface FavoritiDto {
 })
 export class FavoritService {
   private apiUrl = `${environment.apiUrl}favoriti`;
+  private favoritiCount$ = new BehaviorSubject<number>(0);
 
   constructor(private http: HttpClient) {}
 
@@ -43,16 +43,28 @@ export class FavoritService {
 
   getFavoritiProizvodi(): Observable<number[]> {
     return this.http.get<FavoritiDto>(this.apiUrl, this.getHeaders()).pipe(
-      map((response: FavoritiDto) =>  response.proizvodi.map(p => p.proizvodId) )
-
+      map((response: FavoritiDto) => response.proizvodi.map(p => p.proizvodId)),
+      tap(proizvodi => this.favoritiCount$.next(proizvodi.length))
     );
   }
 
+  getFavoritiCount(): Observable<number> {
+    return this.favoritiCount$.asObservable();
+  }
+
   addToFavoriti(proizvodId: number): Observable<any> {
-    return this.http.post(`${this.apiUrl}`, { proizvodId }, this.getHeaders());
+    return this.http.post(`${this.apiUrl}`, { proizvodId }, this.getHeaders()).pipe(
+      tap(() => {
+        this.getFavoritiProizvodi().subscribe();
+      })
+    );
   }
 
   removeFromFavoriti(proizvodId: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${proizvodId}`, this.getHeaders());
+    return this.http.delete<void>(`${this.apiUrl}/${proizvodId}`, this.getHeaders()).pipe(
+      tap(() => {
+        this.getFavoritiProizvodi().subscribe();
+      })
+    );
   }
 }

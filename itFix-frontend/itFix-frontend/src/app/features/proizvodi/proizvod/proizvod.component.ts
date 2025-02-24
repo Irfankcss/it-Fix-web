@@ -20,6 +20,8 @@ import {AuthService} from '../../../core/services/auth.service';
 })
 export class ProizvodComponent implements OnInit {
   proizvod: any;
+  brojProizvodaUKorpi: number = 0;
+  ukupnaCijena: number = 0;
 
   constructor(
     private route: ActivatedRoute,
@@ -40,17 +42,29 @@ export class ProizvodComponent implements OnInit {
   }
 
   dodajuKorpu() {
-    if(!this.isLoggedIn()) {
+    if (!this.isLoggedIn()) {
       this.alertService.showError('Morate biti prijavljeni da biste dodali proizvod u korpu!');
       return;
     }
-    this.cartService.addToCart(this.proizvod,1).subscribe(
-      next=>{
+    this.cartService.addToCart(this.proizvod, 1).subscribe({
+      next: () => {
         this.alertService.showSuccess('Proizvod dodan u korpu!');
+        this.cartService.getCart().subscribe();
+        this.azurirajKorpu();
+      },
+      error: () => {
+        this.alertService.showError('Greška prilikom dodavanja u korpu!');
       }
-    );
-
+    });
   }
+
+  private azurirajKorpu() {
+    this.cartService.getCart().subscribe(korpa => {
+      this.brojProizvodaUKorpi = korpa.proizvodi.length;
+      this.ukupnaCijena = korpa.proizvodi.reduce((sum: number, p: { cijena: number }) => sum + p.cijena, 0);
+    });
+  }
+
 
   private isLoggedIn() {
     return this.authService.isLoggedIn();
