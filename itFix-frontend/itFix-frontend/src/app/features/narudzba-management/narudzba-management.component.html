@@ -1,0 +1,55 @@
+<div class="filter-buttons">
+  <button
+    *ngFor="let status of ['Sve', 'Poslana', 'Završena', 'Odbijena', 'Primljena']"
+    (click)="filterNarudzbe(status)"
+    [class.active]="trenutniFilter === status"
+  >
+    {{ status }}
+  </button>
+</div>
+
+<h4>Trenutno prikazane narudžbe sa statusom: {{ trenutniFilter }} ({{filtriraneNarudzbe.length}})</h4>
+<table class="management-table">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Kupac</th>
+    <th>Kontakt</th>
+    <th>Adresa</th>
+    <th>Datum kreiranja</th>
+    <th>Cijena (KM)</th>
+    <th>Status</th>
+    <th>Napomena</th>
+    <th>Proizvodi</th>
+    <th>Akcija</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let narudzba of filtriraneNarudzbe">
+    <td>{{ narudzba.narudzbaId }}</td>
+    <td>{{ narudzba.imePrezime }} ({{ narudzba.email }})</td>
+    <td>{{ narudzba.brojTelefona }}</td>
+    <td>{{ narudzba.adresaGrad }}</td>
+    <td>{{ narudzba.datumKreiranja | date:'dd.MM.yyyy HH:mm' }}</td>
+    <td>{{ narudzba.ukupnaCijena | currency:'BAM':'symbol':'1.2-2' }}</td>
+    <td>{{ narudzba.status }}</td>
+    <td>{{ narudzba.napomena || '-' }}</td>
+    <td>
+      <ul class="proizvodi-list">
+        <li *ngFor="let proizvod of narudzba.proizvodi">
+          <img [src]="proizvod.slikaUrl" alt="slika proizvoda" class="product-img">
+          <span>{{ proizvod.naziv }} - {{ proizvod.cijena | currency:'BAM':'symbol':'1.2-2' }}</span>
+        </li>
+      </ul>
+    </td>
+    <td>
+      <button class="edit-btn" (click)="updateStatus(narudzba.narudzbaId, 'Poslana')">Označi kao Poslana</button>
+      <button class="edit-btn" (click)="updateStatus(narudzba.narudzbaId, 'Završena')">Označi kao Završena</button>
+      <button class="edit-btn" (click)="updateStatus(narudzba.narudzbaId, 'Odbijena')">Označi kao Odbijena</button>
+      <button class="edit-btn" (click)="updateStatus(narudzba.narudzbaId, 'Primljena')">Označi kao Primljena</button>
+      <button class="delete-btn" (click)="deleteNarudzba(narudzba.narudzbaId)">Obriši</button>
+    </td>
+
+  </tr>
+  </tbody>
+</table>

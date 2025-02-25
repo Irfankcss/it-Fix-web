@@ -1,5 +1,9 @@
+
 <app-navbar #navbar></app-navbar>
 <app-search-bar (searchEvent)="onGlobalSearch($event)"></app-search-bar>
+<div class="admin-bar" style="background-color: #031424">
+  <a href="/admin-dashboard">Admin dashboard</a>
+</div>
 <app-alert></app-alert>
 <div class="body">
   <router-outlet></router-outlet>

@@ -30,6 +30,6 @@ namespace itFixAPI.Controllers.Obavijesti
 
     public class UpdateObavijestDto : CreateObavijestDto
     {
-        public int Id { get; set; }
+        public int Id { get; set;}
     }
 }

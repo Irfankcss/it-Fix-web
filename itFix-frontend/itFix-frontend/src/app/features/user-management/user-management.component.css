@@ -1,0 +1,59 @@
+.management-table {
+  width: 100%;
+  max-width: 1200px;
+  margin: 20px auto;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.management-table thead {
+  background-color: #007bff;
+  color: white;
+  text-align: left;
+}
+
+.management-table th, .management-table td {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+}
+
+.management-table tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+.verified {
+  font-weight: bold;
+  color: green;
+}
+
+.delete-btn {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.delete-btn:hover {
+  background-color: #c82333;
+}
+
+@media (max-width: 768px) {
+  .management-table {
+    font-size: 14px;
+  }
+
+  .management-table th, .management-table td {
+    padding: 8px;
+  }
+
+  .delete-btn {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+}

@@ -3,6 +3,7 @@ using itFixAPI.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -18,26 +19,70 @@ namespace itFixAPI.Controllers.Korisnici
         private readonly SignInManager<Korisnik> _signInManager;
         private readonly IConfiguration _configuration;
         private readonly IEmailService _emailService;
+        private readonly ApplicationDbContext _context;
 
-        public AuthController(UserManager<Korisnik> userManager, SignInManager<Korisnik> signInManager, IConfiguration configuration,IEmailService emailService)
+        public AuthController(UserManager<Korisnik> userManager, SignInManager<Korisnik> signInManager, IConfiguration configuration,IEmailService emailService, ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _configuration = configuration;
             _emailService = emailService;
-        }
-        [Authorize(Roles = "Admin")]
-        [HttpGet("admin-data")]
-        public IActionResult GetAdminData()
-        {
-            return Ok(new { message = "Samo Admin može videti ovo." });
+            _context = context;
         }
 
-        [Authorize(Roles = "Korisnik")]
-        [HttpGet("user-data")]
-        public IActionResult GetUserData()
+        [Authorize(Roles = "Admin")]
+        [HttpGet("users")]
+        public async Task<IActionResult> GetAllUsers()
         {
-            return Ok(new { message = "Samo registrovani korisnici mogu videti ovo." });
+            var users = _userManager.Users.Select(user => new
+            {
+                id = user.Id,
+                email = user.Email,
+                ime = user.Ime,
+                prezime = user.Prezime,
+                datumRegistracije = user.DatumRegistracije,
+                emailVerifikovan = user.EmailConfirmed
+            }).ToList();
+
+            return Ok(users);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpDelete("delete-user/{userId}")]
+        public async Task<IActionResult> DeleteUser(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return NotFound(new { message = "Korisnik nije pronađen." });
+            }
+
+            using var transaction = await _context.Database.BeginTransactionAsync();
+
+            try
+            {
+                var userCart = _context.Korpe.Where(k => k.KorisnikId == userId);
+                _context.Korpe.RemoveRange(userCart);
+
+                var userFavorites = _context.Favoritis.Where(f => f.KorisnikId == userId);
+                _context.Favoritis.RemoveRange(userFavorites);
+
+                await _context.SaveChangesAsync();
+
+                var result = await _userManager.DeleteAsync(user);
+                if (!result.Succeeded)
+                {
+                    return BadRequest(new { message = "Neuspješno brisanje korisnika." });
+                }
+
+                await transaction.CommitAsync();
+                return Ok(new { message = "Korisnik i povezani podaci uspješno obrisani." });
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+                return StatusCode(500, new { message = "Greška prilikom brisanja korisnika.", error = ex.Message });
+            }
         }
 
 

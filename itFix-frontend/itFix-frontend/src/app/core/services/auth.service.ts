@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
-import {catchError, Observable, throwError} from 'rxjs';
-import {environment} from '../../../environment/environment';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { catchError, Observable, throwError } from 'rxjs';
+import { environment } from '../../../environment/environment';
+import {AdminUser} from '../../interfaces/adminUser';
 
 @Injectable({
   providedIn: 'root'
@@ -13,22 +14,14 @@ export class AuthService {
 
   register(user: any): Observable<any> {
     return this.http.post(`${this.apiUrl}auth/register`, user).pipe(
-      catchError((error: HttpErrorResponse) => {
-        let errorMessage = 'Greška pri registraciji!';
-
-        if (error.error?.errors) {
-          errorMessage = Object.values(error.error.errors).flat().join(', ');
-        } else if (error.error?.message) {
-          errorMessage = error.error.message;
-        }
-
-        return throwError(() => new Error(errorMessage));
-      })
+      catchError(this.handleError)
     );
   }
+
   login(credentials: any): Observable<any> {
-    return this.http.post(this.apiUrl + `auth/login`, credentials);
+    return this.http.post(`${this.apiUrl}auth/login`, credentials);
   }
+
   isLoggedIn(): boolean {
     if (typeof window !== 'undefined') {
       return !!localStorage.getItem('token');
@@ -36,37 +29,56 @@ export class AuthService {
     return false;
   }
 
-
   logout() {
     localStorage.removeItem('token'); // Briše token
   }
+
   getCurrentUser(): Observable<User> {
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.get<User>(`${this.apiUrl}auth/me`, { headers });
+    const headers = this.getAuthHeaders();
+    return this.http.get<User>(`${this.apiUrl}auth/me`, { headers }).pipe(
+      catchError(this.handleError)
+    );
   }
 
-
-  getToken(): string | null {
-    return localStorage.getItem('token');
-  }
   getProfile(): Observable<any> {
-    const token = localStorage.getItem('token');  // Preuzmi token iz localStorage
+    const headers = this.getAuthHeaders();
+    return this.http.get(`${this.apiUrl}Korisnik/moj-profil`, { headers }).pipe(
+      catchError(this.handleError)
+    );
+  }
 
-    // Provjeri postoji li token, inače ne šaljemo zahtjev
-    if (!token) {
-      return throwError('Token nije pronađen. Korisnik nije prijavljen.');
+  getAllUsers(): Observable<AdminUser[]> {
+    const headers = this.getAuthHeaders();
+    return this.http.get<AdminUser[]>(`${this.apiUrl}auth/users`, { headers }).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  deleteUser(userId: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.http.delete(`${this.apiUrl}auth/delete-user/${userId}`, { headers }).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  private getAuthHeaders(): HttpHeaders {
+    const token = localStorage.getItem('token');
+    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    let errorMessage = 'Došlo je do greške.';
+
+    if (error.error?.message) {
+      errorMessage = error.error.message;
+    } else if (error.error?.errors) {
+      errorMessage = Object.values(error.error.errors).flat().join(', ');
     }
 
-    // Dodaj Authorization header sa tokenom
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`
-    });
-
-    return this.http.get(`${this.apiUrl}Korisnik/moj-profil`, { headers });
+    return throwError(() => new Error(errorMessage));
   }
-
 }
+
 export interface User {
   id: string;
   ime: string;

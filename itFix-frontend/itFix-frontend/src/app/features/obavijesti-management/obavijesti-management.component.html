@@ -1,0 +1,65 @@
+<button class="add-btn" (click)="openAddModal()">Dodaj</button>
+
+<!-- Tabela sa obavijestima -->
+<table class="management-table">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Naslov</th>
+    <th>Tekst</th>
+    <th>Slika</th>
+    <th>Datum objave</th>
+    <th>Datum isteka</th>
+    <th>SearchTerm</th>
+    <th>Prioritet</th>
+    <th>Akcija</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let obavijest of obavijesti">
+    <td>{{ obavijest.id }}</td>
+    <td>{{ obavijest.naslov }}</td>
+    <td>{{ obavijest.tekst }}</td>
+    <td><img [src]="obavijest.slikaUrl" style="max-height: 40px; max-width: 100px" alt="slika obavijesti"></td>
+    <td>{{ obavijest.datumObjave | date:'dd.MM.yyyy HH:mm' }}</td>
+    <td>{{ obavijest.datumIsteka | date:'dd.MM.yyyy HH:mm' }}</td>
+    <td>{{ obavijest.searchTerm }}</td>
+    <td>{{ obavijest.prioritet }}</td>
+    <td>
+      <button class="delete-btn" (click)="deleteObavijest(obavijest.id)">Obriši</button>
+      <button class="edit-btn" (click)="openEditModal(obavijest)">Uredi</button>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<!-- Modal za uređivanje obavijesti -->
+<div *ngIf="showEditModal" class="modal">
+  <div class="modal-content">
+    <h2>Uredi obavijest</h2>
+    <label>Naslov: <input [(ngModel)]="editObavijestData.naslov" type="text"></label>
+    <label>Tekst: <textarea [(ngModel)]="editObavijestData.tekst"></textarea></label>
+    <label>Slika URL: <input [(ngModel)]="editObavijestData.slikaUrl" type="text"></label>
+    <label>Datum isteka: <input [(ngModel)]="editObavijestData.datumIsteka" type="datetime-local"></label>
+    <label>SearchTerm: <input [(ngModel)]="editObavijestData.searchTerm" type="text"></label>
+    <label>Prioritet: <input [(ngModel)]="editObavijestData.prioritet" type="number"></label>
+    <button (click)="updateObavijest()">Spremi</button>
+    <button (click)="showEditModal = false">Zatvori</button>
+  </div>
+</div>
+
+<!-- Modal za dodavanje nove obavijesti -->
+<div *ngIf="showAddModal" class="modal">
+  <div class="modal-content">
+    <h2>Dodaj novu obavijest</h2>
+    <label>Naslov: <input [(ngModel)]="newObavijest.naslov" type="text"></label>
+    <label>Tekst: <textarea [(ngModel)]="newObavijest.tekst"></textarea></label>
+    <label>Slika URL: <input [(ngModel)]="newObavijest.slikaUrl" type="text"></label>
+    <label>Datum objave: <input [(ngModel)]="newObavijest.datumObjave" type="datetime-local"></label>
+    <label>Datum isteka: <input [(ngModel)]="newObavijest.datumIsteka" type="datetime-local"></label>
+    <label>SearchTerm: <input [(ngModel)]="newObavijest.searchTerm" type="text"></label>
+    <label>Prioritet: <input [(ngModel)]="newObavijest.prioritet" type="number"></label>
+    <button (click)="addObavijest()">Dodaj</button>
+    <button (click)="showAddModal = false">Zatvori</button>
+  </div>
+</div>

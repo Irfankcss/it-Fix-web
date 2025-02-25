@@ -1,0 +1,28 @@
+<table class="management-table">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Ime</th>
+    <th>Prezime</th>
+    <th>Email</th>
+    <th>Datum Registracije</th>
+    <th>Verifikovan</th>
+    <th>Akcija</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let user of users">
+    <td>{{ user.id }}</td>
+    <td>{{ user.ime }}</td>
+    <td>{{ user.prezime }}</td>
+    <td>{{ user.email }}</td>
+    <td>{{ user.datumRegistracije | date:'dd.MM.yyyy HH:mm' }}</td>
+    <td>
+      <span [class.verified]="user.emailVerifikovan">{{ user.emailVerifikovan ? 'Da' : 'Ne' }}</span>
+    </td>
+    <td>
+      <button class="delete-btn" (click)="deleteUser(user.id)">Obriši</button>
+    </td>
+  </tr>
+  </tbody>
+</table>

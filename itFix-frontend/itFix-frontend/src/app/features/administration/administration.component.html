@@ -1,0 +1,26 @@
+<div class="admin-dashboard">
+  <h3>Ploča za administraciju</h3>
+  <nav class="sidebar">
+    <button (click)="selectedTab = 'users'">Korisnici</button>
+    <button (click)="selectedTab = 'kategorije'">Kategorije</button>
+    <button (click)="selectedTab = 'proizvodi'">Proizvodi</button>
+    <button (click)="selectedTab = 'obavijesti'">Obavijesti</button>
+    <button (click)="selectedTab = 'narudzbe'">Narudžbe</button>
+  </nav>
+
+  <div class="content">
+    <div class="table-wrapper" *ngIf="selectedTab === 'users'">
+      <app-user-management></app-user-management>
+    </div>
+    <div class="table-wrapper" *ngIf="selectedTab === 'kategorije'">
+      <app-kategorija-management></app-kategorija-management>
+    </div>
+    <div class="table-wrapper" *ngIf="selectedTab === 'obavijesti'">
+      <app-obavijesti-management></app-obavijesti-management>
+    </div>
+    <div class="table-wrapper" *ngIf="selectedTab === 'narudzbe'">
+      <app-narudzba-management></app-narudzba-management>
+    </div>
+    <p *ngIf="selectedTab == 'products'">Ostali moduli u razvoju...</p>
+  </div>
+</div>

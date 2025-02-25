@@ -4,6 +4,7 @@ import {NgbCarouselModule} from '@ng-bootstrap/ng-bootstrap';
 import {HttpClientModule} from '@angular/common/http';
 import {CommonModule, NgFor} from '@angular/common';
 import {Router} from '@angular/router';
+import {Obavijest} from '../../interfaces/Obavijest';
 
 @Component({
   selector: 'app-obavijesti-carousel',
@@ -13,7 +14,7 @@ import {Router} from '@angular/router';
   styleUrl: './obavijesti-carousel.component.css'
 })
 export class ObavijestiCarouselComponent implements OnInit {
-  obavijesti: any[] = [];
+  obavijesti: Obavijest[] = [];
   isLoading: boolean = true;
   errorMessage: string = '';
 
@@ -25,7 +26,7 @@ export class ObavijestiCarouselComponent implements OnInit {
 
   loadObavijesti(): void {
     this.obavijestService.getObavijesti().subscribe({
-      next: data => {
+      next: (data) => {
         this.obavijesti = data;
         this.isLoading = false;
       },

@@ -11,6 +11,7 @@ import {KorpaComponent} from './features/korpa/korpa.component';
 import {NarudzbaComponent} from './features/narudzba/narudzba.component';
 import {FavoritiComponent} from './features/favoriti/favoriti.component';
 import {ConfirmEmailComponent} from './features/confirm-email/confirm-email.component';
+import {AdministrationComponent} from './features/administration/administration.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent},
@@ -25,5 +26,6 @@ export const routes: Routes = [
   { path: 'narudzba/:id', component:NarudzbaComponent },
   {path:'favoriti',component:FavoritiComponent},
   { path: 'confirm-email', component: ConfirmEmailComponent },
+  {path:'admin-dashboard',component:AdministrationComponent},
   { path: '**', redirectTo: 'login' }
 ];

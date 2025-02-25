@@ -1,0 +1,32 @@
+<button class="add-btn" (click)="openModal()">Dodaj</button>
+
+<table class="management-table">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Naziv</th>
+    <th>Akcija</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let kategorija of kategorije">
+    <td>{{ kategorija.kategorijaId }}</td>
+    <td>{{ kategorija.naziv }}</td>
+    <td>
+      <button class="delete-btn" (click)="deleteKategorija(kategorija.kategorijaId)">Obriši</button>
+      <button class="edit-btn" (click)="openModal(kategorija)">Uredi</button>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<div class="modal" *ngIf="isModalOpen">
+  <div class="modal-content">
+    <h3>{{ editingKategorija ? 'Uredi kategoriju' : 'Dodaj kategoriju' }}</h3>
+    <input type="text" [(ngModel)]="nazivKategorije" placeholder="Unesite naziv kategorije" />
+    <button class="save-btn" (click)="saveKategorija()">
+      {{ editingKategorija ? 'Spremi promjene' : 'Dodaj' }}
+    </button>
+    <button class="close-btn" (click)="closeModal()">Zatvori</button>
+  </div>
+</div>
