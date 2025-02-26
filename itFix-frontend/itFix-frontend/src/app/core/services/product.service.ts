@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { catchError, Observable, retry, throwError } from 'rxjs';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {catchError, map, Observable, retry, throwError} from 'rxjs';
 import { environment } from '../../../environment/environment';
+import {Proizvod} from '../../interfaces/Proizvod';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,10 @@ export class ProizvodService {
 
   getProizvodById(id: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${id}`).pipe(retry(2), catchError(this.handleError));
+  }
+  private getAuthHeaders(): HttpHeaders {
+    const token = localStorage.getItem('token');
+    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
   }
 
   getProizvodi(
@@ -55,6 +60,26 @@ export class ProizvodService {
       catchError(this.handleError)
     );
   }
+  getProizvodiAdmin(): Observable<Proizvod[]> {
+    return this.http.get<{ ukupno: number; proizvodi: Proizvod[] }>(this.apiUrl, { headers: this.getAuthHeaders() })
+      .pipe(map(response => response.proizvodi));
+  }
+  createProizvod(proizvod: any): Observable<any> {
+    return this.http.post<any>(this.apiUrl, proizvod, { headers: this.getAuthHeaders() }).pipe(
+      catchError(this.handleError)
+    );
+  }
 
+  updateProizvod(id: number, proizvod: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/${id}`, proizvod ,{ headers: this.getAuthHeaders() }).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  deleteProizvod(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}` , { headers: this.getAuthHeaders() }).pipe(
+      catchError(this.handleError)
+    );
+  }
 
 }

@@ -66,6 +66,17 @@ public class CreateProizvodDto
         public bool NaRate {  get; set; } = false;
     }
 
+    public class UpdateProizvodDto
+    {
+        public string? Naziv { get; set; }
+        public string? Opis { get; set; }
+        public decimal? Cijena { get; set; }
+        public string? SlikaUrl { get; set; }
+        public bool? Polovan { get; set; }
+        public int? Popust { get; set; }
+        public bool? NaRate { get; set; }
+        public int? GarancijaMjeseci { get; set; }
+    }
 
 
 }

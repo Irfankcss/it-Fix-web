@@ -1,4 +1,5 @@
 ﻿using itFixAPI.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace itFixAPI.Controllers.Proizvodi
         {
             _context = context;
         }
-
+        //[Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> CreateProizvod(CreateProizvodDto createDto)
         {
@@ -163,8 +164,48 @@ namespace itFixAPI.Controllers.Proizvodi
             return Ok(new { ukupno = totalItems, proizvodi = proizvodDtos });
         }
 
+        //[Authorize(Roles = "Admin")]
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateProizvod(int id, UpdateProizvodDto updateDto)
+        {
+            var proizvod = await _context.Proizvodi.FindAsync(id);
+            if (proizvod == null)
+            {
+                return NotFound($"Proizvod sa ID-jem {id} ne postoji.");
+            }
+
+            // Ažuriranje samo ako su podaci poslani
+            if (!string.IsNullOrEmpty(updateDto.Naziv))
+                proizvod.Naziv = updateDto.Naziv;
+
+            if (!string.IsNullOrEmpty(updateDto.Opis))
+                proizvod.Opis = updateDto.Opis;
+
+            if (updateDto.Cijena.HasValue)
+                proizvod.Cijena = updateDto.Cijena.Value;
+
+            if (!string.IsNullOrEmpty(updateDto.SlikaUrl))
+                proizvod.SlikaUrl = updateDto.SlikaUrl;
+
+            if (updateDto.Polovan.HasValue)
+                proizvod.Polovan = updateDto.Polovan.Value;
+
+            if (updateDto.Popust.HasValue)
+                proizvod.Popust = updateDto.Popust.Value;
+
+            if (updateDto.NaRate.HasValue)
+                proizvod.NaRate = updateDto.NaRate.Value;
+
+            if (updateDto.GarancijaMjeseci.HasValue)
+                proizvod.GarancijaMjeseci = updateDto.GarancijaMjeseci.Value;
+
+            await _context.SaveChangesAsync();
+            return Ok(new ProizvodDto(proizvod));
+        }
 
 
+        //[Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProizvod(int id)
         {

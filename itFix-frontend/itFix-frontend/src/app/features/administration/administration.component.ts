@@ -4,6 +4,7 @@ import {UserManagementComponent} from '../user-management/user-management.compon
 import {KategorijaManagementComponent} from '../kategorija-management/kategorija-management.component';
 import {ObavijestiManagementComponent} from '../obavijesti-management/obavijesti-management.component';
 import {NarudzbaManagementComponent} from '../narudzba-management/narudzba-management.component';
+import {ProizvodManagementComponent} from '../proizvod-management/proizvod-management.component';
 
 @Component({
   selector: 'app-administration',
@@ -12,7 +13,8 @@ import {NarudzbaManagementComponent} from '../narudzba-management/narudzba-manag
     UserManagementComponent,
     KategorijaManagementComponent,
     ObavijestiManagementComponent,
-    NarudzbaManagementComponent
+    NarudzbaManagementComponent,
+    ProizvodManagementComponent
   ],
   standalone: true,
   templateUrl: './administration.component.html',

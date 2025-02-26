@@ -21,6 +21,7 @@
     <div class="table-wrapper" *ngIf="selectedTab === 'narudzbe'">
       <app-narudzba-management></app-narudzba-management>
     </div>
-    <p *ngIf="selectedTab == 'products'">Ostali moduli u razvoju...</p>
-  </div>
+    <div class="table-wrapper" *ngIf="selectedTab === 'proizvodi'">
+      <app-proizvod-management></app-proizvod-management>
+    </div>  </div>
 </div>

@@ -1,0 +1,75 @@
+<button class="add-btn" (click)="openAddModal()">Dodaj Proizvod</button>
+
+<table class="management-table">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Naziv</th>
+    <th>Opis</th>
+    <th>Cijena</th>
+    <th>Popust</th>
+    <th>Cijena sa popustom</th>
+    <th>Slika</th>
+    <th>Polovan</th>
+    <th>Akcija</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let proizvod of proizvodi">
+    <td>{{ proizvod.proizvodId }}</td>
+    <td>{{ proizvod.naziv }}</td>
+    <td>{{ proizvod.opis }}</td>
+    <td>{{ proizvod.cijena | currency:'BAM' }}</td>
+    <td>{{ proizvod.popust }}%</td>
+    <td>{{ proizvod.cijenaSaPopustom | currency:'BAM' }}</td>
+    <td><img [src]="proizvod.slikaUrl" style="max-height: 40px; max-width: 100px" alt="Slika proizvoda"></td>
+    <td>{{ proizvod.polovan ? 'Da' : 'Ne' }}</td>
+    <td>
+      <button class="edit-btn" (click)="openEditModal(proizvod)">Uredi</button>
+      <button class="delete-btn" (click)="deleteProizvod(proizvod.proizvodId)">Obriši</button>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<div *ngIf="showEditModal" class="modal">
+  <div class="modal-content">
+    <h2>Uredi proizvod</h2>
+    <label>Naziv: <input [(ngModel)]="editProizvodData!.naziv" type="text"></label>
+    <label>Opis: <textarea [(ngModel)]="editProizvodData!.opis"></textarea></label>
+    <label>Cijena: <input [(ngModel)]="editProizvodData!.cijena" type="number"></label>
+    <label>Popust: <input [(ngModel)]="editProizvodData!.popust" type="number"></label>
+    <label>Slika URL: <input [(ngModel)]="editProizvodData!.slikaUrl" type="text"></label>
+    <label>Polovan: <input type="checkbox" [(ngModel)]="editProizvodData!.polovan"></label>
+    <button (click)="updateProizvod()">Spremi</button>
+    <button (click)="showEditModal = false">Zatvori</button>
+  </div>
+</div>
+
+<div *ngIf="showAddModal" class="modal">
+  <div class="modal-content">
+    <h2>Dodaj novi proizvod</h2>
+
+    <label>Naziv: <input [(ngModel)]="newProizvod.naziv" type="text"></label>
+    <label>Opis: <textarea [(ngModel)]="newProizvod.opis"></textarea></label>
+    <label>Cijena: <input [(ngModel)]="newProizvod.cijena" type="number"></label>
+    <label>Popust: <input [(ngModel)]="newProizvod.popust" type="number"></label>
+    <label>Garancija (mj.): <input [(ngModel)]="newProizvod.garancijaMjeseci" type="number"></label>
+
+    <label>Kategorija:
+      <select [(ngModel)]="newProizvod.kategorijaId">
+        <option *ngFor="let kategorija of kategorije" [value]="kategorija.kategorijaId">
+          {{ kategorija.naziv }}
+        </option>
+      </select>
+    </label>
+
+    <label>Slika URL: <input [(ngModel)]="newProizvod.slikaUrl" type="text"></label>
+    <label>Polovan: <input type="checkbox" [(ngModel)]="newProizvod.polovan"></label>
+    <label>Na rate: <input type="checkbox" [(ngModel)]="newProizvod.naRate"></label>
+
+    <button (click)="addProizvod()">Dodaj</button>
+    <button (click)="showAddModal = false">Zatvori</button>
+  </div>
+</div>
+

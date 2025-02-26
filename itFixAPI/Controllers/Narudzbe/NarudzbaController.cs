@@ -20,7 +20,7 @@ namespace itFixAPI.Controllers.Narudzbe
             _emailService = emailService;
         }
 
-        //  Dohvati sve narudžbe (sa opcijom filtriranja po statusu)
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> GetNarudzbe([FromQuery] string? status = null)
         {
@@ -127,6 +127,7 @@ namespace itFixAPI.Controllers.Narudzbe
         }
 
         //  Ažuriraj postojeću narudžbu (npr. promjena statusa)
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateNarudzba(int id, [FromBody] Narudzba updatedNarudzba)
         {
@@ -149,6 +150,7 @@ namespace itFixAPI.Controllers.Narudzbe
         }
 
         // Obriši narudžbu i njene povezane proizvode
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteNarudzba(int id)
         {
