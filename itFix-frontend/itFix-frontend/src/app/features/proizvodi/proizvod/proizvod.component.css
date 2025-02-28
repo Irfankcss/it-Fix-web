@@ -1,166 +1,160 @@
-/* Glavni kontejner */
-.proizvod-container {
+.all-container{
+  width: 90%;
+  margin-left: 5%;
+  margin-right: 5%;
   display: flex;
-  flex-wrap: wrap;
-  gap: 30px;
-  background: #f8f8f8;
-  padding-left: 30px;
-  padding-right: 30px;
-  border-radius: 12px;
-  max-width: 80%;
-  margin: 20px auto;
-  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
-
-/* Slika */
+.proizvod-container{
+  min-width: 100%;
+  margin: 30px;
+  display:flex;
+  flex-direction: row;
+}
 .slika-container {
   flex: 1;
-  min-width: 300px;
-  max-width: 500px;
+  max-width: 450px;
+  position: relative;
+  overflow: hidden;
 }
 
 .slika-container img {
   width: 100%;
-  border-radius: 12px;
+  border-radius: 16px;
+  transition: opacity 0.2s;
 }
+
+.zoom-slike {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: 200%;
+  background-repeat: no-repeat;
+  pointer-events: none;
+  display: none;
+  border-radius: 16px;
+}
+
+.slika-container:hover .zoom-slike {
+  display: block;
+}
+
+
 
 /* Informacije */
 .info-container {
   flex: 2;
-  background: white;
   padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .naziv {
-  font-size: 28px;
+  font-size: 30px;
   font-weight: bold;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 
-.opis {
-  font-size: 18px;
-  color: #444;
-  margin-bottom: 15px;
-}
-
-/* Cijena */
 .cijene {
   display: flex;
   align-items: center;
-  gap: 15px;
-  margin-bottom: 15px;
+  gap: 20px;
+  margin-bottom: 20px;
 }
 
 .trenutna-cijena {
-  font-size: 30px;
+  font-size: 32px;
   font-weight: bold;
   color: #d60000;
 }
 
 .stara-cijena {
-  font-size: 22px;
+  font-size: 24px;
   text-decoration: line-through;
   color: #888;
 }
 
-/* Ocjena */
-.ocjena {
-  font-size: 18px;
-  color: #ff9800;
-  font-weight: bold;
-  margin-bottom: 15px;
-}
-
-/* Garancija */
-.garancija {
+.garancija, .stanje, .rate {
   font-size: 18px;
   font-weight: bold;
   margin-bottom: 15px;
-  color: #28a745;
+  color: #333;
 }
 
-.dugmad {
-  display: flex;
-  gap: 15px;
+.opis-container {
   margin-top: 20px;
 }
 
-button {
-  padding: 14px 20px;
+.toggle-opis {
+  background: none;
+  border: none;
   font-size: 18px;
-  border-radius: 8px;
+  color: #007bff;
   cursor: pointer;
-  font-weight: bold;
-  transition: 0.3s;
+  margin-bottom: 10px;
+}
+
+.opis {
+  font-size: 18px;
+  color: #444;
+}
+
+/* Dodavanje u korpu */
+.dodaj-korpu-container {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.brojac-kolicine {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brojac-kolicine button {
+  width: 40px;
+  height: 40px;
+  font-size: 18px;
+  border: none;
+  background: #f0f0f0;
+  cursor: pointer;
+  border-radius: 8px;
 }
 
 .dodaj-korpu {
   background: #5cb85c;
   color: white;
   border: none;
+  padding: 14px 20px;
+  font-size: 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
 }
 
 .dodaj-korpu:hover {
   background: #4cae4c;
 }
 
-.brza-kupovina {
-  background: white;
-  color: black;
-  border: 2px solid #5cb85c;
-}
-
-.brza-kupovina:hover {
-  background: #e8f5e8;
-}
-
 /* Responzivnost */
 @media (max-width: 1024px) {
   .proizvod-container {
     flex-direction: column;
-    align-items: center;
     text-align: center;
   }
-
   .slika-container {
     max-width: 80%;
+    margin: 0 auto;
+  }
+  .cijene {
+    justify-content: center;
+  }
+  .dodaj-korpu-container{
+    justify-content: center;
   }
 
-  .info-container {
-    width: 100%;
-  }
-}
-
-@media (max-width: 600px) {
-  .proizvod-container {
-    padding: 20px;
-  }
-
-  .naziv {
-    font-size: 24px;
-  }
-
-  .opis {
-    font-size: 16px;
-  }
-
-  .trenutna-cijena {
-    font-size: 26px;
-  }
-
-  .stara-cijena {
-    font-size: 20px;
-  }
-
-  .ocjena,
-  .garancija {
-    font-size: 16px;
-  }
-
-  button {
-    font-size: 16px;
-    padding: 12px 16px;
-  }
 }

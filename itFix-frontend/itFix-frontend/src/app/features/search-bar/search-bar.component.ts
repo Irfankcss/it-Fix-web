@@ -87,7 +87,6 @@ export class SearchBarComponent implements OnInit {
   ucitajKorpu() {
     if (this.isLoggedIn) {
       this.korpaService.getCart().subscribe(korpa => {
-        console.log(korpa);
         this.brojProizvodaUKorpi = korpa.proizvodi.length;
         this.ukupnaCijena = korpa.proizvodi.reduce((sum: number, p: { proizvod: { cijena: number, popust: number }, kolicina: number }) =>
           sum + ((p.proizvod.cijena - p.proizvod.cijena *( 1/p.proizvod.popust)) * p.kolicina), 0);

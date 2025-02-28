@@ -17,7 +17,7 @@ namespace itFixAPI.Controllers.Proizvodi
         {
             _context = context;
         }
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> CreateProizvod(CreateProizvodDto createDto)
         {
@@ -164,7 +164,7 @@ namespace itFixAPI.Controllers.Proizvodi
             return Ok(new { ukupno = totalItems, proizvodi = proizvodDtos });
         }
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateProizvod(int id, UpdateProizvodDto updateDto)
@@ -205,7 +205,7 @@ namespace itFixAPI.Controllers.Proizvodi
         }
 
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProizvod(int id)
         {

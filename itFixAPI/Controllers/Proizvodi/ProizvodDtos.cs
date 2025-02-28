@@ -13,6 +13,7 @@ namespace itFixAPI.Controllers.Proizvodi
         public string SlikaUrl { get; set; }
         public bool Polovan { get; set; }
         public int Popust { get; set; }
+        public bool NaRate { get; set; }
         public float? Ocjena { get; set; }
         public int BrojRecenzija { get; set; }
         public int? GarancijaMjeseci { get; set; }
@@ -29,6 +30,7 @@ namespace itFixAPI.Controllers.Proizvodi
             CijenaSaPopustom = proizvod.CijenaSaPopustom();
             SlikaUrl = proizvod.SlikaUrl;
             Polovan = proizvod.Polovan;
+            NaRate = proizvod.NaRate;
             Popust = proizvod.Popust;
             Ocjena = proizvod.Ocjena;
             BrojRecenzija = proizvod.BrojRecenzija;

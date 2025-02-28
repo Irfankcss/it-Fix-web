@@ -9,7 +9,6 @@ namespace itFixAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize] // Zaštićen API, samo autorizirani korisnici mogu pristupiti
     public class ObavijestiController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
@@ -23,7 +22,7 @@ namespace itFixAPI.Controllers
 
         // GET: api/Obavijesti
         [HttpGet]
-        [AllowAnonymous] // Omogućava neautoriziranim korisnicima da vide obavijesti
+        [AllowAnonymous] 
         public async Task<ActionResult<IEnumerable<ObavijestDto>>> GetObavijesti()
         {
             try
@@ -82,6 +81,7 @@ namespace itFixAPI.Controllers
         }
 
         // POST: api/Obavijesti
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult<ObavijestDto>> CreateObavijest([FromBody] CreateObavijestDto obavijestDto)
         {
@@ -108,6 +108,7 @@ namespace itFixAPI.Controllers
         }
 
         // PUT: api/Obavijesti/5
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateObavijest(int id, [FromBody] UpdateObavijestDto obavijestDto)
         {
@@ -135,6 +136,7 @@ namespace itFixAPI.Controllers
         }
 
         // DELETE: api/Obavijesti/5
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteObavijest(int id)
         {

@@ -1,6 +1,6 @@
 body {
   font-family: 'Poppins', sans-serif;
-  background: linear-gradient(135deg, #f6f6f6, #c7c7c7); /* Novi gradijent */
+  background: linear-gradient(135deg, #f6f6f6, #ddffc3);
   min-height: 100vh;
   display: flex;
   justify-content: center;
@@ -13,7 +13,7 @@ body {
   justify-content: center;
   height: 100vh;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-  background: linear-gradient(135deg, #ffffff, #b7b7b7);
+  background: linear-gradient(135deg, #f6f6f6, #e2fccf);
   padding: 20px;
 
 }
@@ -63,18 +63,19 @@ body {
 
 .submit-button {
   padding: 12px 15px;
-  background: #7cc04a;
-  color: white;
-  border: none;
+  background: #ffffff;
+  color: #7cc04a;
+  border: 1px solid #7cc04a;
   border-radius: 8px;
   font-size: 16px;
-  font-weight: bold;
+  font-weight: 600;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
 .submit-button:hover {
   background: #6aa440;
+  color:white;
 }
 
 .register-text {

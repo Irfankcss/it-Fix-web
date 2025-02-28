@@ -1,4 +1,5 @@
 ﻿using itFixAPI.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -67,6 +68,7 @@ namespace itFixAPI.Controllers.Kategorije
         }
 
         // POST: api/Kategorija
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult<KategorijaDto>> CreateKategorija(CreateKategorijaDto kategorijaDto)
         {
@@ -100,6 +102,7 @@ namespace itFixAPI.Controllers.Kategorije
         }
 
         // PUT: api/Kategorija/{id}
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateKategorija(int id, UpdateKategorijaDto kategorijaDto)
         {
@@ -130,6 +133,7 @@ namespace itFixAPI.Controllers.Kategorije
         }
 
         // DELETE: api/Kategorija/{id}
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteKategorija(int id)
         {
