@@ -88,10 +88,20 @@ export class SearchBarComponent implements OnInit {
     if (this.isLoggedIn) {
       this.korpaService.getCart().subscribe(korpa => {
         this.brojProizvodaUKorpi = korpa.proizvodi.length;
-        this.ukupnaCijena = korpa.proizvodi.reduce((sum: number, p: { proizvod: { cijena: number, popust: number }, kolicina: number }) =>
-          sum + ((p.proizvod.cijena - p.proizvod.cijena *( 1/p.proizvod.popust)) * p.kolicina), 0);
+        this.ukupnaCijena = this.izracunajUkupnuCijenu(korpa.proizvodi);
       });
     }
+  }
+  private izracunajUkupnuCijenu(proizvodi: { proizvod: { cijena: number, popust: number }, kolicina: number }[]): number {
+    return proizvodi.reduce((sum, p) => {
+      let konacnaCijena = p.proizvod.cijena;
+
+      if (p.proizvod.popust > 0) {
+        konacnaCijena = p.proizvod.cijena * (1 - p.proizvod.popust / 100);
+      }
+
+      return sum + (konacnaCijena * p.kolicina);
+    }, 0);
   }
 
   ngOnInit() {
@@ -103,19 +113,13 @@ export class SearchBarComponent implements OnInit {
 
       this.favoritService.getFavoritiCount().subscribe(count => {
         this.brojFavorita = count;
-        this.korpaService.getCartUpdates().subscribe(korpa => {
-          this.brojProizvodaUKorpi = korpa.proizvodi.length;
-          this.ukupnaCijena = korpa.proizvodi.reduce((sum: number, p: { proizvod: { cijena: number, popust: number }, kolicina: number }) =>
-            sum + ((p.proizvod.cijena - p.proizvod.cijena *( 1/p.proizvod.popust)) * p.kolicina), 0);
-        });
-
       });
 
-      this.korpaService.getCart().subscribe(korpa => {
+      this.korpaService.getCartUpdates().subscribe(korpa => {
         this.brojProizvodaUKorpi = korpa.proizvodi.length;
-        this.ukupnaCijena = korpa.proizvodi.reduce((sum: number, p: { proizvod: { cijena: number, popust: number }, kolicina: number }) =>
-          sum + ((p.proizvod.cijena - p.proizvod.cijena *( 1/p.proizvod.popust)) * p.kolicina), 0);
+        this.ukupnaCijena = this.izracunajUkupnuCijenu(korpa.proizvodi);
       });
     }
   }
+
 }

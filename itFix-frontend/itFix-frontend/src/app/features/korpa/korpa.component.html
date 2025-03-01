@@ -1,46 +1,51 @@
 <div class="korpa-container">
-<div class="korpa-koraci">
-  <span (click)="korak=1" [class.aktivan]="korak === 1">Korpa</span>
-  <span (click)="korak=2" [class.aktivan]="korak === 2">Podaci za narudžbu</span>
-  <span (click)="korak=3" [class.aktivan]="korak === 3">Pregled narudžbe</span>
-</div>
-
-<!-- Korpa -->
-<div *ngIf="korak === 1" class="korpa">
-  <h2>Vaša korpa</h2>
-  <table>
-    <thead>
-    <tr>
-      <th>Proizvod</th>
-      <th>Cijena</th>
-      <th>Količina</th>
-      <th>Ukupno</th>
-      <th></th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let proizvod of korpaProizvodi">
-      <td>
-        <img [src]="proizvod.slika" alt="{{ proizvod.naziv }}">
-        <span>{{ proizvod.naziv.length > 50 ? (proizvod.naziv | slice:0:50) + '...' : proizvod.naziv }}</span>
-      </td>
-      <td>{{ proizvod.cijena | number:'1.2-2' }} KM</td>
-      <td>
-        <input type="number" [(ngModel)]="proizvod.kolicina" (change)="izracunajUkupno()" min="1">
-      </td>
-      <td>{{ (proizvod.cijena * proizvod.kolicina)| number:'1.2-2' }} KM</td>
-      <td>
-        <button (click)="ukloniIzKorpe(proizvod.proizvodId)" class="remove-btn">&#x2716;</button>
-      </td>
-    </tr>
-    </tbody>
-  </table>
-  <div class="ukupno">
-    <span>Ukupno: </span> <strong>{{ ukupno | number:'1.2-2'}} KM</strong>
+  <div class="korpa-koraci">
+    <span (click)="korak=1" [class.aktivan]="korak === 1">Korpa</span>
+    <span (click)="korak=2" [class.aktivan]="korak === 2">Podaci za narudžbu</span>
+    <span (click)="korak=3" [class.aktivan]="korak === 3">Pregled narudžbe</span>
   </div>
-  <button (click)="dalje()" class="dalje-btn">Sljedeći korak</button>
-</div>
 
+  <!-- Korpa -->
+  <div *ngIf="korak === 1" class="korpa">
+    <h2>Vaša korpa</h2>
+    <table>
+      <thead>
+      <tr>
+        <th>Proizvod</th>
+        <th>Cijena</th>
+        <th>Popust</th>
+        <th>Cijena sa popustom</th>
+        <th>Količina</th>
+        <th>Ukupno</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let proizvodO of korpaProizvodi">
+        <td>
+          <img [src]="proizvodO.proizvod.slikaUrl" alt="{{ proizvodO.proizvod.naziv }}">
+          <span>{{ proizvodO.proizvod.naziv.length > 50 ? (proizvodO.proizvod.naziv | slice:0:50) + '...' : proizvodO.proizvod.naziv }}</span>
+        </td>
+        <td>{{ proizvodO.proizvod.cijena | number:'1.2-2' }} KM</td>
+        <td>{{ proizvodO.proizvod.popust }}%</td>
+        <td>{{ (proizvodO.proizvod.cijena * (1 - proizvodO.proizvod.popust / 100)) | number:'1.2-2' }} KM</td>
+        <td>
+          <input type="number" [(ngModel)]="proizvodO.kolicina" (change)="izracunajUkupno()" min="1">
+        </td>
+        <td>{{ ((proizvodO.proizvod.cijena * (1 - proizvodO.proizvod.popust / 100)) * proizvodO.kolicina) | number:'1.2-2' }} KM</td>
+        <td>
+          <button (click)="ukloniIzKorpe(proizvodO.proizvod.proizvodId)" class="remove-btn">&#x2716;</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <div class="ukupno">
+      <span>Ukupno: </span> <strong>{{ ukupno | number:'1.2-2'}} KM</strong>
+    </div>
+    <button (click)="dalje()" class="dalje-btn">Sljedeći korak</button>
+  </div>
+
+  <!-- Podaci za narudžbu -->
   <div *ngIf="korak === 2" class="podaci">
     <h2>Podaci za narudžbu</h2>
     <form class="forma-grid">
@@ -55,25 +60,23 @@
         <input type="text" placeholder="Adresa dostave" [(ngModel)]="podaciNarudzbe.adresaDostave" name="adresaDostave" required>
       </div>
     </form>
-    <p>Molimo Vas da sva polja popunite sa ispravnim podacima za narudžbu, kako bi vaša pošiljka  bila što jednostavnije dostavljena na vašu adresu.</p>
-
+    <p>Molimo Vas da sva polja popunite sa ispravnim podacima za narudžbu.</p>
     <button (click)="nazad()" class="nazad-btn">Nazad</button>
     <button (click)="dalje()" class="dalje-btn">Sljedeći korak</button>
   </div>
 
-
-<!-- Pregled narudžbe -->
-<div *ngIf="korak === 3" class="pregled">
-  <h2>Pregled narudžbe</h2>
-  <p><strong>Ime i Prezime:</strong> {{ podaciNarudzbe.ime }} {{ podaciNarudzbe.prezime }}</p>
-  <p><strong>Email:</strong> {{ podaciNarudzbe.email }}</p>
-  <p><strong>Broj telefona:</strong> {{ podaciNarudzbe.brojTelefona }}</p>
-  <p><strong>Grad:</strong> {{ podaciNarudzbe.grad }}</p>
-  <p><strong>Adresa dostave:</strong> {{ podaciNarudzbe.adresaDostave }}</p>
-  <div class="ukupno">
-    <span>Ukupno za plaćanje: </span> <strong>{{ukupno | number:'1.2-2'}} KM</strong>
+  <!-- Pregled narudžbe -->
+  <div *ngIf="korak === 3" class="pregled">
+    <h2>Pregled narudžbe</h2>
+    <p><strong>Ime i Prezime:</strong> {{ podaciNarudzbe.ime }} {{ podaciNarudzbe.prezime }}</p>
+    <p><strong>Email:</strong> {{ podaciNarudzbe.email }}</p>
+    <p><strong>Broj telefona:</strong> {{ podaciNarudzbe.brojTelefona }}</p>
+    <p><strong>Grad:</strong> {{ podaciNarudzbe.grad }}</p>
+    <p><strong>Adresa dostave:</strong> {{ podaciNarudzbe.adresaDostave }}</p>
+    <div class="ukupno">
+      <span>Ukupno za plaćanje: </span> <strong>{{ukupno | number:'1.2-2'}} KM</strong>
+    </div>
+    <button (click)="nazad()" class="nazad-btn">Nazad</button>
+    <button class="naruci-btn" (click)="kreirajNarudzbu()">Naruči</button>
   </div>
-  <button (click)="nazad()" class="nazad-btn">Nazad</button>
-  <button class="naruci-btn" (click)="kreirajNarudzbu()">Naruči</button>
-</div>
 </div>

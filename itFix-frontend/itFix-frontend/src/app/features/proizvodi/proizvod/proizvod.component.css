@@ -14,6 +14,7 @@
   flex-direction: row;
 }
 .slika-container {
+  cursor:zoom-in  ;
   flex: 1;
   max-width: 450px;
   position: relative;

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { catchError, Observable, throwError } from 'rxjs';
+import {catchError, map, Observable, of, throwError} from 'rxjs';
 import { environment } from '../../../environment/environment';
 import {AdminUser} from '../../interfaces/adminUser';
 
@@ -39,6 +39,17 @@ export class AuthService {
       catchError(this.handleError)
     );
   }
+  isAdmin(): Observable<boolean> {
+    return this.getCurrentUser().pipe(
+      map(user => {
+        return user.roles.some(role => role.toLowerCase() === 'admin');
+      }),
+      catchError(error => {
+        console.error('Greška pri dohvaćanju korisnika:', error);
+        return of(false);
+      })
+    );
+  }
 
   getProfile(): Observable<any> {
     const headers = this.getAuthHeaders();
@@ -62,6 +73,9 @@ export class AuthService {
   }
 
   private getAuthHeaders(): HttpHeaders {
+    if (typeof window === 'undefined') {
+      return new HttpHeaders();
+    }
     const token = localStorage.getItem('token');
     return new HttpHeaders().set('Authorization', `Bearer ${token}`);
   }

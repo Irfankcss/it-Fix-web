@@ -22,6 +22,7 @@ export class LoginComponent {
     this.authService.login(this.credentials).subscribe({
       next: (response) => {
         localStorage.setItem('token', response.token)
+        this.authService.getCurrentUser().subscribe();
         this.alertService.showSuccess('Prijava uspješna. Dobrodošli!');
         this.router.navigate(['/']);
       },

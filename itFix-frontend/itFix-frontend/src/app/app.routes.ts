@@ -14,18 +14,19 @@ import {ConfirmEmailComponent} from './features/confirm-email/confirm-email.comp
 import {AdministrationComponent} from './features/administration/administration.component';
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent},
+  { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'profil', component: ProfileComponent },
-  {path: 'prodavnica', component : StoreComponent},
-  {path: 'proizvod/:id', component:ProizvodComponent},
-  {path:'pracenje-posiljke',component:PosiljkaComponent},
-  {path:'kontakt',component:KontaktComponent},
-  {path:'korpa',component:KorpaComponent},
-  { path: 'narudzba/:id', component:NarudzbaComponent },
-  {path:'favoriti',component:FavoritiComponent},
+  { path: 'prodavnica', component: StoreComponent },
+  { path: 'narudzba/:id', component: NarudzbaComponent, data: { renderMode: 'ssr' } },
+  { path: 'proizvod/:id', component: ProizvodComponent, data: { renderMode: 'ssr' } },
+  { path: 'pracenje-posiljke', component: PosiljkaComponent },
+  { path: 'kontakt', component: KontaktComponent },
+  { path: 'korpa', component: KorpaComponent },
+  { path: 'favoriti', component: FavoritiComponent },
   { path: 'confirm-email', component: ConfirmEmailComponent },
-  {path:'admin-dashboard',component:AdministrationComponent},
+  { path: 'admin-dashboard', component: AdministrationComponent },
   { path: '**', redirectTo: 'login' }
 ];
+

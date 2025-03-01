@@ -5,13 +5,11 @@ import { DecimalPipe, NgForOf, NgIf, SlicePipe} from '@angular/common';
 import { NarudzbaService } from '../../core/services/narudzba.service';
 import {Router} from '@angular/router';
 import {AlertService} from '../../core/services/alert.service';
+import {Proizvod} from '../../interfaces/Proizvod';
 
 interface KorpaProizvod {
-  proizvodId: number;
-  naziv: string;
-  cijena: number;
+  proizvod: Proizvod;
   kolicina: number;
-  slika: string;
 }
 
 @Component({
@@ -19,7 +17,6 @@ interface KorpaProizvod {
   standalone: true,
   imports: [
     FormsModule,
-
     NgIf,
     NgForOf,
     SlicePipe,
@@ -51,30 +48,35 @@ export class KorpaComponent implements OnInit {
 
   ucitajKorpu() {
     this.korpaService.getCart().subscribe(korpa => {
+      if (!korpa || !korpa.proizvodi) {
+        console.error("Korpa je undefined ili nema proizvode!");
+        return;
+      }
+
       this.korpaProizvodi = korpa.proizvodi.map((item: any) => ({
-        proizvodId: item.proizvod.proizvodId,
-        naziv: item.proizvod.naziv,
-        cijena: item.proizvod.cijena,
-        slika: item.proizvod.slikaUrl,
+        proizvod: item.proizvod,
         kolicina: item.kolicina
       }));
       this.izracunajUkupno();
     });
   }
 
+
   izracunajUkupno() {
-    this.ukupno = this.korpaProizvodi.reduce((sum, p) => sum + p.cijena * p.kolicina, 0);
+    this.ukupno = this.korpaProizvodi.reduce((sum, p) => {
+      const konacnaCijena = p.proizvod.cijena * (1 - p.proizvod.popust / 100);
+      return sum + konacnaCijena * p.kolicina;
+    }, 0);
   }
 
   ukloniIzKorpe(proizvodId: number) {
     this.korpaService.removeFromCart(proizvodId).subscribe(() => {
-      this.korpaProizvodi = this.korpaProizvodi.filter(p => p.proizvodId !== proizvodId);
+      this.korpaProizvodi = this.korpaProizvodi.filter(p => p.proizvod.proizvodId !== proizvodId);
       this.alertService.showSuccess("Proizvod uklonjen iz korpe");
       window.location.reload();
       this.izracunajUkupno();
     });
   }
-
 
   dalje() {
     if (this.korak === 2 && !this.svaPoljaPopunjena()) {
@@ -92,6 +94,7 @@ export class KorpaComponent implements OnInit {
   svaPoljaPopunjena(): boolean {
     return Object.values(this.podaciNarudzbe).every(value => value.trim() !== '');
   }
+
   validirajPodatke(): boolean {
     const regexImePrezime = /^[A-ZĆČĐŠŽa-zćčđšž]+(?:\s[A-ZĆČĐŠŽa-zćčđšž]+)*$/;
     const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -127,7 +130,6 @@ export class KorpaComponent implements OnInit {
     return true;
   }
 
-
   kreirajNarudzbu() {
     if (!this.svaPoljaPopunjena()) {
       this.alertService.showError("Molimo popunite sva polja sa podacima za narudžbu!");
@@ -141,7 +143,7 @@ export class KorpaComponent implements OnInit {
       ...this.podaciNarudzbe,
       ukupnaCijena: this.ukupno,
       proizvodi: this.korpaProizvodi.map(p => ({
-        proizvodId: p.proizvodId,
+        proizvodId: p.proizvod.proizvodId,
         kolicina: p.kolicina
       }))
     };

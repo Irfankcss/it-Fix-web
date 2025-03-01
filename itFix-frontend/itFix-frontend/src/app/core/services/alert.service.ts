@@ -21,7 +21,7 @@ export class AlertService {
   private autoHide() {
     setTimeout(() => {
       this.alertSubject.next(null);
-    }, 3000);
+    }, 4100);
   }
 
 }

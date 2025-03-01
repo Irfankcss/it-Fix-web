@@ -6,6 +6,8 @@ import { NavbarComponent } from './features/navbar/navbar.component';
 import {FooterComponent} from './features/footer/footer.component';
 import {AlertComponent} from './features/alert/alert.component';
 import {BackToTopComponent} from './features/back-to-top/back-to-top.component';
+import {AuthService} from './core/services/auth.service';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -15,26 +17,17 @@ import {BackToTopComponent} from './features/back-to-top/back-to-top.component';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent  {
+  isAdmin$: Observable<boolean>;
+  constructor(private router: Router, private authService: AuthService) {
+    this.isAdmin$ = this.authService.isAdmin();
 
-  constructor(private router: Router) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
-        window.scrollTo(0, 0); // Resetuje scroll na vrh stranice
+        window.scrollTo(0, 0);
       }
     });
   }
 
-  //menuOpen = false;
-
-
-
-  //logout() {
- //   this.authService.logout();
- // }
-
- // toggleMenu() {
- //   this.menuOpen = !this.menuOpen;
- // }
 
   onGlobalSearch(searchTerm: string) {
     if (this.router.url.startsWith('/prodavnica')) {

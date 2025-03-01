@@ -38,16 +38,17 @@ export class RegisterComponent {
     });
   }
   validateInput(): boolean {
-    const nameRegex = /^[A-ZČĆŽŠĐ][a-zčćžšđ]{1,}$/; // Ime i prezime počinju velikim slovom, minimum 2 slova
+    const nameRegex = /^[A-ZČĆŽŠĐ][a-zčćžšđ]+(?:[-\s][A-ZČĆŽŠĐ][a-zčćžšđ]+)*$/;
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/; // Standardni email regex
     const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/; // Min 8 karaktera, jedno veliko slovo, broj i spec. znak
 
     if (!nameRegex.test(this.user.ime)) {
-      this.errorMessage = 'Ime mora početi velikim slovom i imati bar 2 slova!';
+      console.log(this.user.ime);
+      this.errorMessage = 'Ime mora početi velikim slovom i imati barem 2 slova!';
       return false;
     }
     if (!nameRegex.test(this.user.prezime)) {
-      this.errorMessage = 'Prezime mora početi velikim slovom i imati bar 2 slova!';
+      this.errorMessage = 'Prezime mora početi velikim slovom i imati barem 2 slova!';
       return false;
     }
     if (!emailRegex.test(this.user.email)) {
