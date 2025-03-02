@@ -10,6 +10,7 @@
     <th>Slika</th>
     <th>Datum objave</th>
     <th>Datum isteka</th>
+    <th>Stanje</th>
     <th>SearchTerm</th>
     <th>Prioritet</th>
     <th>Akcija</th>
@@ -23,6 +24,14 @@
     <td><img [src]="obavijest.slikaUrl" style="max-height: 40px; max-width: 100px" alt="slika obavijesti"></td>
     <td>{{ obavijest.datumObjave | date:'dd.MM.yyyy HH:mm' }}</td>
     <td>{{ obavijest.datumIsteka | date:'dd.MM.yyyy HH:mm' }}</td>
+    <td>
+  <span *ngIf="isIstekla(obavijest.datumIsteka);else aktivna" style="color:red">
+    Istekla
+  </span>
+      <ng-template #aktivna>
+        <span style="color:green">Aktivna</span>
+      </ng-template>
+  </td>
     <td>{{ obavijest.searchTerm }}</td>
     <td>{{ obavijest.prioritet }}</td>
     <td>

@@ -19,7 +19,9 @@ import {Observable} from 'rxjs';
 export class AppComponent  {
   isAdmin$: Observable<boolean>;
   constructor(private router: Router, private authService: AuthService) {
-    this.isAdmin$ = this.authService.isAdmin();
+    if(this.isLoggedIn()) {
+      this.isAdmin$ = this.authService.isAdmin();
+    }else this.isAdmin$ = new Observable<boolean>(observer => observer.next(false));
 
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
@@ -41,7 +43,8 @@ export class AppComponent  {
   }
 
 
-
-
+  private isLoggedIn() {
+    return this.authService.isLoggedIn()  ;
+  }
 }
 

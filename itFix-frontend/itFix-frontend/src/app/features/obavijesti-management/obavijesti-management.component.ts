@@ -33,8 +33,8 @@ export class ObavijestiManagementComponent implements OnInit {
 
   newObavijest: Obavijest = {
     id: 0,
-    naslov: '',
-    tekst: '',
+    naslov: ' ',
+    tekst: ' ',
     slikaUrl: '',
     datumObjave: '',
     datumIsteka: '',
@@ -116,5 +116,12 @@ export class ObavijestiManagementComponent implements OnInit {
       this.loadObavijesti();
       this.showAddModal = false;
     });
+  }
+
+  protected readonly DatePipe = DatePipe;
+  protected readonly Date = Date;
+
+  isIstekla(datumIsteka: string):boolean {
+    return new Date(datumIsteka).getTime() < new Date().getTime();
   }
 }

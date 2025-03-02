@@ -198,9 +198,13 @@ fa-icon:hover{
   }
 
   .search-btn {
+
     max-width: 40px;
   }
 
+  .icon-container{
+    padding-top: 6px;
+  }
   .icon-btn {
     width: 30px;
     height: 30px;

@@ -4,9 +4,9 @@ import { KategorijaService } from '../../core/services/kategorija.service';
 import { FormsModule } from '@angular/forms';
 import { ProizvodListComponent } from '../proizvodi/proizvodi-list/proizvodi-list.component';
 import { CommonModule } from '@angular/common';
-import {ActivatedRoute} from '@angular/router';
-import {MatSlider, MatSliderModule} from '@angular/material/slider';
-import {AlertService} from '../../core/services/alert.service';
+import { ActivatedRoute } from '@angular/router';
+import { MatSlider, MatSliderModule } from '@angular/material/slider';
+import { AlertService } from '../../core/services/alert.service';
 
 @Component({
   selector: 'app-store',
@@ -28,14 +28,15 @@ export class StoreComponent implements OnInit {
   ukupnoProizvoda: number = 0;
   kategorijaId: number = 0;
   podkategorijaId: number = 0;
-  cijena = { min: 0, max: 5000 };
+  cijena = { min: 0, max: 10000 };
   polovan: boolean = false;
-  searchTerm: string = ''; // ✔ Dodano
-  sortBy: string = 'naziv';
+  searchTerm: string = '';
+  sortBy: string = 'cijena';
   sortOrder: string = 'asc';
   page: number = 1;
   pageSize: number = 10;
-  odabranaKategorija: any ='';
+  odabranaKategorija: any = '';
+  prikaziSveKategorije: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -77,6 +78,7 @@ export class StoreComponent implements OnInit {
       this.ukupnoProizvoda = response.ukupno;
     });
   }
+
   onPageChange(newPage: number) {
     this.page = newPage;
     this.fetchProizvodi();
@@ -92,6 +94,7 @@ export class StoreComponent implements OnInit {
     this.sortOrder = sortOrder;
     this.fetchProizvodi();
   }
+
   updateRange(event: any) {
     const value = event.value;
     const mid = (this.cijena.min + this.cijena.max) / 2;
@@ -104,6 +107,7 @@ export class StoreComponent implements OnInit {
 
     this.fetchProizvodi();
   }
+
   updateMin(event: any) {
     this.cijena.min = event.target.value;
     this.fetchProizvodi();
@@ -114,15 +118,13 @@ export class StoreComponent implements OnInit {
     this.fetchProizvodi();
   }
 
-
-
   onSearch(searchTerm: string): void {
     this.searchTerm = searchTerm;
     this.fetchProizvodi();
   }
 
   ponistiKategoirje() {
-    this.odabranaKategorija='';
+    this.odabranaKategorija = '';
     this.alertService.showSuccess("Filter kategorije poništen");
     this.kategorijaId = 0;
     this.fetchProizvodi();

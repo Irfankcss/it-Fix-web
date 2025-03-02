@@ -46,15 +46,15 @@ export class NarudzbaManagementComponent implements OnInit{
 
     });
   }
-  filterNarudzbe(status: string): void{
+  filterNarudzbe(status: string): void {
     this.trenutniFilter = status;
     if (this.trenutniFilter === 'Sve') {
-        this.getNarudzbe();
-        this.filtriraneNarudzbe = this.narudzbe;
+      this.filtriraneNarudzbe = [...this.narudzbe];
     } else {
       this.filtriraneNarudzbe = this.narudzbe.filter(n => n.status === this.trenutniFilter);
     }
   }
+
 
   updateStatus(id: number, noviStatus: string): void {
     const narudzba = this.narudzbe.find(n => n.narudzbaId === id);

@@ -6,6 +6,7 @@ import { NarudzbaService } from '../../core/services/narudzba.service';
 import {Router} from '@angular/router';
 import {AlertService} from '../../core/services/alert.service';
 import {Proizvod} from '../../interfaces/Proizvod';
+import {AuthService} from '../../core/services/auth.service';
 
 interface KorpaProizvod {
   proizvod: Proizvod;
@@ -40,9 +41,14 @@ export class KorpaComponent implements OnInit {
   greskaPoruka: string = '';
 
   constructor(private korpaService: CartService, private narudzbaService: NarudzbaService,
-              private router: Router, private alertService: AlertService) {}
+              private router: Router, private alertService: AlertService, private authService: AuthService) {}
 
   ngOnInit() {
+    if(!this.isLoggedIn()){
+      this.router.navigate(['/login']);
+      this.alertService.showError("Morate biti prijavljeni da biste vidjeli korpu");
+      return;
+    }
     this.ucitajKorpu();
   }
 
@@ -171,5 +177,9 @@ export class KorpaComponent implements OnInit {
         this.alertService.showError('Greška pri kreiranju narudžbe');
       }
     );
+  }
+
+  private isLoggedIn() {
+    return this.authService.isLoggedIn();
   }
 }

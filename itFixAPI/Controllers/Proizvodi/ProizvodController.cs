@@ -99,12 +99,12 @@ namespace itFixAPI.Controllers.Proizvodi
             [FromQuery] decimal? minCijena,
             [FromQuery] decimal? maxCijena,
             [FromQuery] bool? polovan,
-            [FromQuery] string? searchTerm, // 🔍 Novi parametar
+            [FromQuery] string? searchTerm, 
             [FromQuery] int? minPopust,
             [FromQuery] int? maxPopust,
             [FromQuery] float? minOcjena,
             [FromQuery] int? minGarancijaMjeseci,
-            [FromQuery] string? sortBy = "naziv",
+            [FromQuery] string? sortBy = "cijena",
             [FromQuery] string? sortOrder = "asc",
             [FromQuery] int page = 1,
             [FromQuery] int pageSize = 10)
@@ -131,7 +131,7 @@ namespace itFixAPI.Controllers.Proizvodi
                 query = query.Where(p => p.Polovan == polovan.Value);
 
             if (!string.IsNullOrEmpty(searchTerm))
-                query = query.Where(p => p.Naziv.Contains(searchTerm)); // 🔍 Pretraga po nazivu
+                query = query.Where(p => p.Naziv.Contains(searchTerm)); 
 
             if (minPopust.HasValue)
                 query = query.Where(p => p.Popust >= minPopust.Value);
@@ -145,15 +145,23 @@ namespace itFixAPI.Controllers.Proizvodi
             if (minGarancijaMjeseci.HasValue)
                 query = query.Where(p => p.GarancijaMjeseci >= minGarancijaMjeseci.Value);
 
-            // 🔹 Sortiranje
             query = sortBy.ToLower() switch
             {
-                "cijena" => sortOrder.ToLower() == "desc" ? query.OrderByDescending(p => p.Cijena) : query.OrderBy(p => p.Cijena),
-                "naziv" => sortOrder.ToLower() == "desc" ? query.OrderByDescending(p => p.Naziv) : query.OrderBy(p => p.Naziv),
-                "popust" => sortOrder.ToLower() == "desc" ? query.OrderByDescending(p => p.Popust) : query.OrderBy(p => p.Popust),
-                "ocjena" => sortOrder.ToLower() == "desc" ? query.OrderByDescending(p => p.Ocjena) : query.OrderBy(p => p.Ocjena),
+                "cijena" => sortOrder.ToLower() == "desc"
+                    ? query.OrderByDescending(p => p.Cijena * (1 - (p.Popust / 100m)))
+                    : query.OrderBy(p => p.Cijena * (1 - (p.Popust / 100m))),
+                "naziv" => sortOrder.ToLower() == "desc"
+                    ? query.OrderByDescending(p => p.Naziv)
+                    : query.OrderBy(p => p.Naziv),
+                "popust" => sortOrder.ToLower() == "desc"
+                    ? query.OrderByDescending(p => p.Popust)
+                    : query.OrderBy(p => p.Popust),
+                "ocjena" => sortOrder.ToLower() == "desc"
+                    ? query.OrderByDescending(p => p.Ocjena)
+                    : query.OrderBy(p => p.Ocjena),
                 _ => query.OrderBy(p => p.Naziv)
             };
+
 
             // 🔹 Paginacija
             var totalItems = await query.CountAsync();

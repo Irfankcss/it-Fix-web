@@ -6,7 +6,7 @@
   <aside class="filters" [ngClass]="{ 'hidden': !prikaziFiltere }">
     <h3>FILTRIRANJE:</h3>
     <label>Cijena:</label>
-    <mat-slider [min]="0" [max]="5000" [step]="10">
+    <mat-slider [min]="0" [max]="10000" [step]="10">
       <input matSliderStartThumb [(ngModel)]="cijena.min" (input)="updateMin($event)">
       <input matSliderEndThumb [(ngModel)]="cijena.max" (input)="updateMax($event)">
     </mat-slider>
@@ -19,14 +19,15 @@
     <h3>Kategorije</h3>
     <ul class="category-list">
       <li *ngIf="odabranaKategorija!==''" (click)="ponistiKategoirje()" style="background-color: #fa1515;color:white">Poništi kategorije</li>
-      <li
-        *ngFor="let kategorija of kategorije"
-        [class.active]="kategorija.kategorijaId === kategorijaId"
-        (click)="odabranaKategorija = kategorija; kategorijaId = kategorija.kategorijaId; fetchProizvodi()"
-      >
+      <li *ngFor="let kategorija of (prikaziSveKategorije ? kategorije : kategorije.slice(0, 4))"
+          [class.active]="kategorija.kategorijaId === kategorijaId"
+          (click)="odabranaKategorija = kategorija; kategorijaId = kategorija.kategorijaId; fetchProizvodi()">
         {{ kategorija.naziv }}
       </li>
     </ul>
+    <a href="#" (click)="$event.preventDefault(); prikaziSveKategorije = !prikaziSveKategorije">
+      {{ prikaziSveKategorije ? 'Prikaži manje' : 'Prikaži sve kategorije' }}
+    </a>
 
     <label>Sortiraj po cijeni:</label>
     <select [(ngModel)]="sortOrder" (change)="fetchProizvodi()">
@@ -41,7 +42,7 @@
 </div>
 
 <div class="pagination">
-  <button (click)="onPageChange(page - 1)" [disabled]="page === 1">Prethodna</button>
+  <button (click)="onPageChange(page - 1)" [disabled]="page === 1"><</button>
   <span>Stranica {{ page }}</span>
-  <button (click)="onPageChange(page + 1)" [disabled]="page * pageSize >= ukupnoProizvoda">Sljedeća</button>
+  <button (click)="onPageChange(page + 1)" [disabled]="page * pageSize >= ukupnoProizvoda">></button>
 </div>

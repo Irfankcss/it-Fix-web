@@ -21,7 +21,7 @@
       <span class="badge">{{ brojProizvodaUKorpi }}</span>
     </button>
 
-    <div class="ukupno-container">
+    <div class="ukupno-container" (click)="otvoriKorpu()" style="cursor:pointer">
       <span class="ukupno-text">Ukupno</span>
       <span class="ukupno-iznos">{{ ukupnaCijena | number:'1.2-2' }} KM</span>
     </div>

@@ -37,8 +37,6 @@ export class ObavijestiCarouselComponent implements OnInit {
     });
   }
   OtvoriObavjest(obv: any): void {
-    console.log("CLICKED");
-    console.log(obv);
     if (obv.searchTerm && obv.searchTerm.trim() !== '') {
       this.router.navigate(['/prodavnica'], { queryParams: { search: obv.searchTerm } });
     }

@@ -29,8 +29,8 @@
       <tbody>
       <p *ngIf="!narudzba?.narudzbaProizvodi">Nema proizvoda u narudžbi!</p>
 
-      <tr *ngFor="let item of narudzba.narudzbaProizvodi">
-        <td><img [src]="item.proizvod.slikaUrl" alt="{{ item.proizvod.naziv }}"></td>
+      <tr *ngFor="let item of narudzba?.narudzbaProizvodi">
+      <td><img [src]="item.proizvod.slikaUrl" alt="{{ item.proizvod.naziv }}"></td>
         <td>{{ item.proizvod.naziv }}</td>
         <td>{{ item.proizvod.cijena | number:'1.2-2'}} KM</td>
         <td>{{ item.kolicina }}</td>

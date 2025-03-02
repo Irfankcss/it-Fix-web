@@ -4,6 +4,7 @@ import {DecimalPipe, NgForOf, NgIf, SlicePipe} from '@angular/common';
 import {CartService} from '../../core/services/cart.service';
 import {Router} from '@angular/router';
 import {AlertService} from '../../core/services/alert.service';
+import {AuthService} from '../../core/services/auth.service';
 @Component({
   selector: 'app-favoriti',
   standalone: true,
@@ -22,11 +23,15 @@ export class FavoritiComponent implements OnInit {
   errorMessage: string = '';
 
   constructor(private favoritService: FavoritService, private cartService: CartService, private router:Router,
-              private alertService: AlertService) {}
+              private alertService: AlertService, private authService: AuthService) {}
 
   ngOnInit() {
+    if(!this.isLoggedIn()){
+      this.router.navigate(['/login']);
+      this.alertService.showError("Morate biti prijavljeni da biste vidjeli favorite");
+      return;
+    }
     this.ucitajFavorite();
-    console.log("favoriti",this.favoriti);
   }
 
   ucitajFavorite() {
@@ -57,5 +62,9 @@ export class FavoritiComponent implements OnInit {
 
   dodajUKorpu(proizvodId: any) {
       this.router.navigate(['/proizvod', proizvodId]);
+  }
+
+  private isLoggedIn() {
+    return this.authService.isLoggedIn();
   }
 }

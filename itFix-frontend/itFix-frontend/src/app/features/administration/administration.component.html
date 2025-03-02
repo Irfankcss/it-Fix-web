@@ -1,4 +1,4 @@
-<div class="admin-dashboard">
+<div *ngIf="isAdminUser" class="admin-dashboard">
   <h3>Ploča za administraciju</h3>
   <nav class="sidebar">
     <button (click)="selectedTab = 'users'">Korisnici</button>

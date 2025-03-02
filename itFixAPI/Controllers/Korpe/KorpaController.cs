@@ -1,4 +1,5 @@
-﻿using itFixAPI.Data;
+﻿using Azure.Messaging;
+using itFixAPI.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -85,10 +86,10 @@ namespace itFixAPI.Controllers.Korpe
                 KorisnikId = korpa.KorisnikId,
                 Proizvodi = await _context.KorpaProizvodi
                     .Where(kp => kp.KorpaId == korpa.KorpaId)
-                    .Include(kp => kp.Proizvod) // Učitavanje cijelog proizvoda
+                    .Include(kp => kp.Proizvod) 
                     .Select(kp => new KorpaProizvodDto
                     {
-                        Proizvod = kp.Proizvod, // Vraća cijeli objekat Proizvod
+                        Proizvod = kp.Proizvod, 
                         Kolicina = kp.Kolicina
                     })
                     .ToListAsync()
@@ -106,7 +107,7 @@ namespace itFixAPI.Controllers.Korpe
             _context.KorpaProizvodi.RemoveRange(korpa.KorpaProizvodi);
             await _context.SaveChangesAsync();
 
-            return Ok("Korpa je uspješno resetovana.");
+            return Ok(new { message = "Korpa je uspješno resetovana." });
         }
 
 

@@ -61,10 +61,10 @@
 }
 
 .product-card img {
-  max-width: 100%;
-  max-height: 220px;
-  width: auto;
-  height: auto;
+  max-width: 190px;
+  max-height: 190px;
+  width:190px;
+  height: 190px;
   object-fit: contain;
   border-radius: 8px;
   margin-bottom: 10px;

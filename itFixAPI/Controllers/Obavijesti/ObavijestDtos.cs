@@ -17,10 +17,8 @@ namespace itFixAPI.Controllers.Obavijesti
 
     public class CreateObavijestDto
     {
-        [Required]
-        public string Naslov { get; set; }
-        [Required]
-        public string Tekst { get; set; }
+        public string Naslov { get; set; } = "";
+        public string Tekst { get; set; } = "";
         public string? SlikaUrl { get; set; }
         [Required]
         public DateTime DatumIsteka { get; set; }
