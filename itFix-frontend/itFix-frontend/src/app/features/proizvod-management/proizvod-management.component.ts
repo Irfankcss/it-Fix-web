@@ -93,6 +93,7 @@ export class ProizvodManagementComponent implements OnInit {
       cijenaSaPopustom: 0,
       slikaUrl: '',
       polovan: false,
+      isIzdvojen: false,
       popust: 0,
       ocjena: null,
       naRate: false,
@@ -101,5 +102,17 @@ export class ProizvodManagementComponent implements OnInit {
       kategorijaId: 0,
       podkategorijaId: 0
     };
+  }
+
+  Izdvoji(proizvod: Proizvod) {
+    if(!proizvod.isIzdvojen){
+      this.productService.toggleIzdvojen(proizvod.proizvodId, true).subscribe(() => {
+        proizvod.isIzdvojen = true;
+      })
+    }else{
+      this.productService.toggleIzdvojen(proizvod.proizvodId, false).subscribe(() => {
+        proizvod.isIzdvojen = false;
+      })
+    }
   }
 }

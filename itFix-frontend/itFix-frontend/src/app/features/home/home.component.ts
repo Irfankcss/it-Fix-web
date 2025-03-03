@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import {ObavijestiCarouselComponent} from '../obavijesti-carousel/obavijesti-carousel.component';
 import {NajnovijiProizvodiComponent} from '../najnoviji-proizvodi/najnoviji-proizvodi.component';
 import {InfoSekcijaComponent} from '../info-sekcija/info-sekcija.component';
+import {IzdvojieniProizvodiComponent} from '../izdvojieni-proizvodi/izdvojieni-proizvodi.component';
 
 @Component({
   selector: 'app-home',
@@ -10,7 +11,8 @@ import {InfoSekcijaComponent} from '../info-sekcija/info-sekcija.component';
   imports: [
     ObavijestiCarouselComponent,
     NajnovijiProizvodiComponent,
-    InfoSekcijaComponent
+    InfoSekcijaComponent,
+    IzdvojieniProizvodiComponent
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'

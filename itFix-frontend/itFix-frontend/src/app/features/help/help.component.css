@@ -1,0 +1,11 @@
+.help-container{
+  background-color: #fcfcfc;
+  min-height: 80vh;
+  height: auto;
+  width: 70%;
+  margin-left: 15%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

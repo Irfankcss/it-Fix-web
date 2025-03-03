@@ -1,0 +1,85 @@
+<div class="help-container" [ngSwitch]="page">
+  <h2>
+    <span *ngSwitchCase="'refund'">Vraćanje novca i zamjena</span>
+    <span *ngSwitchCase="'ordering'">Proces naručivanja</span>
+    <span *ngSwitchCase="'privacy'">Politika privatnosti</span>
+    <span *ngSwitchCase="'exchange'">Zamjena proizvoda</span>
+    <span *ngSwitchCase="'terms'">Uslovi korištenja</span>
+    <span *ngSwitchDefault>Stranica nije pronađena</span>
+  </h2>
+
+  <p *ngSwitchCase="'refund'">
+    <strong>Politika povrata i zamjene</strong><br>
+    Kupcima omogućavamo povrat ili zamjenu proizvoda unutar <strong>7 dana</strong> od datuma kupovine. Nakon isteka ovog roka, ne možemo garantovati povrat sredstava ili zamjenu proizvoda.<br><br>
+
+    <strong>Uslovi za ostvarivanje povrata:</strong><br>
+    - Proizvod mora biti <strong>nekorišten</strong>, u originalnom pakovanju i sa svim dodacima.<br>
+    - Artikli kupljeni na <strong>akcijama i sniženjima</strong> ne podliježu povratu.<br>
+    - Povrat se vrši nakon pregleda proizvoda i potvrde ispunjavanja uslova.<br><br>
+
+    <strong>Kako izvršiti povrat?</strong><br>
+    Kontaktirajte nas putem e-maila <strong>itfixdoo&#64;gmail.com</strong> ili telefona <strong>+387 63 090 577</strong> kako biste dobili detaljne instrukcije o povratu.
+  </p>
+
+  <p *ngSwitchCase="'ordering'">
+    <strong>Kako naručiti proizvod?</strong><br>
+    Kupovina putem IT-Fix online prodavnice je sigurna i jednostavna. Slijedite ove korake:<br><br>
+
+    <strong>Koraci naručivanja:</strong><br>
+    1. Odaberite željeni proizvod i dodajte ga u korpu.<br>
+    2. Ispunite potrebne podatke za dostavu.<br>
+    3. Potvrdite narudžbu – dobit ćete e-mail s detaljima narudžbe.<br><br>
+
+    <strong>Dostava i troškovi:</strong><br>
+    - Standardna cijena dostave košta <strong>8 KM</strong>, a za narudžbe iznad <strong>100 KM</strong> dostava je besplatna.<br>
+    - Rok isporuke je <strong>1-3 radna dana</strong>, u zavisnosti od vaše lokacije.<br>
+    - Sve narudžbe obrađujemo u roku od <strong>24 sata</strong> od trenutka prijema u sistem.
+  </p>
+
+  <p *ngSwitchCase="'privacy'">
+    <strong>Politika privatnosti</strong><br>
+    Vaša privatnost nam je izuzetno važna. Svi podaci koje prikupljamo koriste se isključivo u svrhu obrade narudžbi i poboljšanja korisničkog iskustva.<br><br>
+
+    <strong>Koje podatke prikupljamo?</strong><br>
+    - Ime i prezime, adresu, broj telefona i e-mail za potrebe dostave.<br>
+    - Informacije o kupovinama radi unaprjeđenja naših usluga.<br><br>
+
+    <strong>Kako čuvamo vaše podatke?</strong><br>
+    - Vaši podaci su zaštićeni i nikada ih ne dijelimo s trećim stranama, osim s dostavnim službama koje obavljaju isporuku.<br>
+    - Koristimo napredne sigurnosne protokole kako bismo spriječili neovlašteni pristup podacima.<br><br>
+
+    Za više informacija kontaktirajte nas na <strong>itfixdoo&#64;gmail.com</strong>.
+  </p>
+
+  <p *ngSwitchCase="'exchange'">
+    <strong>Uslovi za zamjenu proizvoda</strong><br>
+    Ako niste zadovoljni proizvodom, nudimo mogućnost zamjene u roku od <strong>7 dana</strong> od dana prijema.<br><br>
+
+    <strong>Uslovi zamjene:</strong><br>
+    - Proizvod mora biti u originalnom pakovanju i nekorišten.<br>
+    - Kupac snosi troškove dostave prilikom zamjene, osim u slučaju greške s naše strane.<br>
+    - Oštećeni proizvodi koji su rezultat nepravilnog rukovanja ne podliježu zamjeni.<br><br>
+
+    <strong>Kako izvršiti zamjenu?</strong><br>
+    Kontaktirajte našu korisničku podršku putem e-maila <strong>itfixdoo&#64;gmail.com</strong> ili telefona <strong>+387 63 090 577</strong> za dalja uputstva.
+  </p>
+
+  <p *ngSwitchCase="'terms'">
+    <strong>Uslovi korištenja</strong><br>
+    Dobrodošli na IT-Fix online prodavnicu! Korištenjem naše web stranice prihvatate sljedeće uslove poslovanja:<br><br>
+
+    <strong>1. Cijene i plaćanje:</strong><br>
+    - Sve cijene su izražene u <strong>KM</strong> (konvertibilnim markama).<br>
+    - Plaćanje je moguće isključivo pouzećem.<br><br>
+
+    <strong>2. Dostava i isporuka:</strong><br>
+    - Standardna cijena dostave je <strong>8 KM</strong>, a besplatna dostava važi za narudžbe iznad <strong>100 KM</strong>.<br>
+    - Isporuka se vrši u roku od <strong>1-3 radna dana</strong>.<br><br>
+
+    <strong>3. Povrat i reklamacije:</strong><br>
+    - Povrat proizvoda moguć je unutar <strong>7 dana</strong>, uz obavezno ispunjavanje uslova.<br>
+    - Artikli kupljeni na sniženju ne podliježu povratu.<br><br>
+
+    Za sva dodatna pitanja ili nedoumice, slobodno nas kontaktirajte putem e-maila <strong>itfixdoo&#64;gmail.com</strong>.
+  </p>
+</div>

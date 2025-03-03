@@ -1,0 +1,173 @@
+.scroll-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.proizvod-grid {
+  display: flex;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  gap: 25px;
+  padding: 20px;
+  max-width: 100%;
+}
+
+.scroll-btn {
+  background-color: #f3f3f3;
+  color: #007bff;
+  border: 1px solid #007bff;
+  text-align: center;
+
+  cursor: pointer;
+  padding: 10px 15px;
+  border-radius: 50%;
+  font-size: 20px;
+  margin: 0 10px;
+  transition: background 0.3s ease;
+}
+
+.scroll-btn:hover {
+  background-color: #007bff;
+  color:white;
+}
+
+
+.najnoviji-proizvodi {
+  text-align: center;
+  padding: 20px;
+  background-color: rgb(245, 244, 244);
+}
+
+.najnoviji-proizvodi h2 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+
+.cijene{
+  min-height: 68px;
+}
+.proizvod-kartica {
+  cursor: pointer;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  min-height: 300px;
+  min-width: 310px;
+}
+
+.proizvod-kartica:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.proizvod-kartica h3 {
+  font-size: 15px;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+  min-height: 40px;
+  line-height: 1.4;
+}
+
+.proizvod-kartica p {
+  font-size: 16px;
+  font-weight: bold;
+  color: #007bff;
+  margin-bottom: 10px;
+}
+
+.proizvod-kartica img {
+  max-width: 100%;
+  width: 250px;
+  height: 150px;
+  object-fit: contain;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.add-to-cart-btn {
+  background: #ffffff;
+  color: #6ca841;
+  width: 120px;
+  border: 1px solid #6ca841;
+  padding: 10px 15px;
+  border-radius: 15px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.5s ease;
+}
+.bottom{
+  width: 100%;
+  justify-content: center;
+  text-align: center;
+}
+.cijela-ponuda-link{
+  color: #3d3c3c;
+  text-align: right;
+}
+
+.add-to-cart-btn:hover {
+  background: #6ca841;
+  color:white;
+}
+.najnoviji-proizvodi h2 {
+  font-size: 32px;
+  font-weight: 700;
+  color: #222;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 10px;
+  position: relative;
+  display: inline-block;
+  padding-bottom: 10px;
+  background: linear-gradient(90deg, #007bff, #00d4ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.najnoviji-proizvodi h2::after {
+  content: "";
+  width: 80px;
+  height: 4px;
+  background: #007bff;
+  display: block;
+  margin: 8px auto 0 auto;
+  border-radius: 2px;
+}
+
+@media (max-width: 768px) {
+  .najnoviji-proizvodi h2 {
+    font-size: 28px;
+  }
+}
+
+
+/* Manji ekrani */
+@media (max-width: 1200px) {
+  .proizvod-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .proizvod-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .proizvod-grid {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}

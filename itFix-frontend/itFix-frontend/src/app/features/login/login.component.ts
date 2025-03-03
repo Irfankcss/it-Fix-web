@@ -21,14 +21,20 @@ export class LoginComponent {
   login() {
     this.authService.login(this.credentials).subscribe({
       next: (response) => {
-        localStorage.setItem('token', response.token)
-        this.authService.getCurrentUser().subscribe();
-        this.alertService.showSuccess('Prijava uspješna. Dobrodošli!');
-        this.router.navigate(['/']);
+        if (response.token) {
+          localStorage.setItem('token', response.token);
+          this.authService.authStatusSubject.next(true);
+          this.authService.getCurrentUser().subscribe();
+          this.alertService.showSuccess('Prijava uspješna. Dobrodošli!');
+          this.router.navigate(['/']);
+        } else {
+          console.error('Token nije pronađen u odgovoru!');
+        }
       },
       error: () => {
-        this.alertService.showError('Pogrešna lozinka ili email, pokusajte ponovo!');
+        this.alertService.showError('Pogrešna lozinka ili email, pokušajte ponovo!');
       }
     });
   }
 }
+

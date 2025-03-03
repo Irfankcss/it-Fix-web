@@ -1,0 +1,22 @@
+<div class="najnoviji-proizvodi">
+  <h2>Iz ponude izdvajamo:</h2>
+  <div class="scroll-container">
+
+    <div #scrollableGrid class="proizvod-grid">
+      <div *ngFor="let proizvod of Proizvodi" class="proizvod-kartica" (click)="otvoriProizvod(proizvod.proizvodId)">
+        <h3>{{ proizvod.naziv.length > 50 ? (proizvod.naziv | slice:0:50) + '...' : proizvod.naziv }}</h3>
+        <div class="cijene">
+          <p style="color:grey; text-decoration: line-through; font-weight: 500;" class="cijena" *ngIf="proizvod.cijenaSaPopustom<proizvod.cijena">{{proizvod.cijena | number:'1.2-2' }} KM</p>
+          <p>{{( proizvod.cijenaSaPopustom < proizvod.cijena? proizvod.cijenaSaPopustom : proizvod.cijena ) | number: '1.2-2'}} KM</p>
+        </div>
+        <img [src]="proizvod.slikaUrl" alt="{{ proizvod.naziv }}" width="250" height="150">
+        <button class="add-to-cart-btn" (click)="otvoriProizvod(proizvod.proizvodId)">Pregledaj</button>
+      </div>
+    </div>
+
+  </div>
+  <div class="bottom">
+    <button class="scroll-btn left" (click)="scrollLeft()">&#9665;</button>
+    <button class="scroll-btn right" (click)="scrollRight()">&#9655;</button>
+  </div>
+</div>

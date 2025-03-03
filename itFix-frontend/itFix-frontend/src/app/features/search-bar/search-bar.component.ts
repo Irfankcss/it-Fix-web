@@ -105,21 +105,32 @@ export class SearchBarComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.isLoggedIn = this.authService.isLoggedIn();
+    this.authService.authStatus$.subscribe(isLoggedIn => {
+      this.isLoggedIn = isLoggedIn;
 
-    if (this.isLoggedIn) {
-      this.ucitajFavorite();
-      this.ucitajKorpu();
+      if (isLoggedIn) {
+        setTimeout(() => {
+          this.ucitajFavorite();
+          this.ucitajKorpu();
+        }, 500);
+      } else {
+        this.brojFavorita = 0;
+        this.brojProizvodaUKorpi = 0;
+        this.ukupnaCijena = 0;
+      }
+    });
 
-      this.favoritService.getFavoritiCount().subscribe(count => {
-        this.brojFavorita = count;
-      });
 
-      this.korpaService.getCartUpdates().subscribe(korpa => {
-        this.brojProizvodaUKorpi = korpa.proizvodi.length;
-        this.ukupnaCijena = this.izracunajUkupnuCijenu(korpa.proizvodi);
-      });
-    }
+    this.favoritService.getFavoritiCount().subscribe(count => {
+      this.brojFavorita = count;
+    });
+
+    this.korpaService.getCartUpdates().subscribe(korpa => {
+      this.brojProizvodaUKorpi = korpa.proizvodi.length;
+      this.ukupnaCijena = this.izracunajUkupnuCijenu(korpa.proizvodi);
+    });
   }
+
+
 
 }

@@ -7,6 +7,7 @@ export interface Proizvod {
   slikaUrl: string
   polovan: boolean
   naRate:boolean
+  isIzdvojen: boolean
   popust: number
   ocjena: any
   brojRecenzija: number

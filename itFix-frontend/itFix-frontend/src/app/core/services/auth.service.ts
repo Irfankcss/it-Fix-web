@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import {catchError, map, Observable, of, throwError} from 'rxjs';
+import {BehaviorSubject, catchError, map, Observable, of, tap, throwError} from 'rxjs';
 import { environment } from '../../../environment/environment';
 import {AdminUser} from '../../interfaces/adminUser';
 
@@ -9,7 +9,8 @@ import {AdminUser} from '../../interfaces/adminUser';
 })
 export class AuthService {
   private apiUrl = environment.apiUrl;
-
+  public authStatusSubject = new BehaviorSubject<boolean>(this.isLoggedIn());
+  authStatus$ = this.authStatusSubject.asObservable();
   constructor(private http: HttpClient) {}
 
   register(user: any): Observable<any> {
@@ -19,37 +20,52 @@ export class AuthService {
   }
 
   login(credentials: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}auth/login`, credentials);
+    return this.http.post(`${this.apiUrl}auth/login`, credentials).pipe(
+      tap(response => {
+        if (response) {
+          this.authStatusSubject.next(true);
+        } else {
+          console.error('Token nije pronađen u odgovoru!');
+        }
+      }),
+      catchError(this.handleError)
+    );
   }
-
   isLoggedIn(): boolean {
     if (typeof window !== 'undefined') {
       return !!localStorage.getItem('token');
     }
     return false;
   }
-
   logout() {
-    localStorage.removeItem('token'); // Briše token
+    localStorage.removeItem('token');
+    this.authStatusSubject.next(false);
   }
 
-  getCurrentUser(): Observable<User> {
+  getCurrentUser(): Observable<User | null> {
     const headers = this.getAuthHeaders();
     return this.http.get<User>(`${this.apiUrl}auth/me`, { headers }).pipe(
-      catchError(this.handleError)
+      catchError(error => {
+        if (error.status === 401) {
+          this.logout();
+          return of(null);
+        }
+        return throwError(() => error);
+      })
     );
   }
+
+
   isAdmin(): Observable<boolean> {
     return this.getCurrentUser().pipe(
-      map(user => {
-        return user.roles.some(role => role.toLowerCase() === 'admin');
-      }),
+      map(user => user ? user.roles.some(role => role.toLowerCase() === 'admin') : false),
       catchError(error => {
         console.error('Greška pri dohvaćanju korisnika:', error);
         return of(false);
       })
     );
   }
+
 
   getProfile(): Observable<any> {
     const headers = this.getAuthHeaders();
@@ -77,8 +93,12 @@ export class AuthService {
       return new HttpHeaders();
     }
     const token = localStorage.getItem('token');
+    if (!token) {
+      return new HttpHeaders();
+    }
     return new HttpHeaders().set('Authorization', `Bearer ${token}`);
   }
+
 
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'Došlo je do greške.';

@@ -211,6 +211,33 @@ namespace itFixAPI.Controllers.Proizvodi
             await _context.SaveChangesAsync();
             return Ok(new ProizvodDto(proizvod));
         }
+        [HttpGet("izdvojeni")]
+        public async Task<IActionResult> GetIzdvojeniProizvodi()
+        {
+            var izdvojeniProizvodi = await _context.Proizvodi
+                .Where(p => p.isIzdvojen)
+                .ToListAsync();
+
+            var proizvodDtos = izdvojeniProizvodi.Select(p => new ProizvodDto(p));
+
+            return Ok(proizvodDtos);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPut("{id}/izdvoji")]
+        public async Task<IActionResult> ToggleIzdvojen(int id, [FromBody] bool isIzdvojen)
+        {
+            var proizvod = await _context.Proizvodi.FindAsync(id);
+            if (proizvod == null)
+            {
+                return NotFound($"Proizvod sa ID-jem {id} ne postoji.");
+            }
+
+            proizvod.isIzdvojen = isIzdvojen;
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = $"Proizvod {id} je {(isIzdvojen ? "izdvojen" : "nije više izdvojen")}." });
+        }
 
 
         [Authorize(Roles = "Admin")]

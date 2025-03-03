@@ -507,6 +507,9 @@ namespace itFixAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("isIzdvojen")
+                        .HasColumnType("bit");
+
                     b.HasKey("ProizvodId");
 
                     b.HasIndex("KategorijaId");

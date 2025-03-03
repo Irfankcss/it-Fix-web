@@ -19,11 +19,11 @@
       <h3>Treba Vam pomoć?</h3>
       <ul>
         <li><a href="/kontakt">Kontakt</a></li>
-        <li><a href="#">Vraćanje novca i zamjena</a></li>
-        <li><a href="#">Naručivanje</a></li>
-        <li><a href="#">Privacy Policy</a></li>
-        <li><a href="#">Zamjena robe</a></li>
-        <li><a href="#">Terms and Conditions</a></li>
+        <li><a [routerLink]="['/help', 'refund']">Vraćanje novca i zamjena</a></li>
+        <li><a [routerLink]="['/help', 'ordering']">Naručivanje</a></li>
+        <li><a [routerLink]="['/help', 'privacy']">Privacy Policy</a></li>
+        <li><a [routerLink]="['/help', 'exchange']">Zamjena robe</a></li>
+        <li><a [routerLink]="['/help', 'terms']">Terms and Conditions</a></li>
       </ul>
     </div>
 

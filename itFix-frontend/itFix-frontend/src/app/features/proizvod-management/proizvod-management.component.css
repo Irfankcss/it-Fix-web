@@ -150,6 +150,15 @@
   cursor: pointer;
   transition: background 0.3s;
 }
+.izdvoji-btn{
+  background-color: #007afd;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
 .add-btn{
   background-color: #007afd;
   color: white;

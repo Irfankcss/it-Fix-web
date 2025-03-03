@@ -81,5 +81,17 @@ export class ProizvodService {
       catchError(this.handleError)
     );
   }
+  getIzdvojeniProizvodi(): Observable<Proizvod[]> {
+    return this.http.get<Proizvod[]>(`${this.apiUrl}/izdvojeni`).pipe(
+      retry(2),
+      catchError(this.handleError)
+    );
+  }
+
+  toggleIzdvojen(id: number, isIzdvojen: boolean): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/${id}/izdvoji`, isIzdvojen, { headers: this.getAuthHeaders() }).pipe(
+      catchError(this.handleError)
+    );
+  }
 
 }

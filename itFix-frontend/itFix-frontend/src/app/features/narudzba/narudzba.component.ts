@@ -22,16 +22,22 @@ export class NarudzbaComponent implements OnInit{
     const id = this.route.snapshot.paramMap.get('id');
 
     this.authService.getCurrentUser().subscribe(user => {
+      if (!user) {
+        this.router.navigate(['/error']);
+        return;
+      }
+
       if (id) {
         this.narudzbaService.getNarudzbaById(+id).subscribe(narudzba => {
           if (narudzba.korisnikId !== user.id) {
-            this.router.navigate(['/error']); // Ako korisnik nije vlasnik, preusmjeri ga
+            this.router.navigate(['/error']);
           } else {
             this.narudzba = narudzba;
           }
         });
       }
     });
+
   }
 
 

@@ -12,6 +12,7 @@ namespace itFixAPI.Controllers.Proizvodi
         public decimal CijenaSaPopustom { get; set; }
         public string SlikaUrl { get; set; }
         public bool Polovan { get; set; }
+        public bool isIzdvojen { get; set; }
         public int Popust { get; set; }
         public bool NaRate { get; set; }
         public float? Ocjena { get; set; }
@@ -30,6 +31,7 @@ namespace itFixAPI.Controllers.Proizvodi
             CijenaSaPopustom = proizvod.CijenaSaPopustom();
             SlikaUrl = proizvod.SlikaUrl;
             Polovan = proizvod.Polovan;
+            isIzdvojen = proizvod.isIzdvojen;
             NaRate = proizvod.NaRate;
             Popust = proizvod.Popust;
             Ocjena = proizvod.Ocjena;
@@ -78,6 +80,8 @@ public class CreateProizvodDto
         public int? Popust { get; set; }
         public bool? NaRate { get; set; }
         public int? GarancijaMjeseci { get; set; }
+
+        public bool isIzdvojen {  get; set; }
     }
 
 
