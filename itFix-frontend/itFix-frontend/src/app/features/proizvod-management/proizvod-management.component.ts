@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Proizvod } from '../../interfaces/Proizvod';
 import { ProizvodService } from '../../core/services/product.service';
 import { KategorijaService } from '../../core/services/kategorija.service';
-import { CurrencyPipe, NgForOf, NgIf } from '@angular/common';
+import {CurrencyPipe, NgForOf, NgIf, SlicePipe} from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {Kategorija} from '../../interfaces/Kategorija';
 
@@ -12,7 +12,8 @@ import {Kategorija} from '../../interfaces/Kategorija';
     NgForOf,
     CurrencyPipe,
     FormsModule,
-    NgIf
+    NgIf,
+    SlicePipe
   ],
   standalone: true,
   templateUrl: './proizvod-management.component.html',
@@ -54,10 +55,8 @@ export class ProizvodManagementComponent implements OnInit {
     this.newProizvod = this.initProizvod();
     this.showAddModal = true;
   }
-
   updateProizvod() {
     if (!this.editProizvodData) return;
-
     this.productService.updateProizvod(this.editProizvodData.proizvodId, this.editProizvodData).subscribe(() => {
       console.log("Proizvod uspješno ažuriran:", this.editProizvodData);
       this.showEditModal = false;
@@ -71,7 +70,7 @@ export class ProizvodManagementComponent implements OnInit {
     this.productService.createProizvod(this.newProizvod).subscribe(() => {
       console.log("Proizvod uspješno dodan:", this.newProizvod);
       this.showAddModal = false;
-      this.loadProizvodi(); // Osvježavanje liste proizvoda
+      this.loadProizvodi();
     });
   }
 

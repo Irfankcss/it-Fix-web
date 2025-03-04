@@ -23,7 +23,7 @@ export class IzdvojieniProizvodiComponent implements OnInit {
 
   ngOnInit(): void {
     this.proizvodService.getIzdvojeniProizvodi().subscribe({
-      next: (data) => this.Proizvodi = data,
+      next: (data) => this.Proizvodi = data.reverse(),
       error: (err) => console.error('Greška pri dohvaćanju proizvoda:', err)
     });
   }

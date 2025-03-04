@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ProizvodService} from '../../../core/services/product.service';
-import {CurrencyPipe, NgIf, NgStyle} from '@angular/common';
+import {CurrencyPipe, NgIf, NgStyle, SlicePipe} from '@angular/common';
 import {NajnovijiProizvodiComponent} from '../../najnoviji-proizvodi/najnoviji-proizvodi.component';
 import {CartService} from '../../../core/services/cart.service';
 import {AlertService} from '../../../core/services/alert.service';
@@ -18,7 +18,8 @@ import {FormsModule} from '@angular/forms';
     NgIf,
     NajnovijiProizvodiComponent,
     FormsModule,
-    NgStyle
+    NgStyle,
+    SlicePipe
   ]
 })
 export class ProizvodComponent implements OnInit {
@@ -26,7 +27,7 @@ export class ProizvodComponent implements OnInit {
   brojProizvodaUKorpi: number = 0;
   ukupnaCijena: number = 0;
   kolicina: number = 1;
-  prikaziOpis: boolean=true;
+  prikaziOpis: boolean=false;
 
   constructor(
     private route: ActivatedRoute,

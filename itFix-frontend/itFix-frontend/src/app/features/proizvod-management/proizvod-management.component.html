@@ -1,3 +1,4 @@
+<h4>Prikazano ({{proizvodi.length}}) proizvoda</h4>
 <button class="add-btn" (click)="openAddModal()">Dodaj Proizvod</button>
 
 <table class="management-table">
@@ -18,8 +19,8 @@
   <tbody>
   <tr *ngFor="let proizvod of proizvodi">
     <td>{{ proizvod.proizvodId }}</td>
-    <td>{{ proizvod.naziv }}</td>
-    <td>{{ proizvod.opis }}</td>
+    <td>{{ (proizvod.naziv | slice:0:50) + '...'}}</td>
+    <td>{{ (proizvod.opis | slice:0:50) + '...'}}</td>
     <td>{{ proizvod.cijena | currency:'BAM' }}</td>
     <td>{{ proizvod.popust }}%</td>
     <td>{{ proizvod.cijenaSaPopustom | currency:'BAM' }}</td>
@@ -42,6 +43,13 @@
     <label>Opis: <textarea [(ngModel)]="editProizvodData!.opis"></textarea></label>
     <label>Cijena: <input [(ngModel)]="editProizvodData!.cijena" type="number"></label>
     <label>Popust: <input [(ngModel)]="editProizvodData!.popust" type="number"></label>
+    <label>Kategorija:
+      <select [(ngModel)]="editProizvodData!.kategorijaId">
+        <option *ngFor="let kategorija of kategorije" [value]="kategorija.kategorijaId">
+          {{ kategorija.naziv }}
+        </option>
+      </select>
+    </label>
     <label>Slika URL: <input [(ngModel)]="editProizvodData!.slikaUrl" type="text"></label>
     <label>Polovan: <input type="checkbox" [(ngModel)]="editProizvodData!.polovan"></label>
     <button (click)="updateProizvod()">Spremi</button>

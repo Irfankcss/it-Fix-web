@@ -34,7 +34,7 @@ export class StoreComponent implements OnInit {
   sortBy: string = 'cijena';
   sortOrder: string = 'asc';
   page: number = 1;
-  pageSize: number = 10;
+  pageSize: number = 12;
   odabranaKategorija: any = '';
   prikaziSveKategorije: boolean = false;
 

@@ -61,9 +61,9 @@ export class ProizvodService {
     );
   }
   getProizvodiAdmin(): Observable<Proizvod[]> {
-    return this.http.get<{ ukupno: number; proizvodi: Proizvod[] }>(this.apiUrl, { headers: this.getAuthHeaders() })
-      .pipe(map(response => response.proizvodi));
+    return this.http.get<Proizvod[]>(`${this.apiUrl}/admin`, { headers: this.getAuthHeaders() });
   }
+
   createProizvod(proizvod: any): Observable<any> {
     return this.http.post<any>(this.apiUrl, proizvod, { headers: this.getAuthHeaders() }).pipe(
       catchError(this.handleError)

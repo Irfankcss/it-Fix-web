@@ -80,6 +80,7 @@ public class CreateProizvodDto
         public int? Popust { get; set; }
         public bool? NaRate { get; set; }
         public int? GarancijaMjeseci { get; set; }
+        public int? KategorijaId { get; set; }
 
         public bool isIzdvojen {  get; set; }
     }

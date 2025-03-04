@@ -58,6 +58,8 @@ namespace itFixAPI.Controllers.Proizvodi
                 GarancijaMjeseci = createDto.GarancijaMjeseci,
                 DatumDodavanja = DateTime.Now,
             };
+            if (proizvod.Popust > 0)
+                proizvod.isIzdvojen = true;
 
             _context.Proizvodi.Add(proizvod);
             await _context.SaveChangesAsync();
@@ -196,6 +198,15 @@ namespace itFixAPI.Controllers.Proizvodi
             if (!string.IsNullOrEmpty(updateDto.SlikaUrl))
                 proizvod.SlikaUrl = updateDto.SlikaUrl;
 
+            if (updateDto.KategorijaId.HasValue)
+            {
+                var novaKategorija = await _context.Kategorije.FindAsync(updateDto.KategorijaId.Value);
+                if (novaKategorija != null)
+                {
+                    proizvod.KategorijaId = novaKategorija.KategorijaId;
+                    proizvod.Kategorija = novaKategorija;
+                }
+            }
             if (updateDto.Polovan.HasValue)
                 proizvod.Polovan = updateDto.Polovan.Value;
 
@@ -238,7 +249,19 @@ namespace itFixAPI.Controllers.Proizvodi
 
             return Ok(new { message = $"Proizvod {id} je {(isIzdvojen ? "izdvojen" : "nije više izdvojen")}." });
         }
+        [Authorize(Roles = "Admin")]
+        [HttpGet("admin")]
+        public async Task<IActionResult> GetProizvodiAdmin()
+        {
+            var proizvodi = await _context.Proizvodi
+                .Include(p => p.Kategorija)
+                .Include(p => p.Podkategorija)
+                .ToListAsync();
 
+            var proizvodDtos = proizvodi.Select(p => new ProizvodDto(p));
+
+            return Ok(proizvodDtos);
+        }
 
         [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]

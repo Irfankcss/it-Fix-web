@@ -28,15 +28,6 @@
     <div *ngIf="proizvod?.naRate" class="rate">
       - Moguće kupovati na rate (kupovinom u poslovnici)
     </div>
-
-
-    <div class="opis-container">
-      <button class="toggle-opis" (click)="prikaziOpis = !prikaziOpis">
-        {{ prikaziOpis ? 'Sakrij opis' : 'Prikaži opis' }}
-      </button>
-      <p class="opis" *ngIf="prikaziOpis">{{ proizvod?.opis }}</p>
-    </div>
-
     <div class="dodaj-korpu-container">
       <div class="brojac-kolicine">
         <button (click)="smanjiKolicinu()">-</button>
@@ -45,6 +36,13 @@
       </div>
       <button class="dodaj-korpu" (click)="dodajUKorpu(proizvod, kolicina)">Dodaj u korpu</button>
     </div>
+    <div class="opis-container">
+      <p class="opis">{{prikaziOpis?proizvod?.opis:(proizvod?.opis | slice:0:150) + '...'}}</p>
+      <button *ngIf="proizvod?.opis.length > 150" class="toggle-opis" (click)="prikaziOpis = !prikaziOpis">
+        {{ prikaziOpis ? 'Sakrij' : 'Prikaži cijeli opis' }}
+      </button>
+    </div>
+
   </div>
 </div>
 </div>

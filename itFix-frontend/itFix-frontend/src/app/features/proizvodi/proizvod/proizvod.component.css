@@ -17,14 +17,19 @@
   cursor:zoom-in  ;
   flex: 1;
   max-width: 450px;
+  max-height: 450px;
   position: relative;
   overflow: hidden;
 }
 
 .slika-container img {
   width: 100%;
+  min-width: 360px;
+  min-height: 360px;
   border-radius: 16px;
   transition: opacity 0.2s;
+  object-fit: contain;
+  object-position: center;
 }
 
 .zoom-slike {
@@ -33,6 +38,7 @@
   left: 0;
   width: 100%;
   height: 100%;
+  max-height: 100%;
   background-size: 200%;
   background-repeat: no-repeat;
   pointer-events: none;
@@ -100,6 +106,7 @@
 .opis {
   font-size: 18px;
   color: #444;
+  white-space: pre-line;
 }
 
 /* Dodavanje u korpu */
@@ -150,6 +157,10 @@
   .slika-container {
     max-width: 80%;
     margin: 0 auto;
+  }
+  .slika-container img {
+    min-width: 100%;
+    min-height: 100%;
   }
   .cijene {
     justify-content: center;
